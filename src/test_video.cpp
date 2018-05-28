@@ -1,5 +1,6 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
+#include <opencv2/tracking.hpp>
 #include "utils.h"
 #include "mtcnn.h"
 
@@ -30,8 +31,9 @@ void test_video(int argc, char* argv[]) {
     }
 
 	std::vector<Bbox> finalBbox;
+    std::vector<cv::Ptr<cv::Tracker>> trackers;
+	cv::Rect2d roi;
 	cv::Mat frame;
-	clock_t start_time = clock();
 
    	do {
 		finalBbox.clear();
@@ -41,7 +43,10 @@ void test_video(int argc, char* argv[]) {
             continue;
         }
 
-		if (counter % 5 == 0) {
+		if (counter % 25 == 0) {
+			// renew trackers
+			trackers.clear();
+
 			gettimeofday(&tv1,&tz1);
             ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
             mm.detect(ncnn_img, finalBbox);
@@ -50,25 +55,41 @@ void test_video(int argc, char* argv[]) {
             for(vector<Bbox>::iterator it=finalBbox.begin(); it!=finalBbox.end();it++) {
                 if((*it).exist) {
                     total++;
-                    cv::rectangle(frame, cv::Point((*it).x1, (*it).y1), cv::Point((*it).x2, (*it).y2), cv::Scalar(0,0,255), 2,8,0);
-                    for(int num=0;num<5;num++) {
-                        circle(frame, cv::Point((int)*(it->ppoint+num), (int)*(it->ppoint+num+5)), 3, cv::Scalar(0,255,255), -1);
-                    }
+					// draw rectangle
+                    //cv::rectangle(frame, cv::Point((*it).x1, (*it).y1), cv::Point((*it).x2, (*it).y2), cv::Scalar(0,0,255), 2,8,0);
+                    //for(int num=0;num<5;num++) {
+						// draw 5 landmarks
+                        //circle(frame, cv::Point((int)*(it->ppoint+num), (int)*(it->ppoint+num+5)), 3, cv::Scalar(0,255,255), -1);
+                    //}
+					
+					// create tracker
+					auto box = *it;
+					cv::Rect2d roi(cv::Point(box.x1, box.y1),cv::Point(box.x2, box.y2));
+	
+					cv::Ptr<cv::Tracker> tracker = cv::TrackerKCF::create();
+					tracker->init(frame,roi);
+					trackers.push_back(tracker);
                 }
             }
 
             std::cout << "detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms" << std::endl;
 		}
 
+		for (auto it = trackers.begin(); it != trackers.end(); it++) {
+			auto loss = (*it)->update(frame,roi);
+        	if (!loss) {
+            	std::cout << "Stop the tracking process" << std::endl;
+            	// break;
+ 				continue;
+        	}
+			cv::rectangle( frame, roi, cv::Scalar( 255, 0, 0 ), 2, 1 );
+        }
+
 		imshow("face_detection", frame);
 
 		counter++;
 
     } while (QUIT_KEY != cv::waitKey(1));
-
-	clock_t finish_time = clock();
-	double total_time = (double)(finish_time - start_time) / CLOCKS_PER_SEC;
-	std::cout << "time: " << total_time * 1000 << "ms" << std::endl;
 }
 
 int main(int argc, char* argv[]) {

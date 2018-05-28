@@ -39,7 +39,7 @@ cd bin
 ## test video
 ```sh
 cd bin
-./test_video ../models/ncnn 0
+./test_video ../models/ncnn <camera_ip>
 ```
 
 # benchmark
