@@ -36,7 +36,8 @@ message(STATUS "CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/ncnn)
-
+include_directories(${PROJECT_SOURCE_DIR}/include/trackerKCF)
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/trackerKCF)
 
 link_directories(
   ${OpenCV_Install}/lib
@@ -71,7 +72,7 @@ set_target_properties(test_picture
 )
 
 add_executable(test_video src/test_video.cpp src/utils.cpp src/mtcnn.cpp)
-target_link_libraries(test_video ncnn ${OpenCV_LIBS})
+target_link_libraries(test_video ncnn trackerKCF ${OpenCV_LIBS} fftw3f)
 set_target_properties(test_video
         PROPERTIES 
 #        ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"

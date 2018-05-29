@@ -16,8 +16,7 @@ git clone --recursive https://github.com/infinivision/mtcnn_ncnn.git
 ## copy the ncnn lib and include headers to the main repo folder
 ```sh
 # by default the ncnn was installed in ncnn/build/install folder
-mkdir -p lib/ncnn
-mkdir -p include/ncnn
+mkdir -p lib/ncnn include/ncnn
 cp 3rdparty/ncnn/build/install/lib/libncnn.a lib/ncnn/
 cp 3rdparty/ncnn/build/install/include/* include/ncnn/
 ```

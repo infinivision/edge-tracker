@@ -1,6 +1,7 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
-#include <opencv2/tracking.hpp>
+//#include <opencv2/tracking.hpp>
+#include "tracker.hpp"
 #include "utils.h"
 #include "mtcnn.h"
 
