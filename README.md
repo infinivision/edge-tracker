@@ -19,6 +19,17 @@ mkdir -p lib/ncnn include/ncnn
 cp 3rdparty/ncnn/build/install/lib/libncnn.a lib/ncnn/
 cp 3rdparty/ncnn/build/install/include/* include/ncnn/
 ```
+## install eigen
+```sh
+wget http://bitbucket.org/eigen/eigen/get/3.3.4.tar.gz
+tar xzvf 3.3.4.tar.gz
+mv eigen/Eigen /usr/local/include/
+```
+
+## install fftw
+```sh
+apt install libfftw3-dev
+```
 
 ## build the mtcnn main repo
 ```sh

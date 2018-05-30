@@ -48,6 +48,8 @@ void test_video(int argc, char* argv[]) {
 	cv::Rect2d roi;
 	cv::Mat frame;
 
+	cv::namedWindow("face_detection", cv::WINDOW_NORMAL);
+
    	do {
 		finalBbox.clear();
         camera >> frame;
