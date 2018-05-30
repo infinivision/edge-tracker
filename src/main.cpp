@@ -1,58 +1,110 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
-#include "utils.h"
+//#include <opencv2/tracking.hpp>
 #include "mtcnn.h"
+#include <string.h>
+#include "tracker.hpp" // use optimised tracker instead of OpenCV version of KCF tracker
+#include "utils.h"
 
-void image_show(int argc, char* argv[]) {
-    std::string imagepath = argv[1];
-    cv::Mat cv_img = cv::imread(imagepath, CV_LOAD_IMAGE_COLOR);
-    cv::namedWindow("face_detection", cv::WINDOW_NORMAL);
-    std::cout << "cols: " << cv_img.cols << "\trows: " << cv_img.rows << std::endl;
-    resizeWindow("face_detection", cv_img.cols/2, cv_img.rows/2);
-    imshow("face_detection", cv_img);
-    
-    cv::waitKey(0);    
+#define QUIT_KEY 'q'
+
+cv::VideoCapture getCaptureFromIndexOrIp(const char *str) {
+	 if (strcmp(str, "0") == 0 || strcmp(str, "1") == 0) {
+        // use camera index
+        int camera_id = atoi(str);
+        std::cout << "camera index: " << camera_id << std::endl;
+        cv::VideoCapture camera(camera_id);
+		return camera;
+    } else {
+        std::string camera_ip = str;
+        std::cout << "camera ip: " << camera_ip << std::endl;
+        std::string camera_stream = "rtsp://admin:Mcdonalds@" + camera_ip + ":554//Streaming/Channels/1";
+        cv::VideoCapture camera(camera_stream);
+		return camera;
+    }	
 }
 
-int main(int argc, char** argv)
-{
-    if(argc != 3) {
-		std::cout << "usage: main $model_path $image_path" << std::endl;
+void test_video(int argc, char* argv[]) {
+	if(argc != 3) {
+		std::cout << "usage: main $model_path $camera_ip" << std::endl;
 		exit(1); 
 	}
-    std::string model_path = argv[1];
-    std::string imagepath = argv[2];
-    cv::Mat cv_img = cv::imread(imagepath, CV_LOAD_IMAGE_COLOR);
-    if (cv_img.empty())
-    {
-        std::cerr << "cv::Imread failed. File Path: " << imagepath << std::endl;
-        return -1;
-    }
-    std::vector<Bbox> finalBbox;
-    MTCNN mm(model_path);
 
-    // exit(0);
-    ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(cv_img.data, ncnn::Mat::PIXEL_BGR2RGB, cv_img.cols, cv_img.rows);
+	std::string model_path = argv[1];
+	MTCNN mm(model_path);
+
+	cv::VideoCapture camera = getCaptureFromIndexOrIp(argv[2]);
+    if (!camera.isOpened()) {
+        std::cerr << "failed to open camera" << std::endl;
+        return;
+    }
+
+    int counter = 0;
     struct timeval  tv1,tv2;
     struct timezone tz1,tz2;
 
-    gettimeofday(&tv1,&tz1);
-    mm.detect(ncnn_img, finalBbox);
-    gettimeofday(&tv2,&tz2);
-    int total = 0;
-    for(vector<Bbox>::iterator it=finalBbox.begin(); it!=finalBbox.end();it++) {
-    	if((*it).exist) {
-            total++;
-            cv::rectangle(cv_img, cv::Point((*it).x1, (*it).y1), cv::Point((*it).x2, (*it).y2), cv::Scalar(0,0,255), 2,8,0);
-            for(int num=0;num<5;num++) {
-                circle(cv_img, cv::Point((int)*(it->ppoint+num), (int)*(it->ppoint+num+5)), 3, cv::Scalar(0,255,255), -1);
-            }
+	std::vector<Bbox> finalBbox;
+    std::vector<cv::Ptr<cv::Tracker>> trackers;
+	cv::Rect2d roi;
+	cv::Mat frame;
+
+   	do {
+		finalBbox.clear();
+        camera >> frame;
+        if (!frame.data) {
+            std::cerr << "Capture video failed" << std::endl;
+            continue;
         }
-    }
-    std::cout << "detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms" << std::endl;
- 
-    cv::namedWindow("face_detection", cv::WINDOW_NORMAL);
-    imshow("face_detection", cv_img);
-    cv::waitKey(0);
-    return 0;
+
+		if (counter % 25 == 0) {
+			// renew trackers
+			trackers.clear();
+
+			gettimeofday(&tv1,&tz1);
+            ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
+            mm.detect(ncnn_img, finalBbox);
+            gettimeofday(&tv2,&tz2);
+            int total = 0;
+            for(vector<Bbox>::iterator it=finalBbox.begin(); it!=finalBbox.end();it++) {
+                if((*it).exist) {
+                    total++;
+					// draw rectangle
+                    //cv::rectangle(frame, cv::Point((*it).x1, (*it).y1), cv::Point((*it).x2, (*it).y2), cv::Scalar(0,0,255), 2,8,0);
+                    //for(int num=0;num<5;num++) {
+						// draw 5 landmarks
+                        //circle(frame, cv::Point((int)*(it->ppoint+num), (int)*(it->ppoint+num+5)), 3, cv::Scalar(0,255,255), -1);
+                    //}
+					
+					// create tracker
+					auto box = *it;
+					cv::Rect2d roi(cv::Point(box.x1, box.y1),cv::Point(box.x2, box.y2));
+	
+					cv::Ptr<cv::Tracker> tracker = cv::TrackerKCF::create();
+					tracker->init(frame,roi);
+					trackers.push_back(tracker);
+                }
+            }
+
+            std::cout << "detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms" << std::endl;
+		}
+
+		for (auto it = trackers.begin(); it != trackers.end(); it++) {
+			auto loss = (*it)->update(frame,roi);
+        	if (!loss) {
+            	std::cout << "Stop the tracking process" << std::endl;
+            	// break;
+ 				continue;
+        	}
+			cv::rectangle( frame, roi, cv::Scalar( 255, 0, 0 ), 2, 1 );
+        }
+
+		imshow("face_detection", frame);
+
+		counter++;
+
+    } while (QUIT_KEY != cv::waitKey(1));
+}
+
+int main(int argc, char* argv[]) {
+    test_video(argc, argv);
 }

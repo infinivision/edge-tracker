@@ -44,9 +44,9 @@ link_directories(
   ${PROJECT_SOURCE_DIR}/lib/ncnn
 )
 
-add_executable(test_video src/test_video.cpp src/utils.cpp src/mtcnn.cpp)
-target_link_libraries(test_video ncnn trackerKCF ${OpenCV_LIBS} fftw3f)
-set_target_properties(test_video
+add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp)
+target_link_libraries(main ncnn trackerKCF ${OpenCV_LIBS} fftw3f)
+set_target_properties(main
         PROPERTIES 
 #        ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
 #        LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
