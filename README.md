@@ -30,31 +30,8 @@ make
 ```
 
 # how to run
-## test picture
 ```sh
-cd bin
-./test_picture ../models/ncnn/ ../images/1.jpg
+bin/export 32 64 70 80 90 100
+bin/test_video models/ncnn <camera_ip>
 ```
-## test video
-```sh
-cd bin
-./test_video ../models/ncnn <camera_ip>
-```
-
-# benchmark
-## Test data
-we use the [WIDER FACE validate dataset](http://mmlab.ie.cuhk.edu.hk/projects/WIDERFace/) as the test data
-
-## run benchmark
-```sh
-cd bin
-./benchmark ../models/ncnn ../images
-```
-
-## Test Result
-| Platform   | CPU Cores |  Memory  |  total images |   detected   |  min time(ms) | max time(ms) | avg time(ms) |
-| --------   | :-----:    | :----:   | :----:        |    :----:    |    :----:  | :----:    | :----:    |
-| MacOS Sierra | 8    |   16GB  |   3226     |  2073     |   8.068    |   287.446    |   47.03      |
-| firefly 3399 | 6    |   2GB     |   3226       |   2084      |   25.541     |   4437.42    |    351.578    |
-| firefly 3399(Neon) | 6    |   2GB     |   3226       |   2084      |   10.578     |   1325.09    |   157.908   |
 

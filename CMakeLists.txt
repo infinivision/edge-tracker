@@ -44,33 +44,6 @@ link_directories(
   ${PROJECT_SOURCE_DIR}/lib/ncnn
 )
 
-add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp)
-target_link_libraries(main ncnn ${OpenCV_LIBS})
-set_target_properties(main
-        PROPERTIES 
-#        ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
-#        LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
-        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
-)
-
-add_executable(benchmark src/benchmark.cpp src/utils.cpp src/mtcnn.cpp)
-target_link_libraries(benchmark ncnn ${OpenCV_LIBS})
-set_target_properties(benchmark
-        PROPERTIES 
-#        ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
-#        LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
-        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
-)
-
-add_executable(test_picture src/test_picture.cpp src/utils.cpp src/mtcnn.cpp)
-target_link_libraries(test_picture ncnn ${OpenCV_LIBS})
-set_target_properties(test_picture
-        PROPERTIES 
-#        ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
-#        LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
-        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
-)
-
 add_executable(test_video src/test_video.cpp src/utils.cpp src/mtcnn.cpp)
 target_link_libraries(test_video ncnn trackerKCF ${OpenCV_LIBS} fftw3f)
 set_target_properties(test_video
@@ -79,3 +52,8 @@ set_target_properties(test_video
 #        LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
 )
+
+add_executable(export src/export.cpp)
+target_link_libraries(export fftw3f)
+set_target_properties(export PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
+
