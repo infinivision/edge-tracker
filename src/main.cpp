@@ -24,6 +24,22 @@ cv::VideoCapture getCaptureFromIndexOrIp(const char *str) {
     }	
 }
 
+void getLastFrame(cv::VideoCapture& video, cv::Mat& frame) {
+
+    //Get total number of frames in the video
+    //Won't work on live video capture
+    const int frames = video.get(CV_CAP_PROP_FRAME_COUNT);
+
+    //Seek video to last frame
+    video.set(CV_CAP_PROP_POS_FRAMES,frames-1);
+
+    //Capture the last frame
+    video>>frame;
+
+    //Rewind video
+    video.set(CV_CAP_PROP_POS_FRAMES,0);
+}
+
 void test_video(int argc, char* argv[]) {
 	if(argc != 3) {
 		std::cout << "usage: main $model_path $camera_ip" << std::endl;
@@ -52,7 +68,8 @@ void test_video(int argc, char* argv[]) {
 
    	do {
 		finalBbox.clear();
-        camera >> frame;
+        //camera >> frame;
+		getLastFrame(camera, frame);
         if (!frame.data) {
             std::cerr << "Capture video failed" << std::endl;
             continue;
