@@ -69,8 +69,9 @@ void test_video(int argc, char* argv[]) {
     struct timezone tz1,tz2;
 
 	vector<Bbox> finalBbox;
-    MultiTracker trackers;
 	Rect2d roi;
+    vector<Ptr<Tracker>> trackers;
+	vector<Rect2d> boxes;
 	Mat frame;
 
 	namedWindow("face_detection", WINDOW_NORMAL);
@@ -108,8 +109,8 @@ void test_video(int argc, char* argv[]) {
 
 					// test whether is a new face
 					bool newFace = true;
-					for (unsigned i=0;i<trackers.getObjects().size();i++) {
-						Rect2d trackerFace = trackers.getObjects()[i];
+					for (unsigned i=0;i<boxes.size();i++) {
+						Rect2d trackerFace = boxes[i];
 						if (isSameFace(detectedFace, trackerFace)) {
 							newFace = false;
 							break;
@@ -119,7 +120,9 @@ void test_video(int argc, char* argv[]) {
 					// create a tracker if a new face is detected
 					if (newFace) {
 						Ptr<Tracker> tracker = TrackerKCF::create();
-						trackers.add(tracker, frame, detectedFace);
+						tracker->init(frame, detectedFace);
+						trackers.push_back(tracker);
+						boxes.push_back(detectedFace);
 					}
                 }
             }
@@ -128,11 +131,19 @@ void test_video(int argc, char* argv[]) {
 		}
 
 		// update trackers
-		trackers.update(frame);
-
-		// draw tracked faces
-		for(unsigned i=0;i<trackers.getObjects().size();i++)
-        	rectangle( frame, trackers.getObjects()[i], Scalar( 255, 0, 0 ), 2, 1 );
+        for (int i = 0; i < trackers.size(); i++) {
+			Ptr<Tracker> tracker = trackers[i];
+	        bool tracked = tracker->update(frame,boxes[i]);
+            if (!tracked) {
+	            cout << "Stop the tracking process" << endl;
+    	        // delete tracker
+				trackers.erase(trackers.begin() + i);
+				boxes.erase(boxes.begin() + i);
+                continue;
+            }
+			// draw tracked faces
+            rectangle( frame, boxes[i], Scalar( 255, 0, 0 ), 2, 1 );
+        }
 
 		imshow("face_detection", frame);
 
