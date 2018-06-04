@@ -64,7 +64,8 @@ void test_video(int argc, char* argv[]) {
         return;
     }
 
-    int counter = 0;
+    int frameCounter = 0;
+	long faceId = 0;
     struct timeval  tv1,tv2;
     struct timezone tz1,tz2;
 
@@ -84,7 +85,7 @@ void test_video(int argc, char* argv[]) {
             continue;
         }
 
-		if (counter % 25 == 0) {
+		if (frameCounter % 25 == 0) {
 			// renew trackers
 			//trackers.clear();
 
@@ -96,12 +97,6 @@ void test_video(int argc, char* argv[]) {
             for(vector<Bbox>::iterator it=finalBbox.begin(); it!=finalBbox.end();it++) {
                 if((*it).exist) {
                     total++;
-					// draw rectangle
-                    //cv::rectangle(frame, cv::Point((*it).x1, (*it).y1), cv::Point((*it).x2, (*it).y2), cv::Scalar(0,0,255), 2,8,0);
-                    //for(int num=0;num<5;num++) {
-						// draw 5 landmarks
-                        //circle(frame, cv::Point((int)*(it->ppoint+num), (int)*(it->ppoint+num+5)), 3, cv::Scalar(0,255,255), -1);
-                    //}
 					
 					// get face bounding box
 					auto box = *it;
@@ -109,7 +104,8 @@ void test_video(int argc, char* argv[]) {
 
 					// test whether is a new face
 					bool newFace = true;
-					for (unsigned i=0;i<boxes.size();i++) {
+					unsigned i;
+					for (i=0;i<boxes.size();i++) {
 						Rect2d trackerFace = boxes[i];
 						if (isSameFace(detectedFace, trackerFace)) {
 							newFace = false;
@@ -117,12 +113,17 @@ void test_video(int argc, char* argv[]) {
 						}
 					}
 	
-					// create a tracker if a new face is detected
 					if (newFace) {
+						// create a tracker if a new face is detected
 						Ptr<Tracker> tracker = TrackerKCF::create();
 						tracker->init(frame, detectedFace);
+						tracker->id = faceId;
 						trackers.push_back(tracker);
 						boxes.push_back(detectedFace);
+						faceId++;
+					} else {
+						// update tracker's bounding box
+						trackers[i]->reset(frame, detectedFace);
 					}
                 }
             }
@@ -135,7 +136,7 @@ void test_video(int argc, char* argv[]) {
 			Ptr<Tracker> tracker = trackers[i];
 	        bool tracked = tracker->update(frame,boxes[i]);
             if (!tracked) {
-	            cout << "Stop the tracking process" << endl;
+	            cout << "Stop tracking face #" << tracker->id << endl;
     	        // delete tracker
 				trackers.erase(trackers.begin() + i);
 				boxes.erase(boxes.begin() + i);
@@ -147,7 +148,7 @@ void test_video(int argc, char* argv[]) {
 
 		imshow("face_detection", frame);
 
-		counter++;
+		frameCounter++;
 
     } while (QUIT_KEY != waitKey(1));
 }

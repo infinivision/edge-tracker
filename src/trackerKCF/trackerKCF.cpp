@@ -380,7 +380,7 @@ namespace cv{
       minMaxLoc( response, &minVal, &maxVal, &minLoc, &maxLoc );
       if (maxVal < params.detect_thresh)
       {
-          cout << "maxVal < params.detect_thresh" << endl;
+          // cout << "maxVal < params.detect_thresh" << endl;
           return false;
       }
       roi.x+=(maxLoc.x-roi.width/2+1);
