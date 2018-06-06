@@ -42,6 +42,6 @@ make
 # how to run
 ```sh
 bin/export 32 64 70 80 90 100
-bin/main models/ncnn <camera_ip>
+bin/main models/ncnn <camera_ip> <detection_interval>(nb_frames) <face_folder>
 ```
 
