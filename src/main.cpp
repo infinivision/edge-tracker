@@ -12,6 +12,9 @@
 using namespace std;
 using namespace cv;
 
+/*
+ * Get video capture from a camera index (0, 1) or an ip (192.168.1.15)
+ */
 VideoCapture getCaptureFromIndexOrIp(const char *str) {
     if (strcmp(str, "0") == 0 || strcmp(str, "1") == 0) {
         // use camera index
@@ -44,24 +47,42 @@ bool isSameFace(Rect2d &box1, Rect2d &box2) {
          y1 > box2.y && y1 < box2.y + box2.height &&
          x2 > box1.x && x2 < box1.x + box1.width &&
          y2 > box1.y && y2 < box1.y + box1.height ) {
-            return true;
+        return true;
     }
 
     return false;
 }
 
+/*
+ * write face to the output folder
+ */
+void saveFace(Mat &frame, Rect2d &roi, long faceId, string outputFolder) {
+    Mat image = frame(roi);
+    string output = outputFolder + to_string(faceId) + ".jpg";
+    if ( imwrite(output, image) ) {
+        cout << "\tsave face #" << faceId << " to " << output << endl;
+    } else {
+        cout << "\tfail to save face #" << faceId << endl;
+    }
+}
+
 void test_video(int argc, char* argv[]) {
     
     int detectionFrameInterval = 25; // nb of frames
+    string outputFolder; // folder to save face
 
     // parsing arguments
-    if(argc != 3 && argc != 4) {
+    if(argc != 3 && argc != 4 && argc != 5) {
         cout << "usage: main <model_path> <camera_ip> <frames>" << endl;
         exit(1); 
     }
 
-    if (argc == 4) {
+    if (argc >= 4) {
     	detectionFrameInterval = atoi(argv[3]);
+
+        if (argc == 5) {
+            outputFolder = argv[4];
+        }
     }
 
     string model_path = argv[1];
@@ -129,7 +150,13 @@ void test_video(int argc, char* argv[]) {
                         tracker->id = faceId;
                         trackers.push_back(tracker);
                         boxes.push_back(detectedFace);
-                        cout << "frame " << frameCounter << ": start tracking face #" << tracker->id << ", send face" << endl;
+                        cout << "frame " << frameCounter << ": start tracking face #" << tracker->id << endl;
+
+                        if (!outputFolder.empty()) {
+                            // save face
+                            saveFace(frame, detectedFace, faceId, outputFolder);
+                        }
+                        
                         faceId++;
                     } else {
                         // update tracker's bounding box
