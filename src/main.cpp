@@ -7,6 +7,7 @@
 #include "tracker.hpp" // use optimised tracker instead of OpenCV version of KCF tracker
 #include "utils.h"
 #include "face_attr.h"
+#include "face_align.h"
 
 #define QUIT_KEY 'q'
 
@@ -90,6 +91,7 @@ void test_video(int argc, char* argv[]) {
     MTCNN mm(model_path);
     FaceAttr fa;
     fa.Load();
+    FaceAlign align;
 
     VideoCapture camera = getCaptureFromIndexOrIp(argv[2]);
     if (!camera.isOpened()) {

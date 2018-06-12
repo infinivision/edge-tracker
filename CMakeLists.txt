@@ -45,7 +45,7 @@ link_directories(
   ${PROJECT_SOURCE_DIR}/lib/ncnn
 )
 
-add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp)
+add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp)
 target_link_libraries(main ncnn trackerKCF ${OpenCV_LIBS} fftw3f dlib::dlib)
 set_target_properties(main
         PROPERTIES 
