@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include "tracker.hpp" // use optimised tracker instead of OpenCV version of KCF tracker
 #include "utils.h"
+#include "face_attr.h"
+#include "face_align.h"
 
 #define QUIT_KEY 'q'
 
@@ -87,6 +89,9 @@ void test_video(int argc, char* argv[]) {
 
     string model_path = argv[1];
     MTCNN mm(model_path);
+    FaceAttr fa;
+    fa.Load();
+    FaceAlign align;
 
     VideoCapture camera = getCaptureFromIndexOrIp(argv[2]);
     if (!camera.isOpened()) {
@@ -114,6 +119,7 @@ void test_video(int argc, char* argv[]) {
             cerr << "Capture video failed" << endl;
             continue;
         }
+        dlib::cv_image<dlib::bgr_pixel> cimg(frame);
 
         if (frameCounter % detectionFrameInterval == 0) {
             // start face detection
@@ -130,6 +136,7 @@ void test_video(int argc, char* argv[]) {
 
                     // get face bounding box
                     auto box = *it;
+                    std::vector<double> qualities = fa.GetQuality(cimg, box.x1, box.y1, box.x2, box.y2);
                     Rect2d detectedFace(Point(box.x1, box.y1),Point(box.x2, box.y2));
 
                     // test whether is a new face

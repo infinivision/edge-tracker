@@ -38,14 +38,15 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/ncnn)
 include_directories(${PROJECT_SOURCE_DIR}/include/trackerKCF)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/trackerKCF)
+add_subdirectory(../dlib dlib_build)
 
 link_directories(
   ${OpenCV_Install}/lib
   ${PROJECT_SOURCE_DIR}/lib/ncnn
 )
 
-add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp)
-target_link_libraries(main ncnn trackerKCF ${OpenCV_LIBS} fftw3f)
+add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp)
+target_link_libraries(main ncnn trackerKCF ${OpenCV_LIBS} fftw3f dlib::dlib)
 set_target_properties(main
         PROPERTIES 
 #        ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
