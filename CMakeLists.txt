@@ -37,7 +37,9 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/ncnn)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
+include_directories(${PROJECT_SOURCE_DIR}/3rdparty/staple/staple)
 add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
+add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/staple/staple)
 add_subdirectory(../dlib dlib_build)
 
 link_directories(
@@ -46,7 +48,7 @@ link_directories(
 )
 
 add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp)
-target_link_libraries(main ncnn trackerKCF ${OpenCV_LIBS} fftw3f dlib::dlib)
+target_link_libraries(main ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f dlib::dlib)
 set_target_properties(main
         PROPERTIES 
 #        ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"

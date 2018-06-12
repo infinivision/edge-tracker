@@ -4,3 +4,6 @@
 [submodule "kcf"]
 	path = 3rdparty/kcf
 	url = https://github.com/infinivision/KCF
+[submodule "staple"]
+	path = 3rdparty/staple
+	url = https://github.com/infinivision/staple
