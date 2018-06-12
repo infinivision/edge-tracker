@@ -1,3 +1,6 @@
 [submodule "3rdparty/ncnn"]
 	path = 3rdparty/ncnn
 	url = https://github.com/infinivision/ncnn
+[submodule "kcf"]
+	path = 3rdparty/kcf
+	url = https://github.com/infinivision/KCF

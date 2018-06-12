@@ -36,8 +36,8 @@ message(STATUS "CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/ncnn)
-include_directories(${PROJECT_SOURCE_DIR}/include/trackerKCF)
-add_subdirectory(${PROJECT_SOURCE_DIR}/src/trackerKCF)
+include_directories(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
+add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
 add_subdirectory(../dlib dlib_build)
 
 link_directories(
