@@ -197,6 +197,7 @@ void test_video(int argc, char* argv[]) {
                     cout << "frame " << frameCounter << ": stop tracking face #" << tracker->id << endl;
                     trackers.erase(trackers.begin() + i);
                     boxes.erase(boxes.begin() + i);
+                    i--;
                 }
             }
         }
@@ -211,6 +212,7 @@ void test_video(int argc, char* argv[]) {
                 cout << "frame " << frameCounter << ": stop tracking face #" << tracker->id << endl;
                 trackers.erase(trackers.begin() + i);
                 boxes.erase(boxes.begin() + i);
+                i--;
                 continue;
             }
 
