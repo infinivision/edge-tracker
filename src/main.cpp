@@ -110,6 +110,11 @@ void test_video(int argc, char* argv[]) {
     vector<Rect2d> boxes;
     Mat frame;
 
+    FileStorage fs;
+    fs.open("kcf.yaml", FileStorage::READ);
+    TrackerKCF::Params kcf_param;
+    kcf_param.read(fs.root());
+
     namedWindow("face_detection", WINDOW_NORMAL);
 
     do {
@@ -152,7 +157,7 @@ void test_video(int argc, char* argv[]) {
 
                     if (newFace) {
                         // create a tracker if a new face is detected
-                        Ptr<Tracker> tracker = TrackerKCF::create();
+                        Ptr<Tracker> tracker = TrackerKCF::create(kcf_param);
                         tracker->init(frame, detectedFace);
                         tracker->id = faceId;
                         trackers.push_back(tracker);
