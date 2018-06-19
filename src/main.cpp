@@ -110,6 +110,11 @@ void test_video(int argc, char* argv[]) {
     vector<Rect2d> boxes;
     Mat frame;
 
+    FileStorage fs;
+    fs.open("kcf.yaml", FileStorage::READ);
+    TrackerKCF::Params kcf_param;
+    kcf_param.read(fs.root());
+
     namedWindow("face_detection", WINDOW_NORMAL);
     // resizeWindow("face_detection", 800, 600);
 
@@ -153,7 +158,7 @@ void test_video(int argc, char* argv[]) {
 
                     if (newFace) {
                         // create a tracker if a new face is detected
-                        Ptr<Tracker> tracker = TrackerKCF::create();
+                        Ptr<Tracker> tracker = TrackerKCF::create(kcf_param);
                         tracker->init(frame, detectedFace);
                         tracker->id = faceId;
                         trackers.push_back(tracker);
@@ -198,6 +203,7 @@ void test_video(int argc, char* argv[]) {
                     cout << "frame " << frameCounter << ": stop tracking face #" << tracker->id << endl;
                     trackers.erase(trackers.begin() + i);
                     boxes.erase(boxes.begin() + i);
+                    i--;
                 }
             }
         }
@@ -212,6 +218,7 @@ void test_video(int argc, char* argv[]) {
                 cout << "frame " << frameCounter << ": stop tracking face #" << tracker->id << endl;
                 trackers.erase(trackers.begin() + i);
                 boxes.erase(boxes.begin() + i);
+                i--;
                 continue;
             }
 
