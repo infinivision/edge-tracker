@@ -14,6 +14,8 @@
 using namespace std;
 using namespace cv;
 
+FaceAlign faceAlign = FaceAlign();
+
 /*
  * Get video capture from a camera index (0, 1) or an ip (192.168.1.15)
  */
@@ -58,9 +60,15 @@ bool isSameFace(Rect2d &box1, Rect2d &box2) {
 /*
  * write face to the output folder
  */
-void saveFace(Mat &frame, Rect2d &roi, long faceId, string outputFolder) {
-    Mat image = frame(roi);
-    string output = outputFolder + to_string(faceId) + ".jpg";
+void saveFace(Mat &frame, Bbox &box, long faceId, string outputFolder) {
+    std::vector<cv::Point2f> points;
+    for(int num=0;num<5;num++) {
+        cv::Point2f point(box.ppoint[num], box.ppoint[num+5]);
+        points.push_back(point);
+    }
+
+    Mat image = faceAlign.Align(frame, points);
+    string output = outputFolder + "/" + to_string(faceId) + ".jpg";
     if ( imwrite(output, image) ) {
         cout << "\tsave face #" << faceId << " to " << output << endl;
     } else {
@@ -141,7 +149,7 @@ void test_video(int argc, char* argv[]) {
                     total++;
 
                     // get face bounding box
-                    auto box = *it;
+                    Bbox box = *it;
                     std::vector<double> qualities = fa.GetQuality(cimg, box.x1, box.y1, box.x2, box.y2);
                     Rect2d detectedFace(Point(box.x1, box.y1),Point(box.x2, box.y2));
 
@@ -167,7 +175,7 @@ void test_video(int argc, char* argv[]) {
 
                         if (!outputFolder.empty()) {
                             // save face
-                            saveFace(frame, detectedFace, faceId, outputFolder);
+                            saveFace(frame, box, faceId, outputFolder);
                         }
                         
                         faceId++;

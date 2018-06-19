@@ -8,26 +8,38 @@
 using namespace std;
 
 FaceAlign::FaceAlign() {
-  align_src_.push_back(cv::Point2d(38.2946, 51.6963));
-  align_src_.push_back(cv::Point2d(73.5318, 51.5014));
-  align_src_.push_back(cv::Point2d(56.0252, 71.7366));
-  align_src_.push_back(cv::Point2d(41.5493, 92.3655));
-  align_src_.push_back(cv::Point2d(70.7299, 92.2041));
+  align_src_.push_back(cv::Point2f(38.2946, 51.6963));
+  align_src_.push_back(cv::Point2f(73.5318, 51.5014));
+  align_src_.push_back(cv::Point2f(56.0252, 71.7366));
+  align_src_.push_back(cv::Point2f(41.5493, 92.3655));
+  align_src_.push_back(cv::Point2f(70.7299, 92.2041));
 
   size = cv::Size(112,112);
 }
 
-cv::Mat FaceAlign::Align(cv::Mat& input, const std::vector<cv::Point2d>& align_dst) {
+/*
+ * Align face
+ */
+cv::Mat FaceAlign::Align(cv::Mat& input, const std::vector<cv::Point2f>& align_dst) {
 
-  for (int i = 0; i < align_dst.size(); ++i)
-  {
-    /* code */
-    cout << align_dst[i] << endl;
-  }
-  cout << "estimate rigid transform ...";
-  cv::Mat R = cv::estimateRigidTransform(align_dst,align_src_,true);
+  cv::Mat warped;
+
+  // for (int i = 0; i < align_dst.size(); ++i){
+  //   cout << align_dst[i] << endl;
+  // }
+
+  cout << "\testimate rigid transform ...";
+  cv::Mat R = cv::estimateRigidTransform(align_dst,align_src_,false);
   cout << " end, R size: " << R.size() << endl;
 
+  if (R.empty()) {
+    cout << "\tskip face alignment" << endl;
+    return warped;
+  }
+
+  // cout << R << endl;
+
+  // R is now a matrix of size 2 * 3
   cv::Mat H = cv::Mat(2,3,R.type());
   H.at<double>(0,0) = R.at<double>(0,0);
   H.at<double>(0,1) = R.at<double>(0,1);
@@ -40,11 +52,11 @@ cv::Mat FaceAlign::Align(cv::Mat& input, const std::vector<cv::Point2d>& align_d
   // H.at<double>(2,0) = 0.0;
   // H.at<double>(2,1) = 0.0;
   // H.at<double>(2,2) = 1.0;
-  cv::Mat warped;
 
-  cout << "warp perspective ...";
+  cout << "\twarp affine ...";
   cv::warpAffine(input,warped,H,size);
   // cv::warpPerspective(input,warped,H,size);
   cout << " end" << endl;
+
   return warped;
 }
