@@ -111,6 +111,7 @@ void test_video(int argc, char* argv[]) {
     Mat frame;
 
     namedWindow("face_detection", WINDOW_NORMAL);
+    // resizeWindow("face_detection", 800, 600);
 
     do {
         finalBbox.clear();

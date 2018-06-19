@@ -56,6 +56,15 @@ set_target_properties(main
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
 )
 
+add_executable(test_picture src/test_picture.cpp src/utils.cpp src/mtcnn.cpp src/face_align.cpp)
+target_link_libraries(test_picture ncnn ${OpenCV_LIBS} dlib::dlib)
+set_target_properties(test_picture
+        PROPERTIES
+#        ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
+#        LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+)
+
 add_executable(export src/export.cpp)
 target_link_libraries(export fftw3f)
 set_target_properties(export PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
