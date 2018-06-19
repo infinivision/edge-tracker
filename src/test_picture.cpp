@@ -23,6 +23,7 @@ int test_picture(int argc, char** argv) {
         std::cerr << "cv::Imread failed. File Path: " << imagepath << std::endl;
         return -1;
     }
+    cv::Mat image = cv_img.clone();
 
     cv::namedWindow("face_detection", cv::WINDOW_AUTOSIZE);
     std::vector<Bbox> finalBbox;
@@ -55,14 +56,14 @@ int test_picture(int argc, char** argv) {
 
             cout << "after initialization" << endl;
 
-            cv::rectangle(cv_img, cv::Point(box.x1, box.y1), cv::Point(box.x2, box.y2), cv::Scalar(0,0,255), 2,8,0);
+            cv::rectangle(image, cv::Point(box.x1, box.y1), cv::Point(box.x2, box.y2), cv::Scalar(0,0,255), 2,8,0);
             for(int num=0;num<5;num++) {
                 cv::Point2d point((int)box.ppoint[num], (int)box.ppoint[num+5]);
                 points.push_back(point);
-                circle(cv_img, point, 3, cv::Scalar(0,255,255), -1);
+                circle(image, point, 3, cv::Scalar(0,255,255), -1);
             }
 
-            imshow("face_detection", cv_img);
+            imshow("face_detection", image);
             cv::waitKey(0);
 
             cout << "before align, points: " << points.size() << endl;
@@ -74,7 +75,7 @@ int test_picture(int argc, char** argv) {
 
         }
     }
-    
+
     std::cout << "detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms" << std::endl;
 
     return 0;
