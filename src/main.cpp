@@ -29,7 +29,7 @@ VideoCapture getCaptureFromIndexOrIp(const char *str) {
     } else {
         string camera_ip = str;
         cout << "camera ip: " << camera_ip << endl;
-        string camera_stream = "rtsp://admin:Mcdonalds@" + camera_ip + ":554//Streaming/Channels/1";
+        string camera_stream = "rtsp://admin:mdc12345678@" + camera_ip + ":554//Streaming/Channels/1";
         VideoCapture camera(camera_stream);
         return camera;
     }
