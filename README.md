@@ -1,4 +1,4 @@
-# edge tracker Implementation
+# edge tracker
 -----------------------------
 the application can be run on X86 and ARM platform with Neon optimization.
 
@@ -41,7 +41,10 @@ make
 
 # how to run
 ```sh
+# activate OpemMP threads
+set OMP_NUM_THREADS=2
 bin/export 32 64 70 80 90 100
-bin/main models/ncnn <camera_ip> <detection_interval>(nb_frames) <face_folder>
+# use taskset to set cpu affinity 
+taskset -c 4,5 bin/main models/ncnn <camera_ip> <detection_interval>(nb_frames) <face_folder>
 ```
 
