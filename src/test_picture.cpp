@@ -37,7 +37,7 @@ int test_picture(int argc, char** argv) {
     mm.detect(ncnn_img, finalBbox);
     gettimeofday(&tv2,&tz2);
 
-    auto faceAlign = FaceAlign();
+    FaceAlign faceAlign = FaceAlign();
 
     int total = 0;
     for(vector<Bbox>::iterator it=finalBbox.begin(); it!=finalBbox.end();it++) {

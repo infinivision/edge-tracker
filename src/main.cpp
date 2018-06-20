@@ -74,6 +74,12 @@ void saveFace(Mat &frame, Bbox &box, long faceId, string outputFolder) {
     }
 
     Mat image = faceAlign.Align(frame, points);
+
+    if (image.empty()) {
+        /* empty image means unable to align face */
+        return;
+    }
+
     output = outputFolder + "/" + to_string(faceId) + "-align.jpg";
     if ( imwrite(output, image) ) {
         cout << "\tsave face #" << faceId << " to " << output << endl;
