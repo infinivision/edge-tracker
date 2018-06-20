@@ -61,14 +61,20 @@ bool isSameFace(Rect2d &box1, Rect2d &box2) {
  * write face to the output folder
  */
 void saveFace(Mat &frame, Bbox &box, long faceId, string outputFolder) {
+
+    Rect2d roi(Point(box.x1, box.y1),Point(box.x2, box.y2));
+    Mat cropped(frame, roi);
+    string output = outputFolder + "/" + to_string(faceId) + ".jpg";
+    imwrite(output, cropped);
+
     std::vector<cv::Point2f> points;
     for(int num=0;num<5;num++) {
-        cv::Point2f point(box.ppoint[num], box.ppoint[num+5]);
+        Point2f point(box.ppoint[num], box.ppoint[num+5]);
         points.push_back(point);
     }
 
     Mat image = faceAlign.Align(frame, points);
-    string output = outputFolder + "/" + to_string(faceId) + ".jpg";
+    output = outputFolder + "/" + to_string(faceId) + "-align.jpg";
     if ( imwrite(output, image) ) {
         cout << "\tsave face #" << faceId << " to " << output << endl;
     } else {
