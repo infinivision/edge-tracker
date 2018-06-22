@@ -29,7 +29,7 @@ VideoCapture getCaptureFromIndexOrIp(const char *str) {
     } else {
         string camera_ip = str;
         cout << "camera ip: " << camera_ip << endl;
-        string camera_stream = "rtsp://admin:mdc12345678@" + camera_ip + ":554//Streaming/Channels/1";
+        string camera_stream = "rtsp://admin:mcd12345678@" + camera_ip + ":554//Streaming/Channels/1";
         VideoCapture camera(camera_stream);
         return camera;
     }
@@ -88,6 +88,18 @@ void saveFace(Mat &frame, Bbox &box, long faceId, string outputFolder) {
     }
 }
 
+void scaleBox(Bbox &box, float factor_x, float factor_y) {
+    box.x1 = round(box.x1 * factor_x);
+    box.x2 = round(box.x2 * factor_x);
+    box.y1 = round(box.y1 * factor_y);
+    box.y2 = round(box.y2 * factor_y);
+
+    for (int i=0; i<5; i++) {
+        box.ppoint[i] *= factor_x;
+        box.ppoint[i+5] *= factor_y;
+    }
+}
+
 void test_video(int argc, char* argv[]) {
     
     int detectionFrameInterval = 25; // nb of frames
@@ -95,7 +107,7 @@ void test_video(int argc, char* argv[]) {
 
     // parsing arguments
     if(argc != 3 && argc != 4 && argc != 5) {
-        cout << "usage: main <model_path> <camera_ip> <frames>" << endl;
+        cout << "usage: main <model_path> <camera_ip> <frames> <face_folder>" << endl;
         exit(1); 
     }
 
@@ -145,13 +157,27 @@ void test_video(int argc, char* argv[]) {
             cerr << "Capture video failed" << endl;
             continue;
         }
+
         dlib::cv_image<dlib::bgr_pixel> cimg(frame);
 
         if (frameCounter % detectionFrameInterval == 0) {
             // start face detection
             gettimeofday(&tv1,&tz1);
             ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
-            mm.detect(ncnn_img, finalBbox);
+            ncnn::Mat ncnn_img_resized;
+            bool resized = false;
+            float resize_factor_x, resize_factor_y = 1;
+
+            if (frame.cols > 1280) {
+                // resize to 720p
+                ncnn::resize_bilinear(ncnn_img, ncnn_img_resized, 1280, 720);
+                resized = true;
+                resize_factor_x = frame.cols / 1280.0;
+                resize_factor_y = frame.rows / 720.0;
+            } else {
+                ncnn_img_resized = ncnn_img;
+            }
+            mm.detect(ncnn_img_resized, finalBbox);
             gettimeofday(&tv2,&tz2);
             int total = 0;
 
@@ -162,6 +188,10 @@ void test_video(int argc, char* argv[]) {
 
                     // get face bounding box
                     Bbox box = *it;
+                    if (resized) {
+                        scaleBox(box, resize_factor_x, resize_factor_y);
+                    }
+
                     std::vector<double> qualities = fa.GetQuality(cimg, box.x1, box.y1, box.x2, box.y2);
                     Rect2d detectedFace(Point(box.x1, box.y1),Point(box.x2, box.y2));
 
