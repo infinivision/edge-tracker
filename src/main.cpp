@@ -165,7 +165,7 @@ void test_video(int argc, char* argv[]) {
 
         if (frameCounter % detectionFrameInterval == 0) {
             // start face detection
-            gettimeofday(&tv1,&tz1);
+            cout << "frame " << frameCounter << endl;
             ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
             ncnn::Mat ncnn_img_resized;
             bool resized = false;
@@ -173,14 +173,18 @@ void test_video(int argc, char* argv[]) {
 
             if (frame.cols > 1280) {
                 // resize to 720p
+                gettimeofday(&tv1,&tz1);
                 ncnn::resize_bilinear(ncnn_img, ncnn_img_resized, 1280, 720);
-                cout << "\tresize to 720p" << endl;
+                gettimeofday(&tv2,&tz2);
+                cout << "\tresize to 720p, time eclipsed: " << getElapse(&tv1, &tv2) << " ms" << endl;
                 resized = true;
                 resize_factor_x = frame.cols / 1280.0;
                 resize_factor_y = frame.rows / 720.0;
             } else {
                 ncnn_img_resized = ncnn_img;
             }
+
+            gettimeofday(&tv1,&tz1);
             mm.detect(ncnn_img_resized, finalBbox);
             gettimeofday(&tv2,&tz2);
             int total = 0;
@@ -232,7 +236,7 @@ void test_video(int argc, char* argv[]) {
                 }
             }
 
-            cout << "frame " << frameCounter << ": detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms" << endl;
+            cout << "\tdetected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms" << endl;
 
             // clean up trackers if the tracker doesn't follow a face
             for (unsigned i=0; i < trackers.size(); i++) {
