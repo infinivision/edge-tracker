@@ -46,6 +46,7 @@ int test_picture(int argc, char** argv) {
             cout << "detected face #" << total << endl;
             Bbox box = *it;
             std::vector<cv::Point2f> points;
+            Rect2d roi(Point(box.x1, box.y1),Point(box.x2, box.y2));
 
             cv::rectangle(image, cv::Point(box.x1, box.y1), cv::Point(box.x2, box.y2), cv::Scalar(0,0,255), 2,8,0);
             for(int num=0;num<5;num++) {
@@ -60,9 +61,13 @@ int test_picture(int argc, char** argv) {
             cv::Mat aligned = faceAlign.Align(cv_img, points);
 
             if (!aligned.empty()) {
-                std::string outpath = output_folder + "/" + std::to_string(total) + ".jpg";
+                std::string outpath_origin = output_folder + "/" + std::to_string(total) + ".jpg";
+                std::string outpath = output_folder + "/" + std::to_string(total) + "-align.jpg";
+                Mat cropped(cv_img, roi);
+                cv::imwrite(outpath_origin, cropped);
+                cout << "\twrite original image to " << outpath_origin << endl;
                 cv::imwrite(outpath, aligned);
-                cout << "\twrite image to " << outpath << endl;
+                cout << "\twrite aligned image to " << outpath << endl;
             }
         }
     }

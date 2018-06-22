@@ -37,7 +37,7 @@ cv::Mat FaceAlign::Align(cv::Mat& input, const std::vector<cv::Point2f>& align_d
     return warped;
   }
 
-  cout << R << endl;
+  // cout << R << endl;
 
   // R is now a matrix of size 2 * 3
   cv::Mat H = cv::Mat(2,3,R.type());
