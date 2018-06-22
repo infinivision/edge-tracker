@@ -147,7 +147,7 @@ void test_video(int argc, char* argv[]) {
     TrackerKCF::Params kcf_param;
     kcf_param.read(fs.root());
 
-    namedWindow("face_detection", WINDOW_NORMAL);
+    //namedWindow("face_detection", WINDOW_NORMAL);
     // resizeWindow("face_detection", 800, 600);
 
     do {
@@ -192,7 +192,8 @@ void test_video(int argc, char* argv[]) {
                         scaleBox(box, resize_factor_x, resize_factor_y);
                     }
 
-                    std::vector<double> qualities = fa.GetQuality(cimg, box.x1, box.y1, box.x2, box.y2);
+                    //std::vector<double> qualities = fa.GetQuality(cimg, box.x1, box.y1, box.x2, box.y2);
+                    
                     Rect2d detectedFace(Point(box.x1, box.y1),Point(box.x2, box.y2));
 
                     // test whether is a new face
@@ -280,7 +281,7 @@ void test_video(int argc, char* argv[]) {
             putText(frame, to_string(tracker->id), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
         }
 
-        imshow("face_detection", frame);
+        //imshow("face_detection", frame);
 
         frameCounter++;
 
