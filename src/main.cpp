@@ -88,6 +88,9 @@ void saveFace(Mat &frame, Bbox &box, long faceId, string outputFolder) {
     }
 }
 
+/*
+ * scale bounding box for resized frames
+ */
 void scaleBox(Bbox &box, float factor_x, float factor_y) {
     box.x1 = round(box.x1 * factor_x);
     box.x2 = round(box.x2 * factor_x);
@@ -171,6 +174,7 @@ void test_video(int argc, char* argv[]) {
             if (frame.cols > 1280) {
                 // resize to 720p
                 ncnn::resize_bilinear(ncnn_img, ncnn_img_resized, 1280, 720);
+                cout << "\tresize to 720p" << endl;
                 resized = true;
                 resize_factor_x = frame.cols / 1280.0;
                 resize_factor_y = frame.rows / 720.0;
@@ -193,7 +197,6 @@ void test_video(int argc, char* argv[]) {
                     }
 
                     //std::vector<double> qualities = fa.GetQuality(cimg, box.x1, box.y1, box.x2, box.y2);
-                    
                     Rect2d detectedFace(Point(box.x1, box.y1),Point(box.x2, box.y2));
 
                     // test whether is a new face
