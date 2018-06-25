@@ -3,6 +3,7 @@
 //#include <opencv2/tracking.hpp>
 #include "mtcnn.h"
 #include <string.h>
+#include <chrono>
 #include <cstdlib>
 #include "tracker.hpp" // use optimised tracker instead of OpenCV version of KCF tracker
 #include "utils.h"
@@ -64,7 +65,7 @@ void saveFace(Mat &frame, Bbox &box, long faceId, string outputFolder) {
 
     Rect2d roi(Point(box.x1, box.y1),Point(box.x2, box.y2));
     Mat cropped(frame, roi);
-    string output = outputFolder + "/" + to_string(faceId) + ".jpg";
+    string output = outputFolder + "/original/" + to_string(faceId) + ".jpg";
     imwrite(output, cropped);
 
     std::vector<cv::Point2f> points;
@@ -80,7 +81,7 @@ void saveFace(Mat &frame, Bbox &box, long faceId, string outputFolder) {
         return;
     }
 
-    output = outputFolder + "/" + to_string(faceId) + "-align.jpg";
+    output = outputFolder + "/" + to_string(faceId) + ".jpg";
     if ( imwrite(output, image) ) {
         cout << "\tsave face #" << faceId << " to " << output << endl;
     } else {
@@ -103,33 +104,15 @@ void scaleBox(Bbox &box, float factor_x, float factor_y) {
     }
 }
 
-void test_video(int argc, char* argv[]) {
+void test_video(string model_path, const char *camera, int detectionFrameInterval, string outputFolder) {
     
-    int detectionFrameInterval = 25; // nb of frames
-    string outputFolder; // folder to save face
-
-    // parsing arguments
-    if(argc != 3 && argc != 4 && argc != 5) {
-        cout << "usage: main <model_path> <camera_ip> <frames> <face_folder>" << endl;
-        exit(1); 
-    }
-
-    if (argc >= 4) {
-    	detectionFrameInterval = atoi(argv[3]);
-
-        if (argc == 5) {
-            outputFolder = argv[4];
-        }
-    }
-
-    string model_path = argv[1];
     MTCNN mm(model_path);
     FaceAttr fa;
     fa.Load();
     FaceAlign align;
 
-    VideoCapture camera = getCaptureFromIndexOrIp(argv[2]);
-    if (!camera.isOpened()) {
+    VideoCapture cap = getCaptureFromIndexOrIp(camera);
+    if (!cap.isOpened()) {
         cerr << "failed to open camera" << endl;
         return;
     }
@@ -155,7 +138,7 @@ void test_video(int argc, char* argv[]) {
 
     do {
         finalBbox.clear();
-        camera >> frame;
+        cap >> frame;
         if (!frame.data) {
             cerr << "Capture video failed" << endl;
             continue;
@@ -165,7 +148,8 @@ void test_video(int argc, char* argv[]) {
 
         if (frameCounter % detectionFrameInterval == 0) {
             // start face detection
-            cout << "frame #" << frameCounter << endl;
+            auto timenow = chrono::system_clock::to_time_t(chrono::system_clock::now());
+            cout << "frame #" << frameCounter << ", " << ctime(&timenow);
             Mat resized_image;
             bool resized = false;
             float resize_factor_x, resize_factor_y = 1;
@@ -315,5 +299,32 @@ void test_video(int argc, char* argv[]) {
 }
 
 int main(int argc, char* argv[]) {
-    test_video(argc, argv);
+
+    // parsing arguments
+    if(argc != 5) {
+        cout << "usage: main <model_path> <camera_ip> <frames> <face_folder>" << endl;
+        exit(1);
+    }
+
+    int detectionFrameInterval = atoi(argv[3]); // nb of frames
+
+    string outputFolder = argv[4];
+    outputFolder += "/";
+    outputFolder += argv[2];
+
+    string cmd = "mkdir -p " + outputFolder + "/original";
+    const int dir_err = system(cmd.c_str());
+    if (-1 == dir_err) {
+        printf("Error creating directory!n");
+        exit(1);
+    }
+
+    cmd = "rm -f " + outputFolder + "/*";
+    system(cmd.c_str());
+    cmd = "rm -f " + outputFolder + "/original/*";
+    system(cmd.c_str());
+
+    // cpnvert char * to string
+    string model_path = argv[1];
+    test_video(model_path, argv[2], detectionFrameInterval, outputFolder);
 }

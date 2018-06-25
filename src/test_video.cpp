@@ -144,7 +144,7 @@ void test_video(int argc, char* argv[]) {
 
                     // get face bounding box
                     Bbox box = *it;
-                    std::vector<double> qualities = fa.GetQuality(cimg, box.x1, box.y1, box.x2, box.y2);
+                    std::vector<double> qualities = fa.GetPoseQuality(cimg, box.x1, box.y1, box.x2, box.y2);
                     Rect2d detectedFace(Point(box.x1, box.y1),Point(box.x2, box.y2));
 
                     // test whether is a new face

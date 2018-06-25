@@ -66,7 +66,7 @@ void FaceAttr::Load(const std::string& path) {
   dlib::deserialize(path) >> predictor_;
 }
 
-std::vector<double> FaceAttr::GetQuality(dlib::cv_image<dlib::bgr_pixel>& cimg, int left, int top, int right, int bottom) {
+std::vector<double> FaceAttr::GetPoseQuality(dlib::cv_image<dlib::bgr_pixel>& cimg, int left, int top, int right, int bottom) {
   //PROFILE_BLOCK("all");
   dlib::rectangle face(left, top, right, bottom);
   std::vector<double> ret;
@@ -119,3 +119,21 @@ std::vector<double> FaceAttr::GetQuality(dlib::cv_image<dlib::bgr_pixel>& cimg, 
   return ret;
 }
 
+double FaceAttr::GetImageQuality(IplImage* img, int left, int top, int right, int bottom) {
+    double temp = 0;                                                                                                                                                                                              
+    double DR = 0;
+    int i,j;                                                                                                                                                                                                      
+    int height=bottom-top;
+    int width=right-left;                                                                                                                                                                                         
+    int step=img->widthStep/sizeof(uchar);
+    uchar *data=(uchar*)img->imageData;                                                                                                                                                                           
+    double num = width*height;                                                                                                                                                                                                                                                                                                                                                                                                      
+    for(i=top;i<bottom;i++) {                                                                                                                                                                                                             
+        for(j=left;j<right;j++) {                                                                                                                                                                                                         
+            temp += sqrt((pow((double)(data[(i+1)*step+j]-data[i*step+j]),2) + pow((double)(data[i*step+j+1]-data[i*step+j]),2)));
+            temp += abs(data[(i+1)*step+j]-data[i*step+j])+abs(data[i*step+j+1]-data[i*step+j]);                                                                                                                  
+        }
+    }                                                                                                                                                                                                             
+    DR = temp/num;                                                                                                                                                                                                
+    return DR;                                                                                                                                                                                                    
+}
