@@ -18,7 +18,8 @@ class FaceAttr {
 
     FaceAttr();
     void Load(const std::string& path="shape_predictor_68_face_landmarks.dat");
-    std::vector<double> GetQuality(dlib::cv_image<dlib::bgr_pixel>& cimg, int left, int top, int right, int bottom);
+    std::vector<double> GetPoseQuality(dlib::cv_image<dlib::bgr_pixel>& cimg, int left, int top, int right, int bottom);
+    double GetImageQuality(IplImage* img, int left, int top, int right, int bottom);
 };
 
 #endif
