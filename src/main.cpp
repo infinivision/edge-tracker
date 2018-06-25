@@ -165,12 +165,30 @@ void test_video(int argc, char* argv[]) {
 
         if (frameCounter % detectionFrameInterval == 0) {
             // start face detection
-            cout << "frame " << frameCounter << endl;
-            ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
-            ncnn::Mat ncnn_img_resized;
+            cout << "frame #" << frameCounter << endl;
+            Mat resized_image;
             bool resized = false;
             float resize_factor_x, resize_factor_y = 1;
 
+            if (frame.cols > 1280) {
+                // resize to 720p
+                gettimeofday(&tv1,&tz1);
+                resize(frame, resized_image, Size(1280, 720), 0, 0, INTER_NEAREST);
+                gettimeofday(&tv2,&tz2);
+                cout << "\tresize to 720p, time eclipsed: " << getElapse(&tv1, &tv2) << " ms" << endl;
+                resized = true;
+                resize_factor_x = frame.cols / 1280.0;
+                resize_factor_y = frame.rows / 720.0;
+            } else {
+                resized_image = frame;
+            }
+
+            //ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
+            ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(resized_image.data, ncnn::Mat::PIXEL_BGR2RGB, resized_image.cols, resized_image.rows);
+            //ncnn::Mat ncnn_imag_resized;
+            //bool resized = false;
+            //float resize_factor_x, resize_factor_y = 1;
+/*
             if (frame.cols > 1280) {
                 // resize to 720p
                 gettimeofday(&tv1,&tz1);
@@ -183,9 +201,10 @@ void test_video(int argc, char* argv[]) {
             } else {
                 ncnn_img_resized = ncnn_img;
             }
+*/
 
             gettimeofday(&tv1,&tz1);
-            mm.detect(ncnn_img_resized, finalBbox);
+            mm.detect(ncnn_img, finalBbox);
             gettimeofday(&tv2,&tz2);
             int total = 0;
 
