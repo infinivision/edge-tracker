@@ -1,6 +1,8 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 //#include <opencv2/tracking.hpp>
+#include "camera.h"
+#include "cpptoml.h"
 #include "mtcnn.h"
 #include <string.h>
 #include <chrono>
@@ -9,7 +11,6 @@
 #include "utils.h"
 #include "face_attr.h"
 #include "face_align.h"
-#include "cpptoml.h"
 
 #define QUIT_KEY 'q'
 
@@ -21,19 +22,17 @@ FaceAlign faceAlign = FaceAlign();
 /*
  * Get video capture from a camera index (0, 1) or an ip (192.168.1.15)
  */
-VideoCapture getCaptureFromIndexOrIp(const string str) {
-    if ( str == "0" || str == "1") {
+VideoCapture getCaptureFromIndexOrIp(const CameraConfig &camera) {
+    if ( camera.ip.empty()) {
         // use camera index
-        int camera_id = atoi(str.c_str());
-        cout << "camera index: " << camera_id << endl;
-        VideoCapture camera(camera_id);
-        return camera;
+        cout << "camera index: " << camera.index << endl;
+        VideoCapture capture(camera.index);
+        return capture;
     } else {
-        string camera_ip = str;
-        cout << "camera ip: " << camera_ip << endl;
-        string camera_stream = "rtsp://admin:mcd12345678@" + camera_ip + ":554//Streaming/Channels/1";
-        VideoCapture camera(camera_stream);
-        return camera;
+        cout << "camera ip: " << camera.ip << endl;
+        string camera_stream = "rtsp://" + camera.username +  ":" + camera.password + "@" + camera.ip + ":554//Streaming/Channels/1";
+        VideoCapture capture(camera_stream);
+        return capture;
     }
 }
 
@@ -105,7 +104,7 @@ void scaleBox(Bbox &box, float factor_x, float factor_y) {
     }
 }
 
-void test_video(const string model_path, const string camera, int detectionFrameInterval, string outputFolder) {
+void test_video(const string model_path, const CameraConfig &camera, int detectionFrameInterval, string outputFolder) {
     
     MTCNN mm(model_path);
     FaceAttr fa;
@@ -305,7 +304,7 @@ int main(int argc, char* argv[]) {
     string model_path = "models/ncnn";
     string output_folder = "~/Pictures/faces/";
     int detection_interval = 50;
-    string camera_ip, camera_username, camera_password;
+    CameraConfig camera;
 
     int res;
 
@@ -329,30 +328,31 @@ int main(int argc, char* argv[]) {
     }
 
 
-    try
-    {
-        std::shared_ptr<cpptoml::table> g = cpptoml::parse_file("config.toml");
+    try {
+        std::shared_ptr<cpptoml::table> g = cpptoml::parse_file(config_path);
 
         auto detection_interval_ptr = g->get_qualified_as<int>("global.detection_interval");
         detection_interval = *detection_interval_ptr;
 
         auto array = g->get_table_array("camera")->get();
-        auto camera = array[0];
-        auto ip_ptr = camera->get_as<std::string>("ip");
-        auto username_ptr = camera->get_as<std::string>("username");
-        auto password_ptr = camera->get_as<std::string>("password");
+        auto camera_ptr = array[0];
+        auto index_ptr = camera_ptr->get_as<int>("index");
+        auto ip_ptr = camera_ptr->get_as<std::string>("ip");
+        auto username_ptr = camera_ptr->get_as<std::string>("username");
+        auto password_ptr = camera_ptr->get_as<std::string>("password");
 
-        camera_ip = *ip_ptr;
-        camera_username = *username_ptr;
-        camera_password = *password_ptr;
+        if (ip_ptr) {
+            camera = CameraConfig(*ip_ptr, *username_ptr, *password_ptr);
+        } else {
+            camera = CameraConfig(*index_ptr);
+        }
     }
-    catch (const cpptoml::parse_exception& e)
-    {
+    catch (const cpptoml::parse_exception& e) {
         std::cerr << "Failed to parse " << "config.toml" << ": " << e.what() << std::endl;
         return 1;
     }
 
-    output_folder += "/" + camera_ip;
+    output_folder += "/" + camera.identity();
 
     string cmd = "mkdir -p " + output_folder + "/original";
     const int dir_err = system(cmd.c_str());
@@ -367,5 +367,5 @@ int main(int argc, char* argv[]) {
     system(cmd.c_str());
 
     // start processing video
-    test_video(model_path, camera_ip, detection_interval, output_folder);
+    test_video(model_path, camera, detection_interval, output_folder);
 }

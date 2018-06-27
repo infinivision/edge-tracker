@@ -1,0 +1,6 @@
+[global]
+detection_interval = 50
+
+[[camera]]
+ip = 0
+
