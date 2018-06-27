@@ -31,7 +31,18 @@ mv eigen/Eigen /usr/local/include/
 apt install libfftw3-dev
 ```
 
-## build the mtcnn main repo
+## install cpptoml
+
+```sh
+git clone git@github.com:skystrife/cpptoml.git
+mkdir build
+cmake ..
+make
+make install
+```
+
+## build the edge-tracker
+
 ```sh
 mkdir -p build
 cd build
@@ -39,12 +50,12 @@ cmake ..
 make
 ```
 
-# how to run
+# run edge tracker
 ```sh
 # activate OpemMP threads
 set OMP_NUM_THREADS=2
 bin/export 32 64 70 80 90 100
 # use taskset to set cpu affinity 
-taskset -c 4,5 bin/main models/ncnn <camera_ip> <detection_interval>(nb_frames) <face_folder>
+taskset -c 4,5 main -m <model_path> -c <config_file> -o <face_folder>
 ```
 
