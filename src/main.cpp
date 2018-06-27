@@ -308,7 +308,7 @@ int main(int argc, char* argv[]) {
 
     int res;
 
-    while ((res = getopt(argc,argv,"c:h:m:o:t")) != -1) {
+    while ((res = getopt(argc,argv,"c:m:o:h")) != -1) {
         switch (res) {
             case 'c':
                 config_path = std::string(optarg);
