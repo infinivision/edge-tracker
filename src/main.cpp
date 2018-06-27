@@ -9,6 +9,7 @@
 #include "utils.h"
 #include "face_attr.h"
 #include "face_align.h"
+#include "cpptoml.h"
 
 #define QUIT_KEY 'q'
 
@@ -20,10 +21,10 @@ FaceAlign faceAlign = FaceAlign();
 /*
  * Get video capture from a camera index (0, 1) or an ip (192.168.1.15)
  */
-VideoCapture getCaptureFromIndexOrIp(const char *str) {
-    if (strcmp(str, "0") == 0 || strcmp(str, "1") == 0) {
+VideoCapture getCaptureFromIndexOrIp(const string str) {
+    if ( str == "0" || str == "1") {
         // use camera index
-        int camera_id = atoi(str);
+        int camera_id = atoi(str.c_str());
         cout << "camera index: " << camera_id << endl;
         VideoCapture camera(camera_id);
         return camera;
@@ -104,7 +105,7 @@ void scaleBox(Bbox &box, float factor_x, float factor_y) {
     }
 }
 
-void test_video(string model_path, const char *camera, int detectionFrameInterval, string outputFolder) {
+void test_video(const string model_path, const string camera, int detectionFrameInterval, string outputFolder) {
     
     MTCNN mm(model_path);
     FaceAttr fa;
@@ -300,31 +301,71 @@ void test_video(string model_path, const char *camera, int detectionFrameInterva
 
 int main(int argc, char* argv[]) {
 
-    // parsing arguments
-    if(argc != 5) {
-        cout << "usage: main <model_path> <camera_ip> <frames> <face_folder>" << endl;
-        exit(1);
+    string config_path = "config.toml";
+    string model_path = "models/ncnn";
+    string output_folder = "~/Pictures/faces/";
+    int detection_interval = 50;
+    string camera_ip, camera_username, camera_password;
+
+    int res;
+
+    while ((res = getopt(argc,argv,"c:h:m:o:t")) != -1) {
+        switch (res) {
+            case 'c':
+                config_path = std::string(optarg);
+                break;
+            case 'm':
+                model_path = std::string(optarg);
+                break;
+            case 'o':
+                output_folder = std::string(optarg);
+                break;
+            case 'h':
+                cout << "usage: main -m <model_path> -c <config_file> -o <face_folder>" << endl;
+                exit(1);
+            default:
+                break;
+        }
     }
 
-    int detectionFrameInterval = atoi(argv[3]); // nb of frames
 
-    string outputFolder = argv[4];
-    outputFolder += "/";
-    outputFolder += argv[2];
+    try
+    {
+        std::shared_ptr<cpptoml::table> g = cpptoml::parse_file("config.toml");
 
-    string cmd = "mkdir -p " + outputFolder + "/original";
+        auto detection_interval_ptr = g->get_qualified_as<int>("global.detection_interval");
+        detection_interval = *detection_interval_ptr;
+
+        auto array = g->get_table_array("camera")->get();
+        auto camera = array[0];
+        auto ip_ptr = camera->get_as<std::string>("ip");
+        auto username_ptr = camera->get_as<std::string>("username");
+        auto password_ptr = camera->get_as<std::string>("password");
+
+        camera_ip = *ip_ptr;
+        camera_username = *username_ptr;
+        camera_password = *password_ptr;
+    }
+    catch (const cpptoml::parse_exception& e)
+    {
+        std::cerr << "Failed to parse " << "config.toml" << ": " << e.what() << std::endl;
+        return 1;
+    }
+
+    output_folder += "/" + camera_ip;
+
+    string cmd = "mkdir -p " + output_folder + "/original";
     const int dir_err = system(cmd.c_str());
     if (-1 == dir_err) {
         printf("Error creating directory!n");
         exit(1);
     }
 
-    cmd = "rm -f " + outputFolder + "/*";
+    cmd = "rm -f " + output_folder + "/*";
     system(cmd.c_str());
-    cmd = "rm -f " + outputFolder + "/original/*";
+    cmd = "rm -f " + output_folder + "/original/*";
     system(cmd.c_str());
 
-    // cpnvert char * to string
-    string model_path = argv[1];
-    test_video(model_path, argv[2], detectionFrameInterval, outputFolder);
+    // start processing video
+    test_video(model_path, camera_ip, detection_interval, output_folder);
 }
