@@ -42,7 +42,7 @@ VideoCapture getCaptureFromIndexOrIp(const CameraConfig &camera) {
  * return true when:
  *   center point of one box is inside the other
  */
-bool isSameFace(Rect2d &box1, Rect2d &box2) {
+bool overlap(Rect2d &box1, Rect2d &box2) {
     int x1 = box1.x + box1.width/2;
     int y1 = box1.y + box1.height/2;
     int x2 = box2.x + box2.width/2;
@@ -199,7 +199,7 @@ void test_video(const string model_path, const CameraConfig &camera, int detecti
                     unsigned i;
                     for (i=0;i<trackerBoxes.size();i++) {
                         Rect2d trackedFace = trackerBoxes[i];
-                        if (isSameFace(detectedFace, trackedFace)) {
+                        if (overlap(detectedFace, trackedFace)) {
                             newFace = false;
                             break;
                         }
@@ -243,7 +243,7 @@ void test_video(const string model_path, const CameraConfig &camera, int detecti
                     if ((*it).exist) {
                         Bbox box = *it;
                         Rect2d detectedFace(Point(box.x1, box.y1),Point(box.x2, box.y2));
-                        if (isSameFace(detectedFace, trackedFace)) {
+                        if (overlap(detectedFace, trackedFace)) {
                             isFace = true;
                             break;
                         }
