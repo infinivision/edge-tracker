@@ -61,7 +61,7 @@ bool isSameFace(Rect2d &box1, Rect2d &box2) {
 /*
  * write face to the output folder
  */
-void saveFace(Mat &frame, Bbox &box, long faceId, string outputFolder) {
+void saveFace(const Mat &frame, const Bbox &box, long faceId, string outputFolder) {
 
     Rect2d roi(Point(box.x1, box.y1),Point(box.x2, box.y2));
     Mat cropped(frame, roi);
@@ -125,7 +125,12 @@ void test_video(const string model_path, const CameraConfig &camera, int detecti
     vector<Bbox> finalBbox;
     Rect2d roi;
     vector<Ptr<Tracker>> trackers;
-    vector<Rect2d> boxes;
+    vector<Rect2d> trackerBoxes;
+    // frame[i] + selectedFaceBoxes[i] is a selected face
+    vector<Rect2d> selectedFaceBoxes;
+    vector<Mat> frames;
+    // scores[i] is the face score of face frame[i] + selectedFaceBoxes[i]
+    vector<double> scores;
     Mat frame;
 
     FileStorage fs;
@@ -144,7 +149,7 @@ void test_video(const string model_path, const CameraConfig &camera, int detecti
             continue;
         }
 
-        dlib::cv_image<dlib::bgr_pixel> cimg(frame);
+        // dlib::cv_image<dlib::bgr_pixel> cimg(frame);
 
         if (frameCounter % detectionFrameInterval == 0) {
             // start face detection
@@ -167,25 +172,7 @@ void test_video(const string model_path, const CameraConfig &camera, int detecti
                 resized_image = frame;
             }
 
-            //ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
             ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(resized_image.data, ncnn::Mat::PIXEL_BGR2RGB, resized_image.cols, resized_image.rows);
-            //ncnn::Mat ncnn_imag_resized;
-            //bool resized = false;
-            //float resize_factor_x, resize_factor_y = 1;
-/*
-            if (frame.cols > 1280) {
-                // resize to 720p
-                gettimeofday(&tv1,&tz1);
-                ncnn::resize_bilinear(ncnn_img, ncnn_img_resized, 1280, 720);
-                gettimeofday(&tv2,&tz2);
-                cout << "\tresize to 720p, time eclipsed: " << getElapse(&tv1, &tv2) << " ms" << endl;
-                resized = true;
-                resize_factor_x = frame.cols / 1280.0;
-                resize_factor_y = frame.rows / 720.0;
-            } else {
-                ncnn_img_resized = ncnn_img;
-            }
-*/
 
             gettimeofday(&tv1,&tz1);
             mm.detect(ncnn_img, finalBbox);
@@ -209,8 +196,8 @@ void test_video(const string model_path, const CameraConfig &camera, int detecti
                     // test whether is a new face
                     bool newFace = true;
                     unsigned i;
-                    for (i=0;i<boxes.size();i++) {
-                        Rect2d trackedFace = boxes[i];
+                    for (i=0;i<trackerBoxes.size();i++) {
+                        Rect2d trackedFace = trackerBoxes[i];
                         if (isSameFace(detectedFace, trackedFace)) {
                             newFace = false;
                             break;
@@ -223,13 +210,16 @@ void test_video(const string model_path, const CameraConfig &camera, int detecti
                         tracker->init(frame, detectedFace);
                         tracker->id = faceId;
                         trackers.push_back(tracker);
-                        boxes.push_back(detectedFace);
+                        trackerBoxes.push_back(detectedFace);
+                        selectedFaceBoxes.push_back(detectedFace);
+                        frames.push_back(frame);
+                        Mat face(frame, detectedFace);
+                        double score = fa.GetVarianceOfLaplacianSharpness(face);
+                        scores.push_back(score);
                         cout << "frame " << frameCounter << ": start tracking face #" << tracker->id << endl;
 
-                        if (!outputFolder.empty()) {
-                            // save face
-                            saveFace(frame, box, faceId, outputFolder);
-                        }
+                        // save face now when tracker is lost
+                        // saveFace(frame, box, faceId, outputFolder);
                         
                         faceId++;
                     } else {
@@ -244,7 +234,7 @@ void test_video(const string model_path, const CameraConfig &camera, int detecti
             // clean up trackers if the tracker doesn't follow a face
             for (unsigned i=0; i < trackers.size(); i++) {
                 Ptr<Tracker> tracker = trackers[i];
-                Rect2d trackedFace = boxes[i];
+                Rect2d trackedFace = trackerBoxes[i];
 
                 bool isFace = false;
                 for (vector<Bbox>::iterator it=finalBbox.begin(); it!=finalBbox.end();it++) {
@@ -262,8 +252,13 @@ void test_video(const string model_path, const CameraConfig &camera, int detecti
                 if (!isFace) {
                     /* clean up tracker */
                     cout << "frame " << frameCounter << ": stop tracking face #" << tracker->id << endl;
+                    saveFace(frames[i], selectedFaceBoxes[i], tracker->id, outputFolder);
+
                     trackers.erase(trackers.begin() + i);
-                    boxes.erase(boxes.begin() + i);
+                    trackerBoxes.erase(trackerBoxes.begin() + i);
+                    selectedFaceBoxes.erase(selectedFaceBoxes.begin() + i);
+                    frames.erase(frames.begin() + i);
+                    scores.erase(scores.begin() + i);
                     i--;
                 }
             }
@@ -273,17 +268,24 @@ void test_video(const string model_path, const CameraConfig &camera, int detecti
         for (int i = 0; i < trackers.size(); i++) {
             Ptr<Tracker> tracker = trackers[i];
 
-            bool tracked = tracker->update(frame, boxes[i]);
+            bool tracked = tracker->update(frame, trackerBoxes[i]);
             if (!tracked) {
                 // delete tracker
                 cout << "frame " << frameCounter << ": stop tracking face #" << tracker->id << endl;
                 trackers.erase(trackers.begin() + i);
-                boxes.erase(boxes.begin() + i);
+                trackerBoxes.erase(trackerBoxes.begin() + i);
                 i--;
                 continue;
             }
 
-            Rect2d box = boxes[i];
+            Rect2d box = trackerBoxes[i];
+            Mat face(frame, box);
+            double score = fa.GetVarianceOfLaplacianSharpness(face);
+            if (score > scores[i]) {
+                // update the previous stored face
+                selectedFaceBoxes[i] = box;
+                scores[i] = score;
+            }
             // draw tracked face
             rectangle( frame, box, Scalar( 255, 0, 0 ), 2, 1 );
             // show face id

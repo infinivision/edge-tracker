@@ -111,29 +111,58 @@ std::vector<double> FaceAttr::GetPoseQuality(dlib::cv_image<dlib::bgr_pixel>& ci
   cv::hconcat(rotation_mat, translation_vec, pose_mat);
   cv::decomposeProjectionMatrix(pose_mat, out_intrinsics, out_rotation, out_translation, cv::noArray(), cv::noArray(), cv::noArray(), euler_angle);
   //std::cout<<"("<<faces[f].left()<<","<<faces[f].top()<<")("<<faces[f].right()<<","<<faces[f].bottom()<<")"<<std::endl;
+  std::cout << "Pose: 0 - up/down, 1 - left/right, 2 - lean" << std::endl;
   for(int i=0;i<3;i++) {
     double v = euler_angle.at<double>(i);
     ret.push_back(v);
-    //std::cout<<i<<":"<<v<<std::endl;
+    std::cout<< "\t" << i <<":"<<v<<std::endl;
   }
   return ret;
 }
 
 double FaceAttr::GetImageQuality(IplImage* img, int left, int top, int right, int bottom) {
-    double temp = 0;                                                                                                                                                                                              
+    double temp = 0;
     double DR = 0;
-    int i,j;                                                                                                                                                                                                      
+    int i,j;
     int height=bottom-top;
-    int width=right-left;                                                                                                                                                                                         
+    int width=right-left;
     int step=img->widthStep/sizeof(uchar);
-    uchar *data=(uchar*)img->imageData;                                                                                                                                                                           
-    double num = width*height;                                                                                                                                                                                                                                                                                                                                                                                                      
-    for(i=top;i<bottom;i++) {                                                                                                                                                                                                             
-        for(j=left;j<right;j++) {                                                                                                                                                                                                         
+    uchar *data=(uchar*)img->imageData;
+    double num = width*height;
+    for(i=top;i<bottom;i++) {
+        for(j=left;j<right;j++) {
             temp += sqrt((pow((double)(data[(i+1)*step+j]-data[i*step+j]),2) + pow((double)(data[i*step+j+1]-data[i*step+j]),2)));
-            temp += abs(data[(i+1)*step+j]-data[i*step+j])+abs(data[i*step+j+1]-data[i*step+j]);                                                                                                                  
+            temp += abs(data[(i+1)*step+j]-data[i*step+j])+abs(data[i*step+j+1]-data[i*step+j]);
         }
-    }                                                                                                                                                                                                             
-    DR = temp/num;                                                                                                                                                                                                
-    return DR;                                                                                                                                                                                                    
+    }
+    DR = temp/num;
+    return DR;
+}
+
+double FaceAttr::GetNormOfDerivativesBlurriness(const cv::Mat& image) {
+    cv::Mat Gx;
+    cv::Mat Gy;
+    cv::Sobel(image, Gx, CV_32F, 1, 0);
+    cv::Sobel(image, Gy, CV_32F, 0, 1);
+    double normGx = cv::norm(Gx);
+    double normGy = cv::norm(Gy);
+    // write_log("norm: " + std::to_string(normGx));
+    // write_log("norm: " + std::to_string(normGy));
+    double sumSq = normGx * normGx + normGy * normGy;
+    // std::cout << "Image size: " << image.size() << std::endl;
+    // std::cout << "Image size area: " + std::to_string(image.size().area()) << std::endl;
+    // double blur = std::sqrt(sumSq) / image.size().area();
+    double blur = std::sqrt(sumSq) / magic;
+    // std::cout << "blurriness: " << blur << std::endl;
+    return blur;
+}
+
+// input is a grayscale image
+double FaceAttr::GetVarianceOfLaplacianSharpness(const cv::Mat& image) {
+    cv::Mat laplacian_output;
+    cv::Laplacian(image, laplacian_output, CV_32F);
+
+    cv::Scalar mean, stddev;
+    meanStdDev(laplacian_output, mean, stddev);
+    return stddev[0];
 }

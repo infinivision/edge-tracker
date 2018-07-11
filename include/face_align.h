@@ -12,7 +12,7 @@ class FaceAlign {
     cv::Size size;
   public:
     FaceAlign();
-    cv::Mat Align(cv::Mat& input, const std::vector<cv::Point2f>& align_dst);
+    cv::Mat Align(const cv::Mat& input, const std::vector<cv::Point2f>& align_dst);
 };
 
 #endif

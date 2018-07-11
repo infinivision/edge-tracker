@@ -20,7 +20,7 @@ FaceAlign::FaceAlign() {
 /*
  * Align face
  */
-cv::Mat FaceAlign::Align(cv::Mat& input, const std::vector<cv::Point2f>& align_dst) {
+cv::Mat FaceAlign::Align(const cv::Mat& input, const std::vector<cv::Point2f>& align_dst) {
 
   cv::Mat warped;
 
