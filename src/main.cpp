@@ -151,7 +151,8 @@ void test_video(const string model_path, const CameraConfig &camera, int detecti
 
         // dlib::cv_image<dlib::bgr_pixel> cimg(frame);
 
-        if (frameCounter % detectionFrameInterval == 0) {
+        // if (frameCounter % detectionFrameInterval == 0) {
+        {
             // start face detection
             auto timenow = chrono::system_clock::to_time_t(chrono::system_clock::now());
             cout << "frame #" << frameCounter << ", " << ctime(&timenow);
@@ -159,15 +160,15 @@ void test_video(const string model_path, const CameraConfig &camera, int detecti
             bool resized = false;
             float resize_factor_x, resize_factor_y = 1;
 
-            if (frame.cols > 1280) {
-                // resize to 720p
+            if (frame.rows > 480) {
+                // resize to 480p
                 gettimeofday(&tv1,&tz1);
-                resize(frame, resized_image, Size(1280, 720), 0, 0, INTER_NEAREST);
+                resize(frame, resized_image, Size(848, 480), 0, 0, INTER_NEAREST);
                 gettimeofday(&tv2,&tz2);
-                cout << "\tresize to 720p, time eclipsed: " << getElapse(&tv1, &tv2) << " ms" << endl;
+                cout << "\tresize to 480p, time eclipsed: " << getElapse(&tv1, &tv2) << " ms" << endl;
                 resized = true;
-                resize_factor_x = frame.cols / 1280.0;
-                resize_factor_y = frame.rows / 720.0;
+                resize_factor_x = frame.cols / 848.0;
+                resize_factor_y = frame.rows / 480.0;
             } else {
                 resized_image = frame;
             }
