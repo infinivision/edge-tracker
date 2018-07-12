@@ -158,8 +158,9 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
         // if (frameCounter % detectionFrameInterval == 0) {
         {
             // start face detection
-            auto timenow = chrono::system_clock::to_time_t(chrono::system_clock::now());
-            cout << "frame #" << frameCounter << ", " << ctime(&timenow);
+            // auto timenow = chrono::system_clock::to_time_t(chrono::system_clock::now());
+            // cout << "frame #" << frameCounter << ", tracking faces: " << trackers.size() << ", " << ctime(&timenow);
+            cout << "frame #" << frameCounter << ", tracking faces: " << trackers.size() << endl;
             Mat small_frame;
             bool resized = false;
             float resize_factor_x, resize_factor_y = 1;
@@ -193,6 +194,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
                     Bbox box = *it;
                     if (resized) {
                         scaleBox(box, resize_factor_x, resize_factor_y);
+                        *it = box;
                     }
 
                     //std::vector<double> qualities = fa.GetQuality(cimg, box.x1, box.y1, box.x2, box.y2);
@@ -221,7 +223,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
                         Mat face(frame, detected_face);
                         double score = fa.GetVarianceOfLaplacianSharpness(face);
                         scores.push_back(score);
-                        cout << "frame " << frameCounter << ": start tracking face #" << tracker->id << endl;
+                        cout << "\tstart tracking face #" << tracker->id << endl;
 
                         // save face now when tracker is lost
                         // saveFace(frame, box, faceId, outputFolder);
@@ -244,9 +246,9 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
 
                 bool isFace = false;
                 for (vector<Bbox>::iterator it=detected_bounding_boxes.begin(); it!=detected_bounding_boxes.end();it++) {
-                    Bbox box = *it;
                     if ((*it).exist) {
                         Bbox box = *it;
+
                         Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
                         if (overlap(detected_face, tracker_boxes[i])) {
                             isFace = true;
@@ -266,7 +268,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
 
                 if (!isFace) {
                     /* clean up tracker */
-                    cout << "frame " << frameCounter << ": stop tracking face #" << tracker->id << endl;
+                    cout << "\tstop tracking face #" << tracker->id << endl;
                     saveFace(selected_frames[i], selected_faces[i], tracker->id, outputFolder);
 
                     trackers.erase(trackers.begin() + i);
