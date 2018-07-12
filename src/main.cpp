@@ -68,6 +68,8 @@ void saveFace(const Mat &frame, const Bbox &box, long faceId, string outputFolde
     string output = outputFolder + "/original/" + to_string(faceId) + ".jpg";
     imwrite(output, cropped);
 
+    namedWindow("output", WINDOW_NORMAL);
+
     std::vector<cv::Point2f> points;
     for(int num=0;num<5;num++) {
         Point2f point(box.ppoint[num], box.ppoint[num+5]);
@@ -85,8 +87,10 @@ void saveFace(const Mat &frame, const Bbox &box, long faceId, string outputFolde
     if ( imwrite(output, image) ) {
         cout << "\tsave face #" << faceId << " to " << output << endl;
     } else {
-        cout << "\tfail to save face #" << faceId << endl;
+        cout << "\tfail to save face #" << faceId << " to " << output << endl;
     }
+
+    imshow("output", image);
 }
 
 /*
@@ -138,7 +142,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
     TrackerKCF::Params kcf_param;
     kcf_param.read(fs.root());
 
-    namedWindow("face_detection", WINDOW_NORMAL);
+    namedWindow("window", WINDOW_NORMAL);
 
     do {
         detected_bounding_boxes.clear();
@@ -223,7 +227,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
                         Mat face(frame, detected_face);
                         double score = fa.GetVarianceOfLaplacianSharpness(face);
                         scores.push_back(score);
-                        cout << "\tstart tracking face #" << tracker->id << endl;
+                        cout << "\tstart tracking face #" << tracker->id << ", score: " << score << endl;
 
                         // save face now when tracker is lost
                         // saveFace(frame, box, faceId, outputFolder);
@@ -257,6 +261,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
                             double score = fa.GetVarianceOfLaplacianSharpness(face);
                             if (score > scores[i]) {
                                 // select a better face
+                                cout << "\tupdate selected face, new score: " << score << endl;
                                 selected_frames[i] = frame;
                                 selected_faces[i] = box;
                                 scores[i] = score;
@@ -287,7 +292,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
             }
         }
 
-        imshow("face_detection", frame);
+        imshow("window", frame);
 
         frameCounter++;
 
@@ -298,7 +303,7 @@ int main(int argc, char* argv[]) {
 
     string config_path = "config.toml";
     string model_path = "models/ncnn";
-    string output_folder = "~/Pictures/faces/";
+    string output_folder = "/Users/moon/Pictures/faces";
     CameraConfig camera;
 
     int res;
