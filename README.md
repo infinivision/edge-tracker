@@ -56,6 +56,6 @@ make
 set OMP_NUM_THREADS=2
 bin/export 32 64 70 80 90 100
 # use taskset to set cpu affinity 
-taskset -c 4,5 main -m <model_path> -c <config_file> -o <face_folder>
+taskset -c 4,5 main --model=<model_path> --config=<config_file> --output=<face_folder>
 ```
 

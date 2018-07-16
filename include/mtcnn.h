@@ -7,8 +7,22 @@
 using namespace std;
 using namespace cv;
 
-struct Bbox
-{
+class Bbox {
+public:
+    Bbox(){};
+
+    inline void scale(float factor_x, float factor_y) {
+        this->x1 = round(this->x1 * factor_x);
+        this->x2 = round(this->x2 * factor_x);
+        this->y1 = round(this->y1 * factor_y);
+        this->y2 = round(this->y2 * factor_y);
+
+        for (int i=0; i<5; i++) {
+            this->ppoint[i] *= factor_x;
+            this->ppoint[i+5] *= factor_y;
+        }
+    }
+
     float score;
     int x1;
     int y1;

@@ -10,10 +10,11 @@ public:
     std::string ip;
     std::string username;
     std::string password;
+    int resize_rows, resize_cols;
 
     CameraConfig() {};
-    CameraConfig(int index): index(index) {};
-    CameraConfig(std::string ip, std::string username, std::string password): ip(ip), username(username), password(password) {};
+    CameraConfig(int index, int resize_rows, int resize_cols): index(index), resize_rows(resize_rows), resize_cols(resize_cols) {};
+    CameraConfig(std::string ip, std::string username, std::string password, int resize_rows, int resize_cols): ip(ip), username(username), password(password), resize_rows(resize_rows), resize_cols(resize_cols) {};
 
     // return ip, or index if no ip is given
     inline std::string identity() {

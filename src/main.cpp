@@ -77,21 +77,6 @@ void saveFace(const Mat &frame, const Bbox &box, long faceId, string outputFolde
     imshow("output", image);
 }
 
-/*
- * scale bounding box for resized frames
- */
-void scaleBox(Bbox &box, float factor_x, float factor_y) {
-    box.x1 = round(box.x1 * factor_x);
-    box.x2 = round(box.x2 * factor_x);
-    box.y1 = round(box.y1 * factor_y);
-    box.y2 = round(box.y2 * factor_y);
-
-    for (int i=0; i<5; i++) {
-        box.ppoint[i] *= factor_x;
-        box.ppoint[i+5] *= factor_y;
-    }
-}
-
 // void test_video(const string model_path, const CameraConfig &camera, int detectionFrameInterval, string outputFolder) {
 void test_video(const string model_path, const CameraConfig &camera, string outputFolder) {
     
@@ -150,23 +135,19 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
 
         // if (frameCounter % detectionFrameInterval == 0) {
         {
-            // start face detection
-            // auto timenow = chrono::system_clock::to_time_t(chrono::system_clock::now());
-            // cout << "frame #" << frameCounter << ", tracking faces: " << trackers.size() << ", " << ctime(&timenow);
-
             Mat small_frame;
             bool resized = false;
             float resize_factor_x, resize_factor_y = 1;
 
-            if (frame.rows > 480) {
-                // resize to 480p
+            if (frame.rows > camera.resize_rows) {
+                // resize
                 gettimeofday(&tv1,&tz1);
-                resize(frame, small_frame, Size(848, 480), 0, 0, INTER_NEAREST);
+                resize(frame, small_frame, Size(camera.resize_cols, camera.resize_rows), 0, 0, INTER_NEAREST);
                 gettimeofday(&tv2,&tz2);
-                cout << "\tresize to 480p, time eclipsed: " << getElapse(&tv1, &tv2) << " ms" << endl;
+                cout << "\tresize to (" << camera.resize_cols << " * " << camera.resize_rows << "), time eclipsed: " << getElapse(&tv1, &tv2) << " ms" << endl;
                 resized = true;
-                resize_factor_x = frame.cols / 848.0;
-                resize_factor_y = frame.rows / 480.0;
+                resize_factor_x = (float)frame.cols / camera.resize_cols;
+                resize_factor_y = (float)frame.rows / camera.resize_rows;
             } else {
                 small_frame = frame;
             }
@@ -186,7 +167,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
                     // get face bounding box
                     Bbox box = *it;
                     if (resized) {
-                        scaleBox(box, resize_factor_x, resize_factor_y);
+                        box.scale(resize_factor_x, resize_factor_y);
                         *it = box;
                     }
 
@@ -325,11 +306,13 @@ int main(int argc, char* argv[]) {
         auto ip_ptr = camera_ptr->get_as<std::string>("ip");
         auto username_ptr = camera_ptr->get_as<std::string>("username");
         auto password_ptr = camera_ptr->get_as<std::string>("password");
+        auto resize_rows_ptr = camera_ptr->get_as<int>("resize_rows");
+        auto resize_cols_ptr = camera_ptr->get_as<int>("resize_cols");
 
         if (ip_ptr) {
-            camera = CameraConfig(*ip_ptr, *username_ptr, *password_ptr);
+            camera = CameraConfig(*ip_ptr, *username_ptr, *password_ptr, *resize_rows_ptr, *resize_cols_ptr);
         } else {
-            camera = CameraConfig(*index_ptr);
+            camera = CameraConfig(*index_ptr, *resize_rows_ptr, *resize_cols_ptr);
         }
     }
     catch (const cpptoml::parse_exception& e) {
