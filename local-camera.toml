@@ -1,6 +1,5 @@
-[global]
-detection_interval = 1
-
 [[camera]]
-ip = 0
+  ip = 0
+  resize_rows = 480
+  resize_cols = 848
 

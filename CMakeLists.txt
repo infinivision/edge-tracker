@@ -77,12 +77,12 @@ set_target_properties(test_video
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
 )
 
-add_executable(compare src/tracker_compare.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp)
-target_link_libraries(compare ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f dlib::dlib)
-set_target_properties(compare
-        PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
-)
+#add_executable(compare src/tracker_compare.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp)
+#target_link_libraries(compare ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f dlib::dlib)
+#set_target_properties(compare
+#        PROPERTIES
+#        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+#)
 
 add_executable(export src/export.cpp)
 target_link_libraries(export fftw3f)
