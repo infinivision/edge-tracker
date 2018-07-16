@@ -7,3 +7,6 @@
 [submodule "staple"]
 	path = 3rdparty/staple
 	url = https://github.com/infinivision/staple
+[submodule "ncnn"]
+	path = ncnn
+	url = git@github.com:Tencent/ncnn.git

@@ -20,7 +20,7 @@ FaceAlign::FaceAlign() {
 /*
  * Align face
  */
-cv::Mat FaceAlign::Align(cv::Mat& input, const std::vector<cv::Point2f>& align_dst) {
+cv::Mat FaceAlign::Align(const cv::Mat& input, const std::vector<cv::Point2f>& align_dst) {
 
   cv::Mat warped;
 
@@ -28,9 +28,9 @@ cv::Mat FaceAlign::Align(cv::Mat& input, const std::vector<cv::Point2f>& align_d
   //   cout << align_dst[i] << endl;
   // }
 
-  cout << "\testimate rigid transform ...";
+  // cout << "\testimate rigid transform ...";
   cv::Mat R = cv::estimateRigidTransform(align_dst,align_src_,false);
-  cout << " end, R size: " << R.size() << endl;
+  // cout << " end, R size: " << R.size() << endl;
 
   if (R.empty()) {
     cout << "\tskip face alignment" << endl;
@@ -53,10 +53,10 @@ cv::Mat FaceAlign::Align(cv::Mat& input, const std::vector<cv::Point2f>& align_d
   // H.at<double>(2,1) = 0.0;
   // H.at<double>(2,2) = 1.0;
 
-  cout << "\twarp affine ...";
+  // cout << "\twarp affine ...";
   cv::warpAffine(input,warped,H,size);
   // cv::warpPerspective(input,warped,H,size);
-  cout << " end" << endl;
+  // cout << " end" << endl;
 
   return warped;
 }

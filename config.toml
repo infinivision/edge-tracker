@@ -1,0 +1,8 @@
+[global]
+detection_interval = 50
+
+[[camera]]
+ip = "192.168.150.244"
+username = "admin"
+password = "mcd12345678"
+

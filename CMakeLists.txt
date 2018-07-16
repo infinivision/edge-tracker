@@ -56,9 +56,16 @@ set_target_properties(main
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
 )
 
-add_executable(test_picture src/test_picture.cpp src/utils.cpp src/mtcnn.cpp src/face_align.cpp)
-target_link_libraries(test_picture ncnn ${OpenCV_LIBS} dlib::dlib)
-set_target_properties(test_picture
+add_executable(test-face-align src/test_face_align.cpp src/utils.cpp src/mtcnn.cpp src/face_align.cpp)
+target_link_libraries(test-face-align ncnn ${OpenCV_LIBS} dlib::dlib)
+set_target_properties(test-face-align
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+)
+
+add_executable(test-face-quality src/test_face_quality.cpp src/utils.cpp src/face_attr.cpp)
+target_link_libraries(test-face-quality ${OpenCV_LIBS} dlib::dlib)
+set_target_properties(test-face-quality
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
 )

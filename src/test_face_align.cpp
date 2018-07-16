@@ -8,7 +8,7 @@ using namespace std;
 
 int test_picture(int argc, char** argv) {
 	if(argc != 4) {
-		std::cout << "usage: test_picture <model_path> <image> <output_folder>" << std::endl;
+		std::cout << "usage: test_face_align <model_path> <image> <output_folder>" << std::endl;
 		exit(1); 
 	}
 
