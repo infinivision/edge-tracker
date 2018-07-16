@@ -20,23 +20,6 @@ using namespace cv;
 FaceAlign faceAlign = FaceAlign();
 
 /*
- * Get video capture from a camera index (0, 1) or an ip (192.168.1.15)
- */
-VideoCapture getCaptureFromIndexOrIp(const CameraConfig &camera) {
-    if ( camera.ip.empty()) {
-        // use camera index
-        cout << "camera index: " << camera.index << endl;
-        VideoCapture capture(camera.index);
-        return capture;
-    } else {
-        cout << "camera ip: " << camera.ip << endl;
-        string camera_stream = "rtsp://" + camera.username +  ":" + camera.password + "@" + camera.ip + ":554//Streaming/Channels/1";
-        VideoCapture capture(camera_stream);
-        return capture;
-    }
-}
-
-/*
  * Decide whether the detected face is same as the tracking one
  * 
  * return true when:
@@ -86,6 +69,7 @@ void saveFace(const Mat &frame, const Bbox &box, long faceId, string outputFolde
     output = outputFolder + "/" + to_string(faceId) + ".jpg";
     if ( imwrite(output, image) ) {
         cout << "\tsave face #" << faceId << " to " << output << endl;
+        cout << "\tmtcnn score: " << box.score << endl;
     } else {
         cout << "\tfail to save face #" << faceId << " to " << output << endl;
     }
@@ -116,7 +100,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
     fa.Load();
     FaceAlign align;
 
-    VideoCapture cap = getCaptureFromIndexOrIp(camera);
+    VideoCapture cap = camera.GetCapture();
     if (!cap.isOpened()) {
         cerr << "failed to open camera" << endl;
         return;
@@ -152,19 +136,24 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
             continue;
         }
 
+        Mat show_frame = frame.clone();
+
         // dlib::cv_image<dlib::bgr_pixel> cimg(frame);
 
+        cout << "frame #" << frameCounter << ", tracking faces: ";
         // update trackers
         for (int i = 0; i < trackers.size(); i++) {
             trackers[i]->update(frame, tracker_boxes[i]);
+            cout << "#" << trackers[i]->id << " ";
         }
+        cout << endl;
 
         // if (frameCounter % detectionFrameInterval == 0) {
         {
             // start face detection
             // auto timenow = chrono::system_clock::to_time_t(chrono::system_clock::now());
             // cout << "frame #" << frameCounter << ", tracking faces: " << trackers.size() << ", " << ctime(&timenow);
-            cout << "frame #" << frameCounter << ", tracking faces: " << trackers.size() << endl;
+
             Mat small_frame;
             bool resized = false;
             float resize_factor_x, resize_factor_y = 1;
@@ -222,7 +211,8 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
                         trackers.push_back(tracker);
                         tracker_boxes.push_back(detected_face);
                         selected_faces.push_back(box);
-                        selected_frames.push_back(frame);
+                        Mat cloned_frame = frame.clone();
+                        selected_frames.push_back(cloned_frame);
                         // calculate score of the selected face
                         Mat face(frame, detected_face);
                         double score = fa.GetVarianceOfLaplacianSharpness(face);
@@ -262,7 +252,8 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
                             if (score > scores[i]) {
                                 // select a better face
                                 cout << "\tupdate selected face, new score: " << score << endl;
-                                selected_frames[i] = frame;
+                                Mat cloned_frame = frame.clone();
+                                selected_frames[i] = cloned_frame;
                                 selected_faces[i] = box;
                                 scores[i] = score;
                             }
@@ -273,7 +264,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
 
                 if (!isFace) {
                     /* clean up tracker */
-                    cout << "\tstop tracking face #" << tracker->id << endl;
+                    cout << "\tstop tracking face #" << tracker->id << ", final score: " << scores[i] << endl;
                     saveFace(selected_frames[i], selected_faces[i], tracker->id, outputFolder);
 
                     trackers.erase(trackers.begin() + i);
@@ -281,18 +272,17 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
                     selected_faces.erase(selected_faces.begin() + i);
                     selected_frames.erase(selected_frames.begin() + i);
                     scores.erase(scores.begin() + i);
-                    i--;
                 }
 
                 // draw tracked face
-                rectangle( frame, tracker_box, Scalar( 255, 0, 0 ), 2, 1 );
+                rectangle( show_frame, tracker_box, Scalar( 255, 0, 0 ), 2, 1 );
                 // show face id
                 Point middleHighPoint = Point(tracker_box.x+tracker_box.width/2, tracker_box.y);
-                putText(frame, to_string(tracker->id), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
+                putText(show_frame, to_string(tracker->id), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
             }
         }
 
-        imshow("window", frame);
+        imshow("window", show_frame);
 
         frameCounter++;
 
@@ -301,33 +291,31 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
 
 int main(int argc, char* argv[]) {
 
-    string config_path = "config.toml";
-    string model_path = "models/ncnn";
-    string output_folder = "/Users/moon/Pictures/faces";
-    CameraConfig camera;
+    const String keys =
+        "{help h usage ? |                         | print this message   }"
+        "{model        |models/ncnn                | path to mtcnn model  }"
+        "{config       |config.toml                | camera config        }"
+        "{output       |/Users/moon/Pictures/faces | output folder        }"
+    ;
 
-    int res;
-
-    while ((res = getopt(argc,argv,"c:m:o:h")) != -1) {
-        switch (res) {
-            case 'c':
-                config_path = std::string(optarg);
-                break;
-            case 'm':
-                model_path = std::string(optarg);
-                break;
-            case 'o':
-                output_folder = std::string(optarg);
-                break;
-            case 'h':
-                cout << "usage: main -m <model_path> -c <config_file> -o <face_folder>" << endl;
-                exit(1);
-            default:
-                break;
-        }
+    CommandLineParser parser(argc, argv, keys);
+    parser.about("camera face detector");
+    if (parser.has("help")) {
+        parser.printMessage();
+        return 0;
     }
 
+    String config_path = parser.get<String>("config");
+    cout << "config path: " << config_path << endl;
 
+    String model_path = parser.get<String>("model");
+    String output_folder = parser.get<String>("output");
+    if (!parser.check()) {
+        parser.printErrors();
+        return 0;
+    }
+
+    CameraConfig camera;
     try {
         std::shared_ptr<cpptoml::table> g = cpptoml::parse_file(config_path);
 
@@ -345,14 +333,14 @@ int main(int argc, char* argv[]) {
         }
     }
     catch (const cpptoml::parse_exception& e) {
-        std::cerr << "Failed to parse " << "config.toml" << ": " << e.what() << std::endl;
+        std::cerr << "Failed to parse " << config_path << ": " << e.what() << std::endl;
         return 1;
     }
 
     output_folder += "/" + camera.identity();
 
     string cmd = "mkdir -p " + output_folder + "/original";
-    const int dir_err = system(cmd.c_str());
+    int dir_err = system(cmd.c_str());
     if (-1 == dir_err) {
         printf("Error creating directory!n");
         exit(1);
