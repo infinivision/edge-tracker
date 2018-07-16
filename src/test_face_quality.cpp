@@ -39,12 +39,7 @@ int test_picture(string imagepath) {
     std::cout << "Image quality: " << quality << ", time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms" << std::endl;
 
     gettimeofday(&tv1,&tz1);
-    double blur = fa.GetNormOfDerivativesBlurriness(gray);
-    gettimeofday(&tv2,&tz2);
-    std::cout << "Blur (norm of derivatives): " << blur << ", time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms" << std::endl;
-
-    gettimeofday(&tv1,&tz1);
-    blur = fa.GetVarianceOfLaplacianSharpness(gray);
+    double blur = fa.GetVarianceOfLaplacianSharpness(gray);
     gettimeofday(&tv2,&tz2);
     std::cout << "Blur (variance of laplacian): " << blur << ", time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms" << std::endl;
 
