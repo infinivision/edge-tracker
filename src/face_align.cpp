@@ -4,6 +4,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/video/tracking.hpp>
 #include <face_align.h>
+#include <glog/logging.h>
 
 using namespace std;
 
@@ -33,7 +34,7 @@ cv::Mat FaceAlign::Align(const cv::Mat& input, const std::vector<cv::Point2f>& a
   // cout << " end, R size: " << R.size() << endl;
 
   if (R.empty()) {
-    cout << "\tskip face alignment" << endl;
+    LOG(INFO) << "\tskip face alignment" << endl;
     return warped;
   }
 

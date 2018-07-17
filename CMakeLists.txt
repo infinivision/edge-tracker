@@ -48,7 +48,7 @@ link_directories(
 )
 
 add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp)
-target_link_libraries(main ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f dlib::dlib)
+target_link_libraries(main ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f dlib::dlib glog)
 set_target_properties(main
         PROPERTIES 
 #        ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
@@ -57,7 +57,7 @@ set_target_properties(main
 )
 
 add_executable(test-face-align src/test_face_align.cpp src/utils.cpp src/mtcnn.cpp src/face_align.cpp)
-target_link_libraries(test-face-align ncnn ${OpenCV_LIBS} dlib::dlib)
+target_link_libraries(test-face-align ncnn ${OpenCV_LIBS} dlib::dlib glog)
 set_target_properties(test-face-align
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
@@ -71,7 +71,7 @@ set_target_properties(test-face-quality
 )
 
 add_executable(test_video src/test_video.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp)
-target_link_libraries(test_video ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f dlib::dlib)
+target_link_libraries(test_video ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f dlib::dlib glog)
 set_target_properties(test_video
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"

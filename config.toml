@@ -1,7 +1,8 @@
 [[camera]]
-  ip = "192.168.150.244"
+  ip = "192.168.150.243"
   username = "admin"
   password = "mcd12345678"
-  resize_rows = 480
-  resize_cols = 848
+  resize_rows = 0
+  resize_cols = 0
+  detection_period = 10
 
