@@ -11,6 +11,7 @@
 #include "face_attr.h"
 #include "face_align.h"
 #include <glog/logging.h>
+#include <thread>
 
 #define QUIT_KEY 'q'
 
@@ -77,8 +78,28 @@ void saveFace(const Mat &frame, const Bbox &box, long faceId, string outputFolde
     imshow("output", image);
 }
 
-// void test_video(const string model_path, const CameraConfig &camera, int detectionFrameInterval, string outputFolder) {
-void test_video(const string model_path, const CameraConfig &camera, string outputFolder) {
+// prepare (clean output folder), output_folder argument will be changed!
+void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
+    output_folder += "/" + camera.identity();
+
+    string cmd = "mkdir -p " + output_folder + "/original";
+    int dir_err = system(cmd.c_str());
+    if (-1 == dir_err) {
+        LOG(ERROR) << "Error creating directory";
+        exit(1);
+    }
+
+    cmd = "rm -f " + output_folder + "/*";
+    system(cmd.c_str());
+    cmd = "rm -f " + output_folder + "/original/*";
+    system(cmd.c_str());
+}
+
+void process_camera(const string model_path, const CameraConfig &camera, string output_folder) {
+
+    cout << "processing camera: " << camera.identity() << endl;
+
+    prepare_output_folder(camera, output_folder);
     
     MTCNN mm(model_path);
     FaceAttr fa;
@@ -111,7 +132,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
     TrackerKCF::Params kcf_param;
     kcf_param.read(fs.root());
 
-    namedWindow("window", WINDOW_NORMAL);
+    // namedWindow("window", WINDOW_NORMAL);
 
     do {
         detected_bounding_boxes.clear();
@@ -199,9 +220,6 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
                         double score = fa.GetVarianceOfLaplacianSharpness(face);
                         scores.push_back(score);
                         LOG(INFO) << "\tstart tracking face #" << tracker->id << ", score: " << score;
-
-                        // save face now when tracker is lost
-                        // saveFace(frame, box, faceId, outputFolder);
                         
                         faceId++;
                     } else {
@@ -249,7 +267,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
                 if (!isFace) {
                     /* clean up tracker */
                     LOG(INFO) << "\tstop tracking face #" << tracker->id << ", final score: " << scores[i];
-                    saveFace(selected_frames[i], selected_faces[i], tracker->id, outputFolder);
+                    saveFace(selected_frames[i], selected_faces[i], tracker->id, output_folder);
 
                     trackers.erase(trackers.begin() + i);
                     tracker_boxes.erase(tracker_boxes.begin() + i);
@@ -262,19 +280,20 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
             }
 
             // draw tracked face
-            rectangle( show_frame, tracker_box, Scalar( 255, 0, 0 ), 2, 1 );
+            // rectangle( show_frame, tracker_box, Scalar( 255, 0, 0 ), 2, 1 );
             // show face id
-            Point middleHighPoint = Point(tracker_box.x+tracker_box.width/2, tracker_box.y);
-            putText(show_frame, to_string(tracker->id), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
+            // Point middleHighPoint = Point(tracker_box.x+tracker_box.width/2, tracker_box.y);
+            // putText(show_frame, to_string(tracker->id), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
         }
 
-        imshow("window", show_frame);
+        // imshow("window", show_frame);
 
         frameCounter++;
 
         google::FlushLogFiles(google::GLOG_INFO);
 
-    } while (QUIT_KEY != waitKey(1));
+    } while (true);
+    // } while (QUIT_KEY != waitKey(1));
 }
 
 int main(int argc, char* argv[]) {
@@ -305,24 +324,18 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    CameraConfig camera(config_path);
+    vector<CameraConfig> cameras = LoadCameraConfig(config_path);
 
-    LOG(INFO) << "detection period: " << camera.detection_period;
+    // LOG(INFO) << "detection period: " << camera.detection_period;
 
-    output_folder += "/" + camera.identity();
-
-    string cmd = "mkdir -p " + output_folder + "/original";
-    int dir_err = system(cmd.c_str());
-    if (-1 == dir_err) {
-        LOG(ERROR) << "Error creating directory";
-        exit(1);
+    for (CameraConfig camera: cameras) {
+        // start processing video
+        thread t {process_camera, model_path, camera, output_folder};
+        t.detach();
     }
 
-    cmd = "rm -f " + output_folder + "/*";
-    system(cmd.c_str());
-    cmd = "rm -f " + output_folder + "/original/*";
-    system(cmd.c_str());
+    while(true) {
+        std::this_thread::sleep_for(chrono::seconds(1));
+    }
 
-    // start processing video
-    test_video(model_path, camera, output_folder);
 }
