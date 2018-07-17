@@ -3,6 +3,7 @@
 
 #include "cpptoml.h"
 #include <opencv2/opencv.hpp>
+#include <glog/logging.h>
 
 class CameraConfig {
 
@@ -63,11 +64,11 @@ public:
     inline cv::VideoCapture GetCapture() const {
         if ( this->ip.empty()) {
             // use camera index
-            std::cout << "camera index: " << this->index << std::endl;
+            LOG(INFO) << "camera index: " << this->index;
             cv::VideoCapture capture(this->index);
             return capture;
         } else {
-            std::cout << "camera ip: " << this->ip << std::endl;
+            LOG(INFO) << "camera ip: " << this->ip << std::endl;
             std::string camera_stream = "rtsp://" + this->username +  ":" + this->password + "@" + this->ip + ":554//Streaming/Channels/1";
             cv::VideoCapture capture(camera_stream);
             return capture;

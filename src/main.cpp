@@ -10,6 +10,7 @@
 #include "utils.h"
 #include "face_attr.h"
 #include "face_align.h"
+#include <glog/logging.h>
 
 #define QUIT_KEY 'q'
 
@@ -67,10 +68,10 @@ void saveFace(const Mat &frame, const Bbox &box, long faceId, string outputFolde
 
     output = outputFolder + "/" + to_string(faceId) + ".jpg";
     if ( imwrite(output, image) ) {
-        cout << "\tsave face #" << faceId << " to " << output << endl;
-        cout << "\tmtcnn score: " << box.score << endl;
+        LOG(INFO) << "\tsave face #" << faceId << " to " << output;
+        LOG(INFO) << "\tmtcnn score: " << box.score;
     } else {
-        cout << "\tfail to save face #" << faceId << " to " << output << endl;
+        LOG(INFO) << "\tfail to save face #" << faceId << " to " << output;
     }
 
     imshow("output", image);
@@ -123,13 +124,13 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
 
         Mat show_frame = frame.clone();
 
-        cout << "frame #" << frameCounter << ", tracking faces: ";
+        string log = "frame #" + to_string(frameCounter) + ", tracking faces: ";
         // update trackers
         for (int i = 0; i < trackers.size(); i++) {
             trackers[i]->update(frame, tracker_boxes[i]);
-            cout << "#" << trackers[i]->id << " ";
+            log += "#" + to_string(trackers[i]->id) + " ";
         }
-        cout << endl;
+        LOG(INFO) << log;
 
         if (frameCounter % camera.detection_period == 0)
         {
@@ -143,7 +144,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
                 gettimeofday(&tv1,&tz1);
                 resize(frame, small_frame, Size(camera.resize_cols, camera.resize_rows), 0, 0, INTER_NEAREST);
                 gettimeofday(&tv2,&tz2);
-                cout << "\tresize to (" << camera.resize_cols << " * " << camera.resize_rows << "), time eclipsed: " << getElapse(&tv1, &tv2) << " ms" << endl;
+                LOG(INFO) << "\tresize to (" << camera.resize_cols << " * " << camera.resize_rows << "), time eclipsed: " << getElapse(&tv1, &tv2) << " ms";
                 resized = true;
                 resize_factor_x = (float)frame.cols / camera.resize_cols;
                 resize_factor_y = (float)frame.rows / camera.resize_rows;
@@ -197,7 +198,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
                         Mat face(frame, detected_face);
                         double score = fa.GetVarianceOfLaplacianSharpness(face);
                         scores.push_back(score);
-                        cout << "\tstart tracking face #" << tracker->id << ", score: " << score << endl;
+                        LOG(INFO) << "\tstart tracking face #" << tracker->id << ", score: " << score;
 
                         // save face now when tracker is lost
                         // saveFace(frame, box, faceId, outputFolder);
@@ -211,7 +212,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
                 }
             }
 
-            cout << "\tdetected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms" << endl;
+            LOG(INFO) << "\tdetected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms";
         }
 
         // clean up trackers if the tracker doesn't follow a face
@@ -234,7 +235,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
                             double score = fa.GetVarianceOfLaplacianSharpness(face);
                             if (score > scores[i]) {
                                 // select a better face
-                                cout << "\tupdate selected face, new score: " << score << endl;
+                                LOG(INFO) << "\tupdate selected face, new score: " << score;
                                 Mat cloned_frame = frame.clone();
                                 selected_frames[i] = cloned_frame;
                                 selected_faces[i] = box;
@@ -247,7 +248,7 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
 
                 if (!isFace) {
                     /* clean up tracker */
-                    cout << "\tstop tracking face #" << tracker->id << ", final score: " << scores[i] << endl;
+                    LOG(INFO) << "\tstop tracking face #" << tracker->id << ", final score: " << scores[i];
                     saveFace(selected_frames[i], selected_faces[i], tracker->id, outputFolder);
 
                     trackers.erase(trackers.begin() + i);
@@ -271,10 +272,14 @@ void test_video(const string model_path, const CameraConfig &camera, string outp
 
         frameCounter++;
 
+        google::FlushLogFiles(google::GLOG_INFO);
+
     } while (QUIT_KEY != waitKey(1));
 }
 
 int main(int argc, char* argv[]) {
+
+    google::InitGoogleLogging(argv[0]);
 
     const String keys =
         "{help h usage ? |                         | print this message   }"
@@ -291,7 +296,7 @@ int main(int argc, char* argv[]) {
     }
 
     String config_path = parser.get<String>("config");
-    cout << "config path: " << config_path << endl;
+    LOG(INFO) << "config path: " << config_path;
 
     String model_path = parser.get<String>("model");
     String output_folder = parser.get<String>("output");
@@ -302,14 +307,14 @@ int main(int argc, char* argv[]) {
 
     CameraConfig camera(config_path);
 
-    cout << "detection period: " << camera.detection_period << endl;
+    LOG(INFO) << "detection period: " << camera.detection_period;
 
     output_folder += "/" + camera.identity();
 
     string cmd = "mkdir -p " + output_folder + "/original";
     int dir_err = system(cmd.c_str());
     if (-1 == dir_err) {
-        printf("Error creating directory!n");
+        LOG(ERROR) << "Error creating directory";
         exit(1);
     }
 

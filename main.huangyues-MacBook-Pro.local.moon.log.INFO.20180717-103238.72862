@@ -1,0 +1,2234 @@
+Log file created at: 2018/07/17 10:32:38
+Running on machine: huangyues-MacBook-Pro.local
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0717 10:32:38.700541 2462495616 main.cpp:300] config path: local-camera.toml
+I0717 10:32:38.701411 2462495616 main.cpp:312] detection period: 1
+I0717 10:32:40.218227 2462495616 main.cpp:133] frame #0, tracking faces: 
+I0717 10:32:40.313328 2462495616 main.cpp:201] 	start tracking face #0, score: 23.0924
+I0717 10:32:40.313354 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.132 ms
+I0717 10:32:40.453028 2462495616 main.cpp:133] frame #1, tracking faces: #0 
+I0717 10:32:40.534106 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.992 ms
+I0717 10:32:40.619298 2462495616 main.cpp:133] frame #2, tracking faces: #0 
+I0717 10:32:40.689013 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.935 ms
+I0717 10:32:40.751171 2462495616 main.cpp:133] frame #3, tracking faces: #0 
+I0717 10:32:40.823283 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.698 ms
+I0717 10:32:40.884848 2462495616 main.cpp:133] frame #4, tracking faces: #0 
+I0717 10:32:40.957466 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.136 ms
+I0717 10:32:41.018913 2462495616 main.cpp:133] frame #5, tracking faces: #0 
+I0717 10:32:41.087056 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.606 ms
+I0717 10:32:41.154980 2462495616 main.cpp:133] frame #6, tracking faces: #0 
+I0717 10:32:41.227072 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.691 ms
+I0717 10:32:41.288655 2462495616 main.cpp:133] frame #7, tracking faces: #0 
+I0717 10:32:41.360640 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.588 ms
+I0717 10:32:41.425755 2462495616 main.cpp:133] frame #8, tracking faces: #0 
+I0717 10:32:41.495553 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.166 ms
+I0717 10:32:41.559676 2462495616 main.cpp:133] frame #9, tracking faces: #0 
+I0717 10:32:41.632699 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.297 ms
+I0717 10:32:41.726267 2462495616 main.cpp:133] frame #10, tracking faces: #0 
+I0717 10:32:41.797755 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.929 ms
+I0717 10:32:41.858685 2462495616 main.cpp:133] frame #11, tracking faces: #0 
+I0717 10:32:41.929065 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.587 ms
+I0717 10:32:41.994107 2462495616 main.cpp:133] frame #12, tracking faces: #0 
+I0717 10:32:42.064801 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.046 ms
+I0717 10:32:42.126206 2462495616 main.cpp:133] frame #13, tracking faces: #0 
+I0717 10:32:42.209386 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.533 ms
+I0717 10:32:42.294556 2462495616 main.cpp:133] frame #14, tracking faces: #0 
+I0717 10:32:42.370779 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.492 ms
+I0717 10:32:42.460760 2462495616 main.cpp:133] frame #15, tracking faces: #0 
+I0717 10:32:42.534139 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.689 ms
+I0717 10:32:42.627996 2462495616 main.cpp:133] frame #16, tracking faces: #0 
+I0717 10:32:42.697676 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.998 ms
+I0717 10:32:42.761266 2462495616 main.cpp:133] frame #17, tracking faces: #0 
+I0717 10:32:42.847672 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.751 ms
+I0717 10:32:42.928715 2462495616 main.cpp:133] frame #18, tracking faces: #0 
+I0717 10:32:43.015413 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.95 ms
+I0717 10:32:43.093974 2462495616 main.cpp:133] frame #19, tracking faces: #0 
+I0717 10:32:43.180071 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.385 ms
+I0717 10:32:43.262080 2462495616 main.cpp:133] frame #20, tracking faces: #0 
+I0717 10:32:43.320972 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 55.191 ms
+I0717 10:32:43.395431 2462495616 main.cpp:133] frame #21, tracking faces: #0 
+I0717 10:32:43.463572 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.479 ms
+I0717 10:32:43.528872 2462495616 main.cpp:133] frame #22, tracking faces: #0 
+I0717 10:32:43.606043 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.744 ms
+I0717 10:32:43.695179 2462495616 main.cpp:133] frame #23, tracking faces: #0 
+I0717 10:32:43.753329 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 54.483 ms
+I0717 10:32:43.826774 2462495616 main.cpp:133] frame #24, tracking faces: #0 
+I0717 10:32:43.908974 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.63 ms
+I0717 10:32:43.993878 2462495616 main.cpp:133] frame #25, tracking faces: #0 
+I0717 10:32:44.071138 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.667 ms
+I0717 10:32:44.162533 2462495616 main.cpp:133] frame #26, tracking faces: #0 
+I0717 10:32:44.232879 2462495616 main.cpp:201] 	start tracking face #1, score: 16.2872
+I0717 10:32:44.233041 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 66.148 ms
+I0717 10:32:44.294673 2462495616 main.cpp:133] frame #27, tracking faces: #0 #1 
+I0717 10:32:44.360877 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.599 ms
+I0717 10:32:44.362143 2462495616 main.cpp:251] 	stop tracking face #1, final score: 16.2872
+I0717 10:32:44.367086 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:32:44.461294 2462495616 main.cpp:133] frame #28, tracking faces: #0 
+I0717 10:32:44.532191 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.212 ms
+I0717 10:32:44.596339 2462495616 main.cpp:133] frame #29, tracking faces: #0 
+I0717 10:32:44.685561 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.616 ms
+I0717 10:32:44.761947 2462495616 main.cpp:133] frame #30, tracking faces: #0 
+I0717 10:32:44.855015 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 87.799 ms
+I0717 10:32:44.929745 2462495616 main.cpp:133] frame #31, tracking faces: #0 
+I0717 10:32:44.997078 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.035 ms
+I0717 10:32:45.059926 2462495616 main.cpp:133] frame #32, tracking faces: #0 
+I0717 10:32:45.125269 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.048 ms
+I0717 10:32:45.195127 2462495616 main.cpp:133] frame #33, tracking faces: #0 
+I0717 10:32:45.269803 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.31 ms
+I0717 10:32:45.358825 2462495616 main.cpp:133] frame #34, tracking faces: #0 
+I0717 10:32:45.435267 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.139 ms
+I0717 10:32:45.521572 2462495616 main.cpp:133] frame #35, tracking faces: #0 
+I0717 10:32:45.606142 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.692 ms
+I0717 10:32:45.698956 2462495616 main.cpp:133] frame #36, tracking faces: #0 
+I0717 10:32:45.820335 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 117.828 ms
+I0717 10:32:45.896780 2462495616 main.cpp:133] frame #37, tracking faces: #0 
+I0717 10:32:46.000820 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 100.239 ms
+I0717 10:32:46.071641 2462495616 main.cpp:133] frame #38, tracking faces: #0 
+I0717 10:32:46.162050 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.903 ms
+I0717 10:32:46.226691 2462495616 main.cpp:133] frame #39, tracking faces: #0 
+I0717 10:32:46.320209 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.032 ms
+I0717 10:32:46.398058 2462495616 main.cpp:133] frame #40, tracking faces: #0 
+I0717 10:32:46.475610 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.039 ms
+I0717 10:32:46.566488 2462495616 main.cpp:133] frame #41, tracking faces: #0 
+I0717 10:32:46.635521 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.598 ms
+I0717 10:32:46.699481 2462495616 main.cpp:133] frame #42, tracking faces: #0 
+I0717 10:32:46.778192 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.271 ms
+I0717 10:32:46.909154 2462495616 main.cpp:133] frame #43, tracking faces: #0 
+I0717 10:32:46.983168 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.524 ms
+I0717 10:32:47.062139 2462495616 main.cpp:133] frame #44, tracking faces: #0 
+I0717 10:32:47.137279 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.749 ms
+I0717 10:32:47.227774 2462495616 main.cpp:133] frame #45, tracking faces: #0 
+I0717 10:32:47.316932 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.365 ms
+I0717 10:32:47.395503 2462495616 main.cpp:133] frame #46, tracking faces: #0 
+I0717 10:32:47.485481 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.447 ms
+I0717 10:32:47.561933 2462495616 main.cpp:133] frame #47, tracking faces: #0 
+I0717 10:32:47.633769 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.282 ms
+I0717 10:32:47.728066 2462495616 main.cpp:133] frame #48, tracking faces: #0 
+I0717 10:32:47.804581 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.985 ms
+I0717 10:32:47.906520 2462495616 main.cpp:133] frame #49, tracking faces: #0 
+I0717 10:32:47.992125 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.981 ms
+I0717 10:32:48.061691 2462495616 main.cpp:133] frame #50, tracking faces: #0 
+I0717 10:32:48.128091 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.973 ms
+I0717 10:32:48.199734 2462495616 main.cpp:133] frame #51, tracking faces: #0 
+I0717 10:32:48.285850 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.689 ms
+I0717 10:32:48.367162 2462495616 main.cpp:133] frame #52, tracking faces: #0 
+I0717 10:32:48.454967 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.988 ms
+I0717 10:32:48.532148 2462495616 main.cpp:133] frame #53, tracking faces: #0 
+I0717 10:32:48.618752 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.854 ms
+I0717 10:32:48.699537 2462495616 main.cpp:133] frame #54, tracking faces: #0 
+I0717 10:32:48.793571 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 87.756 ms
+I0717 10:32:48.866729 2462495616 main.cpp:133] frame #55, tracking faces: #0 
+I0717 10:32:48.959240 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.077 ms
+I0717 10:32:49.031721 2462495616 main.cpp:133] frame #56, tracking faces: #0 
+I0717 10:32:49.120141 2462495616 main.cpp:201] 	start tracking face #2, score: 14.7897
+I0717 10:32:49.120306 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 82.179 ms
+I0717 10:32:49.198490 2462495616 main.cpp:133] frame #57, tracking faces: #0 #2 
+I0717 10:32:49.289957 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.195 ms
+I0717 10:32:49.291085 2462495616 main.cpp:251] 	stop tracking face #2, final score: 14.7897
+I0717 10:32:49.292244 2462495616 main.cpp:71] 	save face #2 to /Users/moon/Pictures/faces/0/2.jpg
+I0717 10:32:49.292254 2462495616 main.cpp:72] 	mtcnn score: 0.815359
+I0717 10:32:49.365957 2462495616 main.cpp:133] frame #58, tracking faces: #0 
+I0717 10:32:49.436625 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.862 ms
+I0717 10:32:49.498222 2462495616 main.cpp:133] frame #59, tracking faces: #0 
+I0717 10:32:49.578513 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.492 ms
+I0717 10:32:49.668012 2462495616 main.cpp:133] frame #60, tracking faces: #0 
+I0717 10:32:49.753465 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.77 ms
+I0717 10:32:49.832657 2462495616 main.cpp:133] frame #61, tracking faces: #0 
+I0717 10:32:49.919854 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.522 ms
+I0717 10:32:50.001678 2462495616 main.cpp:133] frame #62, tracking faces: #0 
+I0717 10:32:50.094780 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.371 ms
+I0717 10:32:50.170104 2462495616 main.cpp:133] frame #63, tracking faces: #0 
+I0717 10:32:50.255681 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.274 ms
+I0717 10:32:50.332984 2462495616 main.cpp:133] frame #64, tracking faces: #0 
+I0717 10:32:50.419122 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.588 ms
+I0717 10:32:50.499897 2462495616 main.cpp:133] frame #65, tracking faces: #0 
+I0717 10:32:50.588165 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.437 ms
+I0717 10:32:50.670629 2462495616 main.cpp:133] frame #66, tracking faces: #0 
+I0717 10:32:50.748970 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.787 ms
+I0717 10:32:50.833869 2462495616 main.cpp:133] frame #67, tracking faces: #0 
+I0717 10:32:50.922842 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.426 ms
+I0717 10:32:51.000247 2462495616 main.cpp:133] frame #68, tracking faces: #0 
+I0717 10:32:51.098258 2462495616 main.cpp:201] 	start tracking face #3, score: 16.4906
+I0717 10:32:51.098397 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 88.118 ms
+I0717 10:32:51.165454 2462495616 main.cpp:133] frame #69, tracking faces: #0 #3 
+I0717 10:32:51.256214 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.201 ms
+I0717 10:32:51.257215 2462495616 main.cpp:251] 	stop tracking face #3, final score: 16.4906
+I0717 10:32:51.258291 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:32:51.329501 2462495616 main.cpp:133] frame #70, tracking faces: #0 
+I0717 10:32:51.395541 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.744 ms
+I0717 10:32:51.463038 2462495616 main.cpp:133] frame #71, tracking faces: #0 
+I0717 10:32:51.544778 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.461 ms
+I0717 10:32:51.604662 2462495616 main.cpp:133] frame #72, tracking faces: #0 
+I0717 10:32:51.684909 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.955 ms
+I0717 10:32:51.765512 2462495616 main.cpp:133] frame #73, tracking faces: #0 
+I0717 10:32:51.843750 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.575 ms
+I0717 10:32:51.938957 2462495616 main.cpp:133] frame #74, tracking faces: #0 
+I0717 10:32:52.008699 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.106 ms
+I0717 10:32:52.096493 2462495616 main.cpp:133] frame #75, tracking faces: #0 
+I0717 10:32:52.177511 2462495616 main.cpp:201] 	start tracking face #4, score: 16.5389
+I0717 10:32:52.177657 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 75.482 ms
+I0717 10:32:52.262601 2462495616 main.cpp:133] frame #76, tracking faces: #0 #4 
+I0717 10:32:52.340881 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.606 ms
+I0717 10:32:52.342365 2462495616 main.cpp:251] 	stop tracking face #4, final score: 16.5389
+I0717 10:32:52.343444 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:32:52.442157 2462495616 main.cpp:133] frame #77, tracking faces: #0 
+I0717 10:32:52.508838 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.932 ms
+I0717 10:32:52.610496 2462495616 main.cpp:133] frame #78, tracking faces: #0 
+I0717 10:32:52.694335 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.391 ms
+I0717 10:32:52.767093 2462495616 main.cpp:133] frame #79, tracking faces: #0 
+I0717 10:32:52.858566 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 87.268 ms
+I0717 10:32:52.944389 2462495616 main.cpp:133] frame #80, tracking faces: #0 
+I0717 10:32:53.019726 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.116 ms
+I0717 10:32:53.110571 2462495616 main.cpp:133] frame #81, tracking faces: #0 
+I0717 10:32:53.185075 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.257 ms
+I0717 10:32:53.262189 2462495616 main.cpp:133] frame #82, tracking faces: #0 
+I0717 10:32:53.345307 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.023 ms
+I0717 10:32:53.442538 2462495616 main.cpp:133] frame #83, tracking faces: #0 
+I0717 10:32:53.524371 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.646 ms
+I0717 10:32:53.607132 2462495616 main.cpp:133] frame #84, tracking faces: #0 
+I0717 10:32:53.690846 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.29 ms
+I0717 10:32:53.780367 2462495616 main.cpp:133] frame #85, tracking faces: #0 
+I0717 10:32:53.863037 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.222 ms
+I0717 10:32:53.936566 2462495616 main.cpp:133] frame #86, tracking faces: #0 
+I0717 10:32:54.015699 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.596 ms
+I0717 10:32:54.105942 2462495616 main.cpp:133] frame #87, tracking faces: #0 
+I0717 10:32:54.197357 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 87.86 ms
+I0717 10:32:54.262975 2462495616 main.cpp:133] frame #88, tracking faces: #0 
+I0717 10:32:54.339242 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.779 ms
+I0717 10:32:54.431854 2462495616 main.cpp:133] frame #89, tracking faces: #0 
+I0717 10:32:54.515094 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.636 ms
+I0717 10:32:54.599545 2462495616 main.cpp:133] frame #90, tracking faces: #0 
+I0717 10:32:54.678268 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.037 ms
+I0717 10:32:54.767001 2462495616 main.cpp:133] frame #91, tracking faces: #0 
+I0717 10:32:54.856889 2462495616 main.cpp:201] 	start tracking face #5, score: 18.705
+I0717 10:32:54.857072 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 85.592 ms
+I0717 10:32:54.932814 2462495616 main.cpp:133] frame #92, tracking faces: #0 #5 
+I0717 10:32:55.034796 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 98.326 ms
+I0717 10:32:55.035898 2462495616 main.cpp:251] 	stop tracking face #5, final score: 18.705
+I0717 10:32:55.036993 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:32:55.099136 2462495616 main.cpp:133] frame #93, tracking faces: #0 
+I0717 10:32:55.181480 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.492 ms
+I0717 10:32:55.278218 2462495616 main.cpp:133] frame #94, tracking faces: #0 
+I0717 10:32:55.343699 2462495616 main.cpp:201] 	start tracking face #6, score: 17.0632
+I0717 10:32:55.343847 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 61.446 ms
+I0717 10:32:55.448119 2462495616 main.cpp:133] frame #95, tracking faces: #0 #6 
+I0717 10:32:55.528291 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 76.63 ms
+I0717 10:32:55.529362 2462495616 main.cpp:238] 	update selected face, new score: 19.5762
+I0717 10:32:55.605347 2462495616 main.cpp:133] frame #96, tracking faces: #0 #6 
+I0717 10:32:55.692152 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 83.398 ms
+I0717 10:32:55.693431 2462495616 main.cpp:238] 	update selected face, new score: 21.1982
+I0717 10:32:55.772291 2462495616 main.cpp:133] frame #97, tracking faces: #0 #6 
+I0717 10:32:55.853126 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 77.465 ms
+I0717 10:32:55.939744 2462495616 main.cpp:133] frame #98, tracking faces: #0 #6 
+I0717 10:32:56.024709 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.42 ms
+I0717 10:32:56.025787 2462495616 main.cpp:251] 	stop tracking face #6, final score: 21.1982
+I0717 10:32:56.026811 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:32:56.106068 2462495616 main.cpp:133] frame #99, tracking faces: #0 
+I0717 10:32:56.205757 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 96.169 ms
+I0717 10:32:56.272608 2462495616 main.cpp:133] frame #100, tracking faces: #0 
+I0717 10:32:56.357894 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.596 ms
+I0717 10:32:56.447237 2462495616 main.cpp:133] frame #101, tracking faces: #0 
+I0717 10:32:56.526540 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.999 ms
+I0717 10:32:56.610625 2462495616 main.cpp:133] frame #102, tracking faces: #0 
+I0717 10:32:56.699291 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.596 ms
+I0717 10:32:56.777493 2462495616 main.cpp:133] frame #103, tracking faces: #0 
+I0717 10:32:56.868453 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.681 ms
+I0717 10:32:56.943842 2462495616 main.cpp:133] frame #104, tracking faces: #0 
+I0717 10:32:57.019764 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.856 ms
+I0717 10:32:57.114102 2462495616 main.cpp:133] frame #105, tracking faces: #0 
+I0717 10:32:57.194372 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.967 ms
+I0717 10:32:57.277745 2462495616 main.cpp:133] frame #106, tracking faces: #0 
+I0717 10:32:57.375627 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 93.241 ms
+I0717 10:32:57.476683 2462495616 main.cpp:133] frame #107, tracking faces: #0 
+I0717 10:32:57.541965 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.899 ms
+I0717 10:32:57.610807 2462495616 main.cpp:133] frame #108, tracking faces: #0 
+I0717 10:32:57.700112 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.926 ms
+I0717 10:32:57.775210 2462495616 main.cpp:133] frame #109, tracking faces: #0 
+I0717 10:32:57.863114 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.521 ms
+I0717 10:32:57.943192 2462495616 main.cpp:133] frame #110, tracking faces: #0 
+I0717 10:32:58.018929 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.359 ms
+I0717 10:32:58.109819 2462495616 main.cpp:133] frame #111, tracking faces: #0 
+I0717 10:32:58.172844 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 59.643 ms
+I0717 10:32:58.243485 2462495616 main.cpp:133] frame #112, tracking faces: #0 
+I0717 10:32:58.315935 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.807 ms
+I0717 10:32:58.376364 2462495616 main.cpp:133] frame #113, tracking faces: #0 
+I0717 10:32:58.448118 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.317 ms
+I0717 10:32:58.543323 2462495616 main.cpp:133] frame #114, tracking faces: #0 
+I0717 10:32:58.618562 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.89 ms
+I0717 10:32:58.707131 2462495616 main.cpp:133] frame #115, tracking faces: #0 
+I0717 10:32:58.793079 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.592 ms
+I0717 10:32:58.874792 2462495616 main.cpp:133] frame #116, tracking faces: #0 
+I0717 10:32:58.945884 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.931 ms
+I0717 10:32:59.008844 2462495616 main.cpp:133] frame #117, tracking faces: #0 
+I0717 10:32:59.087695 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.591 ms
+I0717 10:32:59.181493 2462495616 main.cpp:133] frame #118, tracking faces: #0 
+I0717 10:32:59.251108 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.751 ms
+I0717 10:32:59.343293 2462495616 main.cpp:133] frame #119, tracking faces: #0 
+I0717 10:32:59.422508 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.271 ms
+I0717 10:32:59.508066 2462495616 main.cpp:133] frame #120, tracking faces: #0 
+I0717 10:32:59.585222 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.829 ms
+I0717 10:32:59.687327 2462495616 main.cpp:133] frame #121, tracking faces: #0 
+I0717 10:32:59.764077 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.798 ms
+I0717 10:32:59.841513 2462495616 main.cpp:133] frame #122, tracking faces: #0 
+I0717 10:32:59.917475 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.435 ms
+I0717 10:33:00.009613 2462495616 main.cpp:133] frame #123, tracking faces: #0 
+I0717 10:33:00.096580 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.454 ms
+I0717 10:33:00.174206 2462495616 main.cpp:133] frame #124, tracking faces: #0 
+I0717 10:33:00.243053 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.415 ms
+I0717 10:33:00.306327 2462495616 main.cpp:133] frame #125, tracking faces: #0 
+I0717 10:33:00.395606 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.173 ms
+I0717 10:33:00.474170 2462495616 main.cpp:133] frame #126, tracking faces: #0 
+I0717 10:33:00.549640 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.942 ms
+I0717 10:33:00.641752 2462495616 main.cpp:133] frame #127, tracking faces: #0 
+I0717 10:33:00.728476 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.224 ms
+I0717 10:33:00.811552 2462495616 main.cpp:133] frame #128, tracking faces: #0 
+I0717 10:33:00.883080 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.24 ms
+I0717 10:33:00.955405 2462495616 main.cpp:133] frame #129, tracking faces: #0 
+I0717 10:33:01.031216 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.244 ms
+I0717 10:33:01.112062 2462495616 main.cpp:133] frame #130, tracking faces: #0 
+I0717 10:33:01.184938 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.416 ms
+I0717 10:33:01.289047 2462495616 main.cpp:133] frame #131, tracking faces: #0 
+I0717 10:33:01.374651 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.137 ms
+I0717 10:33:01.441555 2462495616 main.cpp:133] frame #132, tracking faces: #0 
+I0717 10:33:01.529351 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.158 ms
+I0717 10:33:01.612087 2462495616 main.cpp:133] frame #133, tracking faces: #0 
+I0717 10:33:01.710741 2462495616 main.cpp:201] 	start tracking face #7, score: 13.3321
+I0717 10:33:01.710898 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 93.687 ms
+I0717 10:33:01.775512 2462495616 main.cpp:133] frame #134, tracking faces: #0 #7 
+I0717 10:33:01.846297 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.863 ms
+I0717 10:33:01.847371 2462495616 main.cpp:251] 	stop tracking face #7, final score: 13.3321
+I0717 10:33:01.848475 2462495616 main.cpp:71] 	save face #7 to /Users/moon/Pictures/faces/0/7.jpg
+I0717 10:33:01.848484 2462495616 main.cpp:72] 	mtcnn score: 0.889781
+I0717 10:33:01.944530 2462495616 main.cpp:133] frame #135, tracking faces: #0 
+I0717 10:33:02.014387 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.862 ms
+I0717 10:33:02.117036 2462495616 main.cpp:133] frame #136, tracking faces: #0 
+I0717 10:33:02.187855 2462495616 main.cpp:201] 	start tracking face #8, score: 13.5816
+I0717 10:33:02.188011 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 66.929 ms
+I0717 10:33:02.283965 2462495616 main.cpp:133] frame #137, tracking faces: #0 #8 
+I0717 10:33:02.355203 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.079 ms
+I0717 10:33:02.356243 2462495616 main.cpp:251] 	stop tracking face #8, final score: 13.5816
+I0717 10:33:02.357342 2462495616 main.cpp:71] 	save face #8 to /Users/moon/Pictures/faces/0/8.jpg
+I0717 10:33:02.357352 2462495616 main.cpp:72] 	mtcnn score: 0.941816
+I0717 10:33:02.448648 2462495616 main.cpp:133] frame #138, tracking faces: #0 
+I0717 10:33:02.520599 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.535 ms
+I0717 10:33:02.626312 2462495616 main.cpp:133] frame #139, tracking faces: #0 
+I0717 10:33:02.754673 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 124.497 ms
+I0717 10:33:02.888793 2462495616 main.cpp:133] frame #140, tracking faces: #0 
+I0717 10:33:02.974159 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.861 ms
+I0717 10:33:03.047832 2462495616 main.cpp:133] frame #141, tracking faces: #0 
+I0717 10:33:03.191740 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 139.042 ms
+I0717 10:33:03.280488 2462495616 main.cpp:133] frame #142, tracking faces: #0 
+I0717 10:33:03.395416 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 110.928 ms
+I0717 10:33:03.513738 2462495616 main.cpp:133] frame #143, tracking faces: #0 
+I0717 10:33:03.637449 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 119.432 ms
+I0717 10:33:03.717142 2462495616 main.cpp:133] frame #144, tracking faces: #0 
+I0717 10:33:03.843801 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 121.106 ms
+I0717 10:33:03.949736 2462495616 main.cpp:133] frame #145, tracking faces: #0 
+I0717 10:33:04.086380 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 132.714 ms
+I0717 10:33:04.182397 2462495616 main.cpp:133] frame #146, tracking faces: #0 
+I0717 10:33:04.274492 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.237 ms
+I0717 10:33:04.346058 2462495616 main.cpp:133] frame #147, tracking faces: #0 
+I0717 10:33:04.429600 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.12 ms
+I0717 10:33:04.513798 2462495616 main.cpp:133] frame #148, tracking faces: #0 
+I0717 10:33:04.607437 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.448 ms
+I0717 10:33:04.683141 2462495616 main.cpp:133] frame #149, tracking faces: #0 
+I0717 10:33:04.773183 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.986 ms
+I0717 10:33:04.846729 2462495616 main.cpp:133] frame #150, tracking faces: #0 
+I0717 10:33:04.933452 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.537 ms
+I0717 10:33:05.017504 2462495616 main.cpp:133] frame #151, tracking faces: #0 
+I0717 10:33:05.116899 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.716 ms
+I0717 10:33:05.211944 2462495616 main.cpp:133] frame #152, tracking faces: #0 
+I0717 10:33:05.285450 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.399 ms
+I0717 10:33:05.351230 2462495616 main.cpp:133] frame #153, tracking faces: #0 
+I0717 10:33:05.430886 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.327 ms
+I0717 10:33:05.514606 2462495616 main.cpp:133] frame #154, tracking faces: #0 
+I0717 10:33:05.597342 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.278 ms
+I0717 10:33:05.680148 2462495616 main.cpp:133] frame #155, tracking faces: #0 
+I0717 10:33:05.784940 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 101.445 ms
+I0717 10:33:05.856977 2462495616 main.cpp:133] frame #156, tracking faces: #0 
+I0717 10:33:05.939200 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.683 ms
+I0717 10:33:06.017755 2462495616 main.cpp:133] frame #157, tracking faces: #0 
+I0717 10:33:06.105303 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.165 ms
+I0717 10:33:06.183305 2462495616 main.cpp:133] frame #158, tracking faces: #0 
+I0717 10:33:06.271291 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.425 ms
+I0717 10:33:06.362746 2462495616 main.cpp:133] frame #159, tracking faces: #0 
+I0717 10:33:06.444237 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.132 ms
+I0717 10:33:06.519443 2462495616 main.cpp:133] frame #160, tracking faces: #0 
+I0717 10:33:06.595651 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.625 ms
+I0717 10:33:06.683328 2462495616 main.cpp:133] frame #161, tracking faces: #0 
+I0717 10:33:06.763578 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.927 ms
+I0717 10:33:06.849512 2462495616 main.cpp:133] frame #162, tracking faces: #0 
+I0717 10:33:06.930218 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.322 ms
+I0717 10:33:07.013835 2462495616 main.cpp:133] frame #163, tracking faces: #0 
+I0717 10:33:07.088567 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.093 ms
+I0717 10:33:07.182972 2462495616 main.cpp:133] frame #164, tracking faces: #0 
+I0717 10:33:07.261394 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.106 ms
+I0717 10:33:07.350096 2462495616 main.cpp:133] frame #165, tracking faces: #0 
+I0717 10:33:07.415552 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.126 ms
+I0717 10:33:07.484593 2462495616 main.cpp:133] frame #166, tracking faces: #0 
+I0717 10:33:07.553381 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.482 ms
+I0717 10:33:07.619009 2462495616 main.cpp:133] frame #167, tracking faces: #0 
+I0717 10:33:07.705619 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.482 ms
+I0717 10:33:07.783464 2462495616 main.cpp:133] frame #168, tracking faces: #0 
+I0717 10:33:07.858979 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.044 ms
+I0717 10:33:07.952875 2462495616 main.cpp:133] frame #169, tracking faces: #0 
+I0717 10:33:08.032776 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.588 ms
+I0717 10:33:08.119261 2462495616 main.cpp:133] frame #170, tracking faces: #0 
+I0717 10:33:08.196993 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.174 ms
+I0717 10:33:08.286186 2462495616 main.cpp:133] frame #171, tracking faces: #0 
+I0717 10:33:08.370767 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.383 ms
+I0717 10:33:08.452898 2462495616 main.cpp:133] frame #172, tracking faces: #0 
+I0717 10:33:08.558259 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 101.762 ms
+I0717 10:33:08.668123 2462495616 main.cpp:133] frame #173, tracking faces: #0 
+I0717 10:33:08.758311 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.364 ms
+I0717 10:33:08.854693 2462495616 main.cpp:133] frame #174, tracking faces: #0 
+I0717 10:33:08.928951 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.544 ms
+I0717 10:33:09.014366 2462495616 main.cpp:133] frame #175, tracking faces: #0 
+I0717 10:33:09.101492 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.255 ms
+I0717 10:33:09.184342 2462495616 main.cpp:133] frame #176, tracking faces: #0 
+I0717 10:33:09.269876 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.948 ms
+I0717 10:33:09.349757 2462495616 main.cpp:133] frame #177, tracking faces: #0 
+I0717 10:33:09.422904 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.504 ms
+I0717 10:33:09.487704 2462495616 main.cpp:133] frame #178, tracking faces: #0 
+I0717 10:33:09.570854 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.123 ms
+I0717 10:33:09.655361 2462495616 main.cpp:133] frame #179, tracking faces: #0 
+I0717 10:33:09.725419 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.632 ms
+I0717 10:33:09.823536 2462495616 main.cpp:133] frame #180, tracking faces: #0 
+I0717 10:33:09.897017 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.894 ms
+I0717 10:33:09.990948 2462495616 main.cpp:133] frame #181, tracking faces: #0 
+I0717 10:33:10.080857 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.878 ms
+I0717 10:33:10.148983 2462495616 main.cpp:133] frame #182, tracking faces: #0 
+I0717 10:33:10.234696 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.033 ms
+I0717 10:33:10.324795 2462495616 main.cpp:133] frame #183, tracking faces: #0 
+I0717 10:33:10.425952 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 97.539 ms
+I0717 10:33:10.497061 2462495616 main.cpp:133] frame #184, tracking faces: #0 
+I0717 10:33:10.591513 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.922 ms
+I0717 10:33:10.688437 2462495616 main.cpp:133] frame #185, tracking faces: #0 
+I0717 10:33:10.759912 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.226 ms
+I0717 10:33:10.831708 2462495616 main.cpp:133] frame #186, tracking faces: #0 
+I0717 10:33:10.918349 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.301 ms
+I0717 10:33:10.989101 2462495616 main.cpp:133] frame #187, tracking faces: #0 
+I0717 10:33:11.077365 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.078 ms
+I0717 10:33:11.156378 2462495616 main.cpp:133] frame #188, tracking faces: #0 
+I0717 10:33:11.234258 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.945 ms
+I0717 10:33:11.320935 2462495616 main.cpp:133] frame #189, tracking faces: #0 
+I0717 10:33:11.415205 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.869 ms
+I0717 10:33:11.487917 2462495616 main.cpp:133] frame #190, tracking faces: #0 
+I0717 10:33:11.569474 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.103 ms
+I0717 10:33:11.653623 2462495616 main.cpp:133] frame #191, tracking faces: #0 
+I0717 10:33:11.723215 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.989 ms
+I0717 10:33:11.789949 2462495616 main.cpp:133] frame #192, tracking faces: #0 
+I0717 10:33:11.864190 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.913 ms
+I0717 10:33:11.926141 2462495616 main.cpp:133] frame #193, tracking faces: #0 
+I0717 10:33:11.996268 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.162 ms
+I0717 10:33:12.067075 2462495616 main.cpp:133] frame #194, tracking faces: #0 
+I0717 10:33:12.139472 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.905 ms
+I0717 10:33:12.225718 2462495616 main.cpp:133] frame #195, tracking faces: #0 
+I0717 10:33:12.302464 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.986 ms
+I0717 10:33:12.389835 2462495616 main.cpp:133] frame #196, tracking faces: #0 
+I0717 10:33:12.461905 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.631 ms
+I0717 10:33:12.553966 2462495616 main.cpp:133] frame #197, tracking faces: #0 
+I0717 10:33:12.613102 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 55.725 ms
+I0717 10:33:12.686511 2462495616 main.cpp:133] frame #198, tracking faces: #0 
+I0717 10:33:12.757918 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.004 ms
+I0717 10:33:12.823197 2462495616 main.cpp:133] frame #199, tracking faces: #0 
+I0717 10:33:12.895620 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.177 ms
+I0717 10:33:12.957063 2462495616 main.cpp:133] frame #200, tracking faces: #0 
+I0717 10:33:13.050272 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.137 ms
+I0717 10:33:13.122731 2462495616 main.cpp:133] frame #201, tracking faces: #0 
+I0717 10:33:13.195538 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.524 ms
+I0717 10:33:13.257814 2462495616 main.cpp:133] frame #202, tracking faces: #0 
+I0717 10:33:13.347949 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.809 ms
+I0717 10:33:13.431342 2462495616 main.cpp:133] frame #203, tracking faces: #0 
+I0717 10:33:13.504438 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.358 ms
+I0717 10:33:13.591678 2462495616 main.cpp:133] frame #204, tracking faces: #0 
+I0717 10:33:13.700239 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 104.879 ms
+I0717 10:33:13.794330 2462495616 main.cpp:133] frame #205, tracking faces: #0 
+I0717 10:33:13.871937 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.516 ms
+I0717 10:33:13.962016 2462495616 main.cpp:133] frame #206, tracking faces: #0 
+I0717 10:33:14.047415 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.716 ms
+I0717 10:33:14.127336 2462495616 main.cpp:133] frame #207, tracking faces: #0 
+I0717 10:33:14.209939 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.938 ms
+I0717 10:33:14.291781 2462495616 main.cpp:133] frame #208, tracking faces: #0 
+I0717 10:33:14.363582 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.388 ms
+I0717 10:33:14.426036 2462495616 main.cpp:133] frame #209, tracking faces: #0 
+I0717 10:33:14.514149 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.634 ms
+I0717 10:33:14.591681 2462495616 main.cpp:133] frame #210, tracking faces: #0 
+I0717 10:33:14.667663 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.627 ms
+I0717 10:33:14.758445 2462495616 main.cpp:133] frame #211, tracking faces: #0 
+I0717 10:33:14.830571 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.595 ms
+I0717 10:33:14.893311 2462495616 main.cpp:133] frame #212, tracking faces: #0 
+I0717 10:33:14.965261 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.412 ms
+I0717 10:33:15.058650 2462495616 main.cpp:133] frame #213, tracking faces: #0 
+I0717 10:33:15.138926 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.92 ms
+I0717 10:33:15.225450 2462495616 main.cpp:133] frame #214, tracking faces: #0 
+I0717 10:33:15.292039 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 63.209 ms
+I0717 10:33:15.358674 2462495616 main.cpp:133] frame #215, tracking faces: #0 
+I0717 10:33:15.436357 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.215 ms
+I0717 10:33:15.524531 2462495616 main.cpp:133] frame #216, tracking faces: #0 
+I0717 10:33:15.593919 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.092 ms
+I0717 10:33:15.657686 2462495616 main.cpp:133] frame #217, tracking faces: #0 
+I0717 10:33:15.736218 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.499 ms
+I0717 10:33:15.825489 2462495616 main.cpp:133] frame #218, tracking faces: #0 
+I0717 10:33:15.893326 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.483 ms
+I0717 10:33:15.958456 2462495616 main.cpp:133] frame #219, tracking faces: #0 
+I0717 10:33:16.035869 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.896 ms
+I0717 10:33:16.126173 2462495616 main.cpp:133] frame #220, tracking faces: #0 
+I0717 10:33:16.203449 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.866 ms
+I0717 10:33:16.292496 2462495616 main.cpp:133] frame #221, tracking faces: #0 
+I0717 10:33:16.362278 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.431 ms
+I0717 10:33:16.427044 2462495616 main.cpp:133] frame #222, tracking faces: #0 
+I0717 10:33:16.505077 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.353 ms
+I0717 10:33:16.592977 2462495616 main.cpp:133] frame #223, tracking faces: #0 
+I0717 10:33:16.661046 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.668 ms
+I0717 10:33:16.727705 2462495616 main.cpp:133] frame #224, tracking faces: #0 
+I0717 10:33:16.803244 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.065 ms
+I0717 10:33:16.903170 2462495616 main.cpp:133] frame #225, tracking faces: #0 
+I0717 10:33:16.964828 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 58.034 ms
+I0717 10:33:17.026522 2462495616 main.cpp:133] frame #226, tracking faces: #0 
+I0717 10:33:17.101186 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.213 ms
+I0717 10:33:17.191269 2462495616 main.cpp:133] frame #227, tracking faces: #0 
+I0717 10:33:17.254521 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 60.017 ms
+I0717 10:33:17.325613 2462495616 main.cpp:133] frame #228, tracking faces: #0 
+I0717 10:33:17.407361 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.173 ms
+I0717 10:33:17.503048 2462495616 main.cpp:133] frame #229, tracking faces: #0 
+I0717 10:33:17.578608 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.931 ms
+I0717 10:33:17.659812 2462495616 main.cpp:133] frame #230, tracking faces: #0 
+I0717 10:33:17.742648 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.34 ms
+I0717 10:33:17.827978 2462495616 main.cpp:133] frame #231, tracking faces: #0 
+I0717 10:33:17.889506 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 58.093 ms
+I0717 10:33:17.968329 2462495616 main.cpp:133] frame #232, tracking faces: #0 
+I0717 10:33:18.068200 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 96.507 ms
+I0717 10:33:18.159114 2462495616 main.cpp:133] frame #233, tracking faces: #0 
+I0717 10:33:18.240942 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.723 ms
+I0717 10:33:18.324065 2462495616 main.cpp:133] frame #234, tracking faces: #0 
+I0717 10:33:18.391865 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.609 ms
+I0717 10:33:18.458257 2462495616 main.cpp:133] frame #235, tracking faces: #0 
+I0717 10:33:18.539288 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.984 ms
+I0717 10:33:18.629607 2462495616 main.cpp:133] frame #236, tracking faces: #0 
+I0717 10:33:18.715255 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.995 ms
+I0717 10:33:18.796758 2462495616 main.cpp:133] frame #237, tracking faces: #0 
+I0717 10:33:18.867305 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 59.998 ms
+I0717 10:33:18.930718 2462495616 main.cpp:133] frame #238, tracking faces: #0 
+I0717 10:33:19.001727 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.66 ms
+I0717 10:33:19.095521 2462495616 main.cpp:133] frame #239, tracking faces: #0 
+I0717 10:33:19.163656 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.539 ms
+I0717 10:33:19.232107 2462495616 main.cpp:133] frame #240, tracking faces: #0 
+I0717 10:33:19.342449 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 107.083 ms
+I0717 10:33:19.430585 2462495616 main.cpp:133] frame #241, tracking faces: #0 
+I0717 10:33:19.508311 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.242 ms
+I0717 10:33:19.588269 2462495616 main.cpp:133] frame #242, tracking faces: #0 
+I0717 10:33:19.671461 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.99 ms
+I0717 10:33:19.732930 2462495616 main.cpp:133] frame #243, tracking faces: #0 
+I0717 10:33:19.813529 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.38 ms
+I0717 10:33:19.902690 2462495616 main.cpp:133] frame #244, tracking faces: #0 
+I0717 10:33:19.981098 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.428 ms
+I0717 10:33:20.064931 2462495616 main.cpp:133] frame #245, tracking faces: #0 
+I0717 10:33:20.152948 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.083 ms
+I0717 10:33:20.231221 2462495616 main.cpp:133] frame #246, tracking faces: #0 
+I0717 10:33:20.305395 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.847 ms
+I0717 10:33:20.399091 2462495616 main.cpp:133] frame #247, tracking faces: #0 
+I0717 10:33:20.466857 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.565 ms
+I0717 10:33:20.528723 2462495616 main.cpp:133] frame #248, tracking faces: #0 
+I0717 10:33:20.596732 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.168 ms
+I0717 10:33:20.661922 2462495616 main.cpp:133] frame #249, tracking faces: #0 
+I0717 10:33:20.733026 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.633 ms
+I0717 10:33:20.797662 2462495616 main.cpp:133] frame #250, tracking faces: #0 
+I0717 10:33:20.865265 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 63.488 ms
+I0717 10:33:20.970947 2462495616 main.cpp:133] frame #251, tracking faces: #0 
+I0717 10:33:21.053438 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.119 ms
+I0717 10:33:21.133617 2462495616 main.cpp:133] frame #252, tracking faces: #0 
+I0717 10:33:21.212168 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.273 ms
+I0717 10:33:21.296375 2462495616 main.cpp:133] frame #253, tracking faces: #0 
+I0717 10:33:21.380892 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.895 ms
+I0717 10:33:21.465448 2462495616 main.cpp:133] frame #254, tracking faces: #0 
+I0717 10:33:21.535650 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.241 ms
+I0717 10:33:21.599746 2462495616 main.cpp:133] frame #255, tracking faces: #0 
+I0717 10:33:21.667523 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.427 ms
+I0717 10:33:21.733397 2462495616 main.cpp:133] frame #256, tracking faces: #0 
+I0717 10:33:21.801431 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.727 ms
+I0717 10:33:21.869321 2462495616 main.cpp:133] frame #257, tracking faces: #0 
+I0717 10:33:21.941980 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.781 ms
+I0717 10:33:22.045279 2462495616 main.cpp:133] frame #258, tracking faces: #0 
+I0717 10:33:22.139101 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.233 ms
+I0717 10:33:22.231946 2462495616 main.cpp:133] frame #259, tracking faces: #0 
+I0717 10:33:22.332502 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 95.526 ms
+I0717 10:33:22.430523 2462495616 main.cpp:133] frame #260, tracking faces: #0 
+I0717 10:33:22.524544 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.31 ms
+I0717 10:33:22.601397 2462495616 main.cpp:133] frame #261, tracking faces: #0 
+I0717 10:33:22.676306 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.037 ms
+I0717 10:33:22.767084 2462495616 main.cpp:133] frame #262, tracking faces: #0 
+I0717 10:33:22.841068 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.769 ms
+I0717 10:33:22.932190 2462495616 main.cpp:133] frame #263, tracking faces: #0 
+I0717 10:33:23.008278 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.992 ms
+I0717 10:33:23.097198 2462495616 main.cpp:133] frame #264, tracking faces: #0 
+I0717 10:33:23.192723 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 91.977 ms
+I0717 10:33:23.311122 2462495616 main.cpp:133] frame #265, tracking faces: #0 
+I0717 10:33:23.404939 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.344 ms
+I0717 10:33:23.495906 2462495616 main.cpp:133] frame #266, tracking faces: #0 
+I0717 10:33:23.575140 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.879 ms
+I0717 10:33:23.665405 2462495616 main.cpp:133] frame #267, tracking faces: #0 
+I0717 10:33:23.733198 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.506 ms
+I0717 10:33:23.801232 2462495616 main.cpp:133] frame #268, tracking faces: #0 
+I0717 10:33:23.874874 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.555 ms
+I0717 10:33:23.966640 2462495616 main.cpp:133] frame #269, tracking faces: #0 
+I0717 10:33:24.046589 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.646 ms
+I0717 10:33:24.135327 2462495616 main.cpp:133] frame #270, tracking faces: #0 
+I0717 10:33:24.205435 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.826 ms
+I0717 10:33:24.309298 2462495616 main.cpp:133] frame #271, tracking faces: #0 
+I0717 10:33:24.386714 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.001 ms
+I0717 10:33:24.462121 2462495616 main.cpp:133] frame #272, tracking faces: #0 
+I0717 10:33:24.544124 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.265 ms
+I0717 10:33:24.644434 2462495616 main.cpp:133] frame #273, tracking faces: #0 
+I0717 10:33:24.718303 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.541 ms
+I0717 10:33:24.798856 2462495616 main.cpp:133] frame #274, tracking faces: #0 
+I0717 10:33:24.884413 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.991 ms
+I0717 10:33:24.964179 2462495616 main.cpp:133] frame #275, tracking faces: #0 
+I0717 10:33:25.034884 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.353 ms
+I0717 10:33:25.107538 2462495616 main.cpp:133] frame #276, tracking faces: #0 
+I0717 10:33:25.177242 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.648 ms
+I0717 10:33:25.278725 2462495616 main.cpp:133] frame #277, tracking faces: #0 
+I0717 10:33:25.348855 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.798 ms
+I0717 10:33:25.442059 2462495616 main.cpp:133] frame #278, tracking faces: #0 
+I0717 10:33:25.524152 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.418 ms
+I0717 10:33:25.599268 2462495616 main.cpp:133] frame #279, tracking faces: #0 
+I0717 10:33:25.670663 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.857 ms
+I0717 10:33:25.732961 2462495616 main.cpp:133] frame #280, tracking faces: #0 
+I0717 10:33:25.800676 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 63.486 ms
+I0717 10:33:25.877238 2462495616 main.cpp:133] frame #281, tracking faces: #0 
+I0717 10:33:25.965747 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.68 ms
+I0717 10:33:26.043690 2462495616 main.cpp:133] frame #282, tracking faces: #0 
+I0717 10:33:26.121116 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.377 ms
+I0717 10:33:26.204674 2462495616 main.cpp:133] frame #283, tracking faces: #0 
+I0717 10:33:26.270274 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.368 ms
+I0717 10:33:26.336505 2462495616 main.cpp:133] frame #284, tracking faces: #0 
+I0717 10:33:26.412822 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.929 ms
+I0717 10:33:26.507786 2462495616 main.cpp:133] frame #285, tracking faces: #0 
+I0717 10:33:26.569795 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 58.638 ms
+I0717 10:33:26.633016 2462495616 main.cpp:133] frame #286, tracking faces: #0 
+I0717 10:33:26.711223 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.966 ms
+I0717 10:33:26.804565 2462495616 main.cpp:133] frame #287, tracking faces: #0 
+I0717 10:33:26.886279 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.549 ms
+I0717 10:33:26.971801 2462495616 main.cpp:133] frame #288, tracking faces: #0 
+I0717 10:33:27.057379 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.366 ms
+I0717 10:33:27.130040 2462495616 main.cpp:133] frame #289, tracking faces: #0 
+I0717 10:33:27.208915 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.753 ms
+I0717 10:33:27.274304 2462495616 main.cpp:133] frame #290, tracking faces: #0 
+I0717 10:33:27.345439 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.413 ms
+I0717 10:33:27.439916 2462495616 main.cpp:133] frame #291, tracking faces: #0 
+I0717 10:33:27.503720 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 60.256 ms
+I0717 10:33:27.572535 2462495616 main.cpp:133] frame #292, tracking faces: #0 
+I0717 10:33:27.639550 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 63.804 ms
+I0717 10:33:27.706450 2462495616 main.cpp:133] frame #293, tracking faces: #0 
+I0717 10:33:27.772824 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.989 ms
+I0717 10:33:27.840746 2462495616 main.cpp:133] frame #294, tracking faces: #0 
+I0717 10:33:27.915323 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.955 ms
+I0717 10:33:28.005823 2462495616 main.cpp:133] frame #295, tracking faces: #0 
+I0717 10:33:28.074550 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.538 ms
+I0717 10:33:28.138535 2462495616 main.cpp:133] frame #296, tracking faces: #0 
+I0717 10:33:28.206604 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.85 ms
+I0717 10:33:28.272717 2462495616 main.cpp:133] frame #297, tracking faces: #0 
+I0717 10:33:28.353968 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.043 ms
+I0717 10:33:28.438148 2462495616 main.cpp:133] frame #298, tracking faces: #0 
+I0717 10:33:28.510920 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.906 ms
+I0717 10:33:28.582105 2462495616 main.cpp:133] frame #299, tracking faces: #0 
+I0717 10:33:28.656329 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.817 ms
+I0717 10:33:28.738989 2462495616 main.cpp:133] frame #300, tracking faces: #0 
+I0717 10:33:28.814843 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.677 ms
+I0717 10:33:28.904703 2462495616 main.cpp:133] frame #301, tracking faces: #0 
+I0717 10:33:28.965112 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 56.616 ms
+I0717 10:33:29.038450 2462495616 main.cpp:133] frame #302, tracking faces: #0 
+I0717 10:33:29.114717 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.337 ms
+I0717 10:33:29.205018 2462495616 main.cpp:133] frame #303, tracking faces: #0 
+I0717 10:33:29.277045 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.107 ms
+I0717 10:33:29.375802 2462495616 main.cpp:133] frame #304, tracking faces: #0 
+I0717 10:33:29.462545 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.286 ms
+I0717 10:33:29.537940 2462495616 main.cpp:133] frame #305, tracking faces: #0 
+I0717 10:33:29.617624 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.434 ms
+I0717 10:33:29.707721 2462495616 main.cpp:133] frame #306, tracking faces: #0 
+I0717 10:33:29.802868 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 91.796 ms
+I0717 10:33:29.915449 2462495616 main.cpp:133] frame #307, tracking faces: #0 
+I0717 10:33:30.014056 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.63 ms
+I0717 10:33:30.104311 2462495616 main.cpp:133] frame #308, tracking faces: #0 
+I0717 10:33:30.184579 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.739 ms
+I0717 10:33:30.275085 2462495616 main.cpp:133] frame #309, tracking faces: #0 
+I0717 10:33:30.354310 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.85 ms
+I0717 10:33:30.451642 2462495616 main.cpp:133] frame #310, tracking faces: #0 
+I0717 10:33:30.551895 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 96.323 ms
+I0717 10:33:30.641299 2462495616 main.cpp:133] frame #311, tracking faces: #0 
+I0717 10:33:30.722322 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.18 ms
+I0717 10:33:30.808945 2462495616 main.cpp:133] frame #312, tracking faces: #0 
+I0717 10:33:30.882962 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.512 ms
+I0717 10:33:30.974974 2462495616 main.cpp:133] frame #313, tracking faces: #0 
+I0717 10:33:31.072590 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 94.388 ms
+I0717 10:33:31.139217 2462495616 main.cpp:133] frame #314, tracking faces: #0 
+I0717 10:33:31.226912 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.019 ms
+I0717 10:33:31.311147 2462495616 main.cpp:133] frame #315, tracking faces: #0 
+I0717 10:33:31.404958 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.094 ms
+I0717 10:33:31.475932 2462495616 main.cpp:133] frame #316, tracking faces: #0 
+I0717 10:33:31.571497 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 92.267 ms
+I0717 10:33:31.643873 2462495616 main.cpp:133] frame #317, tracking faces: #0 
+I0717 10:33:31.721578 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.239 ms
+I0717 10:33:31.810209 2462495616 main.cpp:133] frame #318, tracking faces: #0 
+I0717 10:33:31.888571 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.98 ms
+I0717 10:33:31.973981 2462495616 main.cpp:133] frame #319, tracking faces: #0 
+I0717 10:33:32.061776 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.106 ms
+I0717 10:33:32.150270 2462495616 main.cpp:133] frame #320, tracking faces: #0 
+I0717 10:33:32.235993 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.591 ms
+I0717 10:33:32.309202 2462495616 main.cpp:133] frame #321, tracking faces: #0 
+I0717 10:33:32.406111 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 92.948 ms
+I0717 10:33:32.475286 2462495616 main.cpp:133] frame #322, tracking faces: #0 
+I0717 10:33:32.573525 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 93.848 ms
+I0717 10:33:32.642601 2462495616 main.cpp:133] frame #323, tracking faces: #0 
+I0717 10:33:32.727537 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.033 ms
+I0717 10:33:32.808953 2462495616 main.cpp:133] frame #324, tracking faces: #0 
+I0717 10:33:32.914672 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 102.373 ms
+I0717 10:33:32.986006 2462495616 main.cpp:133] frame #325, tracking faces: #0 
+I0717 10:33:33.104598 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 114.183 ms
+I0717 10:33:33.220831 2462495616 main.cpp:133] frame #326, tracking faces: #0 
+I0717 10:33:33.389065 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 163.556 ms
+I0717 10:33:33.488328 2462495616 main.cpp:133] frame #327, tracking faces: #0 
+I0717 10:33:33.609236 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 116.858 ms
+I0717 10:33:33.683843 2462495616 main.cpp:133] frame #328, tracking faces: #0 
+I0717 10:33:33.778092 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.589 ms
+I0717 10:33:33.843412 2462495616 main.cpp:133] frame #329, tracking faces: #0 
+I0717 10:33:33.936851 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.185 ms
+I0717 10:33:34.013258 2462495616 main.cpp:133] frame #330, tracking faces: #0 
+I0717 10:33:34.102615 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.702 ms
+I0717 10:33:34.213259 2462495616 main.cpp:133] frame #331, tracking faces: #0 
+I0717 10:33:34.294250 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.057 ms
+I0717 10:33:34.379045 2462495616 main.cpp:133] frame #332, tracking faces: #0 
+I0717 10:33:34.487995 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 104.881 ms
+I0717 10:33:34.578511 2462495616 main.cpp:133] frame #333, tracking faces: #0 
+I0717 10:33:34.647990 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.944 ms
+I0717 10:33:34.713552 2462495616 main.cpp:133] frame #334, tracking faces: #0 
+I0717 10:33:34.810284 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 91.369 ms
+I0717 10:33:34.879623 2462495616 main.cpp:133] frame #335, tracking faces: #0 
+I0717 10:33:35.011606 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 124.416 ms
+I0717 10:33:35.095257 2462495616 main.cpp:133] frame #336, tracking faces: #0 
+I0717 10:33:35.192239 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.525 ms
+I0717 10:33:35.281903 2462495616 main.cpp:133] frame #337, tracking faces: #0 
+I0717 10:33:35.365113 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.019 ms
+I0717 10:33:35.464254 2462495616 main.cpp:133] frame #338, tracking faces: #0 
+I0717 10:33:35.550423 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.642 ms
+I0717 10:33:35.614545 2462495616 main.cpp:133] frame #339, tracking faces: #0 
+I0717 10:33:35.724444 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 106.354 ms
+I0717 10:33:35.831455 2462495616 main.cpp:133] frame #340, tracking faces: #0 
+I0717 10:33:35.930449 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 93.086 ms
+I0717 10:33:36.018041 2462495616 main.cpp:133] frame #341, tracking faces: #0 
+I0717 10:33:36.110965 2462495616 main.cpp:201] 	start tracking face #9, score: 16.7713
+I0717 10:33:36.111101 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 88.782 ms
+I0717 10:33:36.180936 2462495616 main.cpp:133] frame #342, tracking faces: #0 #9 
+I0717 10:33:36.273689 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.221 ms
+I0717 10:33:36.274212 2462495616 main.cpp:251] 	stop tracking face #9, final score: 16.7713
+I0717 10:33:36.275213 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:33:36.346570 2462495616 main.cpp:133] frame #343, tracking faces: #0 
+I0717 10:33:36.440233 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.933 ms
+I0717 10:33:36.538363 2462495616 main.cpp:133] frame #344, tracking faces: #0 
+I0717 10:33:36.622303 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.37 ms
+I0717 10:33:36.711408 2462495616 main.cpp:133] frame #345, tracking faces: #0 
+I0717 10:33:36.796697 2462495616 main.cpp:201] 	start tracking face #10, score: 19.3962
+I0717 10:33:36.796842 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 76.636 ms
+I0717 10:33:36.877849 2462495616 main.cpp:133] frame #346, tracking faces: #0 #10 
+I0717 10:33:36.980990 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 95.944 ms
+I0717 10:33:36.981462 2462495616 main.cpp:251] 	stop tracking face #10, final score: 19.3962
+I0717 10:33:36.982609 2462495616 main.cpp:71] 	save face #10 to /Users/moon/Pictures/faces/0/10.jpg
+I0717 10:33:36.982619 2462495616 main.cpp:72] 	mtcnn score: 0.80005
+I0717 10:33:37.067131 2462495616 main.cpp:133] frame #347, tracking faces: #0 
+I0717 10:33:37.200112 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 129.312 ms
+I0717 10:33:37.276240 2462495616 main.cpp:133] frame #348, tracking faces: #0 
+I0717 10:33:37.381731 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 96.761 ms
+I0717 10:33:37.477222 2462495616 main.cpp:133] frame #349, tracking faces: #0 
+I0717 10:33:37.566071 2462495616 main.cpp:201] 	start tracking face #11, score: 19.1813
+I0717 10:33:37.566216 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 84.467 ms
+I0717 10:33:37.643868 2462495616 main.cpp:133] frame #350, tracking faces: #0 #11 
+I0717 10:33:37.747547 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 99.335 ms
+I0717 10:33:37.748101 2462495616 main.cpp:251] 	stop tracking face #11, final score: 19.1813
+I0717 10:33:37.749143 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:33:37.819360 2462495616 main.cpp:133] frame #351, tracking faces: #0 
+I0717 10:33:37.935684 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 112.544 ms
+I0717 10:33:38.012328 2462495616 main.cpp:133] frame #352, tracking faces: #0 
+I0717 10:33:38.105242 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 87.427 ms
+I0717 10:33:38.177476 2462495616 main.cpp:133] frame #353, tracking faces: #0 
+I0717 10:33:38.268393 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.223 ms
+I0717 10:33:38.349174 2462495616 main.cpp:133] frame #354, tracking faces: #0 
+I0717 10:33:38.416882 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.309 ms
+I0717 10:33:38.525517 2462495616 main.cpp:133] frame #355, tracking faces: #0 
+I0717 10:33:38.603163 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.696 ms
+I0717 10:33:38.700567 2462495616 main.cpp:133] frame #356, tracking faces: #0 
+I0717 10:33:38.775347 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.033 ms
+I0717 10:33:38.850133 2462495616 main.cpp:133] frame #357, tracking faces: #0 
+I0717 10:33:38.926491 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.761 ms
+I0717 10:33:39.018692 2462495616 main.cpp:133] frame #358, tracking faces: #0 
+I0717 10:33:39.104384 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.794 ms
+I0717 10:33:39.183706 2462495616 main.cpp:133] frame #359, tracking faces: #0 
+I0717 10:33:39.268707 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.664 ms
+I0717 10:33:39.351343 2462495616 main.cpp:133] frame #360, tracking faces: #0 
+I0717 10:33:39.439819 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.064 ms
+I0717 10:33:39.515707 2462495616 main.cpp:133] frame #361, tracking faces: #0 
+I0717 10:33:39.595803 2462495616 main.cpp:201] 	start tracking face #12, score: 12.3473
+I0717 10:33:39.595943 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 76.138 ms
+I0717 10:33:39.685672 2462495616 main.cpp:133] frame #362, tracking faces: #0 #12 
+I0717 10:33:39.760198 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.091 ms
+I0717 10:33:39.760771 2462495616 main.cpp:251] 	stop tracking face #12, final score: 12.3473
+I0717 10:33:39.761874 2462495616 main.cpp:71] 	save face #12 to /Users/moon/Pictures/faces/0/12.jpg
+I0717 10:33:39.761883 2462495616 main.cpp:72] 	mtcnn score: 0.809475
+I0717 10:33:39.853309 2462495616 main.cpp:133] frame #363, tracking faces: #0 
+I0717 10:33:39.951160 2462495616 main.cpp:201] 	start tracking face #13, score: 13.3573
+I0717 10:33:39.951354 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 86.502 ms
+I0717 10:33:40.053670 2462495616 main.cpp:133] frame #364, tracking faces: #0 #13 
+I0717 10:33:40.132949 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 74.583 ms
+I0717 10:33:40.211338 2462495616 main.cpp:133] frame #365, tracking faces: #0 #13 
+I0717 10:33:40.293462 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.036 ms
+I0717 10:33:40.294003 2462495616 main.cpp:251] 	stop tracking face #13, final score: 13.3573
+I0717 10:33:40.294986 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:33:40.377040 2462495616 main.cpp:133] frame #366, tracking faces: #0 
+I0717 10:33:40.452752 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.242 ms
+I0717 10:33:40.518985 2462495616 main.cpp:133] frame #367, tracking faces: #0 
+I0717 10:33:40.646340 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 117.139 ms
+I0717 10:33:40.716897 2462495616 main.cpp:133] frame #368, tracking faces: #0 
+I0717 10:33:40.806943 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.119 ms
+I0717 10:33:40.887441 2462495616 main.cpp:133] frame #369, tracking faces: #0 
+I0717 10:33:40.971664 2462495616 main.cpp:201] 	start tracking face #14, score: 12.5414
+I0717 10:33:40.971806 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 80.233 ms
+I0717 10:33:41.049319 2462495616 main.cpp:133] frame #370, tracking faces: #0 #14 
+I0717 10:33:41.142596 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.638 ms
+I0717 10:33:41.143187 2462495616 main.cpp:251] 	stop tracking face #14, final score: 12.5414
+I0717 10:33:41.144207 2462495616 main.cpp:71] 	save face #14 to /Users/moon/Pictures/faces/0/14.jpg
+I0717 10:33:41.144215 2462495616 main.cpp:72] 	mtcnn score: 0.845232
+I0717 10:33:41.220149 2462495616 main.cpp:133] frame #371, tracking faces: #0 
+I0717 10:33:41.303582 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.284 ms
+I0717 10:33:41.387676 2462495616 main.cpp:133] frame #372, tracking faces: #0 
+I0717 10:33:41.472947 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.246 ms
+I0717 10:33:41.545231 2462495616 main.cpp:133] frame #373, tracking faces: #0 
+I0717 10:33:41.627310 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.136 ms
+I0717 10:33:41.688859 2462495616 main.cpp:133] frame #374, tracking faces: #0 
+I0717 10:33:41.770396 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.18 ms
+I0717 10:33:41.854115 2462495616 main.cpp:133] frame #375, tracking faces: #0 
+I0717 10:33:41.932718 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.04 ms
+I0717 10:33:42.020710 2462495616 main.cpp:133] frame #376, tracking faces: #0 
+I0717 10:33:42.103334 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.969 ms
+I0717 10:33:42.200804 2462495616 main.cpp:133] frame #377, tracking faces: #0 
+I0717 10:33:42.261567 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 54.465 ms
+I0717 10:33:42.365654 2462495616 main.cpp:133] frame #378, tracking faces: #0 
+I0717 10:33:42.443622 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.656 ms
+I0717 10:33:42.520422 2462495616 main.cpp:133] frame #379, tracking faces: #0 
+I0717 10:33:42.600390 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.567 ms
+I0717 10:33:42.686087 2462495616 main.cpp:133] frame #380, tracking faces: #0 
+I0717 10:33:42.778959 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.312 ms
+I0717 10:33:42.870581 2462495616 main.cpp:133] frame #381, tracking faces: #0 
+I0717 10:33:42.986518 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 108.061 ms
+I0717 10:33:43.069983 2462495616 main.cpp:133] frame #382, tracking faces: #0 
+I0717 10:33:43.173432 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 99.412 ms
+I0717 10:33:43.249176 2462495616 main.cpp:133] frame #383, tracking faces: #0 
+I0717 10:33:43.337532 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.341 ms
+I0717 10:33:43.453904 2462495616 main.cpp:133] frame #384, tracking faces: #0 
+I0717 10:33:43.538815 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.549 ms
+I0717 10:33:43.629673 2462495616 main.cpp:133] frame #385, tracking faces: #0 
+I0717 10:33:43.728982 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 95.59 ms
+I0717 10:33:43.826848 2462495616 main.cpp:133] frame #386, tracking faces: #0 
+I0717 10:33:43.939229 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 107.925 ms
+I0717 10:33:44.022817 2462495616 main.cpp:133] frame #387, tracking faces: #0 
+I0717 10:33:44.138123 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 110.522 ms
+I0717 10:33:44.221501 2462495616 main.cpp:133] frame #388, tracking faces: #0 
+I0717 10:33:44.361124 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 136.282 ms
+I0717 10:33:44.456782 2462495616 main.cpp:133] frame #389, tracking faces: #0 
+I0717 10:33:44.553768 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 91.836 ms
+I0717 10:33:44.626271 2462495616 main.cpp:133] frame #390, tracking faces: #0 
+I0717 10:33:44.714728 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.61 ms
+I0717 10:33:44.794894 2462495616 main.cpp:133] frame #391, tracking faces: #0 
+I0717 10:33:44.886466 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.326 ms
+I0717 10:33:44.962447 2462495616 main.cpp:133] frame #392, tracking faces: #0 
+I0717 10:33:45.069576 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 103.115 ms
+I0717 10:33:45.152407 2462495616 main.cpp:133] frame #393, tracking faces: #0 
+I0717 10:33:45.238545 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.62 ms
+I0717 10:33:45.325630 2462495616 main.cpp:133] frame #394, tracking faces: #0 
+I0717 10:33:45.434377 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 103.886 ms
+I0717 10:33:45.531918 2462495616 main.cpp:133] frame #395, tracking faces: #0 
+I0717 10:33:45.696375 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 159.78 ms
+I0717 10:33:45.787994 2462495616 main.cpp:133] frame #396, tracking faces: #0 
+I0717 10:33:45.859968 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.686 ms
+I0717 10:33:45.956107 2462495616 main.cpp:133] frame #397, tracking faces: #0 
+I0717 10:33:46.054153 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 94.712 ms
+I0717 10:33:46.124450 2462495616 main.cpp:133] frame #398, tracking faces: #0 
+I0717 10:33:46.221513 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 92.837 ms
+I0717 10:33:46.291496 2462495616 main.cpp:133] frame #399, tracking faces: #0 
+I0717 10:33:46.393867 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 98.267 ms
+I0717 10:33:46.495985 2462495616 main.cpp:133] frame #400, tracking faces: #0 
+I0717 10:33:46.568423 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.898 ms
+I0717 10:33:46.658622 2462495616 main.cpp:133] frame #401, tracking faces: #0 
+I0717 10:33:46.762032 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 98.225 ms
+I0717 10:33:46.862058 2462495616 main.cpp:133] frame #402, tracking faces: #0 
+I0717 10:33:46.950922 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.278 ms
+I0717 10:33:47.030010 2462495616 main.cpp:133] frame #403, tracking faces: #0 
+I0717 10:33:47.111402 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.982 ms
+I0717 10:33:47.195834 2462495616 main.cpp:133] frame #404, tracking faces: #0 
+I0717 10:33:47.271495 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.075 ms
+I0717 10:33:47.370273 2462495616 main.cpp:133] frame #405, tracking faces: #0 
+I0717 10:33:47.438490 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.726 ms
+I0717 10:33:47.528606 2462495616 main.cpp:133] frame #406, tracking faces: #0 
+I0717 10:33:47.597975 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.014 ms
+I0717 10:33:47.661303 2462495616 main.cpp:133] frame #407, tracking faces: #0 
+I0717 10:33:47.740945 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.127 ms
+I0717 10:33:47.828846 2462495616 main.cpp:133] frame #408, tracking faces: #0 
+I0717 10:33:47.903059 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.52 ms
+I0717 10:33:47.996821 2462495616 main.cpp:133] frame #409, tracking faces: #0 
+I0717 10:33:48.059193 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 59.116 ms
+I0717 10:33:48.127990 2462495616 main.cpp:133] frame #410, tracking faces: #0 
+I0717 10:33:48.214731 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.258 ms
+I0717 10:33:48.297571 2462495616 main.cpp:133] frame #411, tracking faces: #0 
+I0717 10:33:48.405623 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 104.678 ms
+I0717 10:33:48.493165 2462495616 main.cpp:133] frame #412, tracking faces: #0 
+I0717 10:33:48.601857 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 102.256 ms
+I0717 10:33:48.691774 2462495616 main.cpp:133] frame #413, tracking faces: #0 
+I0717 10:33:48.758905 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.676 ms
+I0717 10:33:48.825541 2462495616 main.cpp:133] frame #414, tracking faces: #0 
+I0717 10:33:48.892992 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 63.947 ms
+I0717 10:33:48.956454 2462495616 main.cpp:133] frame #415, tracking faces: #0 
+I0717 10:33:49.044723 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.831 ms
+I0717 10:33:49.126401 2462495616 main.cpp:133] frame #416, tracking faces: #0 
+I0717 10:33:49.198715 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.793 ms
+I0717 10:33:49.261376 2462495616 main.cpp:133] frame #417, tracking faces: #0 
+I0717 10:33:49.336010 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.111 ms
+I0717 10:33:49.425668 2462495616 main.cpp:133] frame #418, tracking faces: #0 
+I0717 10:33:49.498699 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.749 ms
+I0717 10:33:49.591315 2462495616 main.cpp:133] frame #419, tracking faces: #0 
+I0717 10:33:49.657338 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.559 ms
+I0717 10:33:49.727264 2462495616 main.cpp:133] frame #420, tracking faces: #0 
+I0717 10:33:49.788302 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 57.382 ms
+I0717 10:33:49.857355 2462495616 main.cpp:133] frame #421, tracking faces: #0 
+I0717 10:33:49.928184 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.448 ms
+I0717 10:33:50.031494 2462495616 main.cpp:133] frame #422, tracking faces: #0 
+I0717 10:33:50.102022 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.074 ms
+I0717 10:33:50.175241 2462495616 main.cpp:133] frame #423, tracking faces: #0 
+I0717 10:33:50.243029 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 60.97 ms
+I0717 10:33:50.318945 2462495616 main.cpp:133] frame #424, tracking faces: #0 
+I0717 10:33:50.405508 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.778 ms
+I0717 10:33:50.495517 2462495616 main.cpp:133] frame #425, tracking faces: #0 
+I0717 10:33:50.561172 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.175 ms
+I0717 10:33:50.627810 2462495616 main.cpp:133] frame #426, tracking faces: #0 
+I0717 10:33:50.706677 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.941 ms
+I0717 10:33:50.794955 2462495616 main.cpp:133] frame #427, tracking faces: #0 
+I0717 10:33:50.875633 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.653 ms
+I0717 10:33:50.960017 2462495616 main.cpp:133] frame #428, tracking faces: #0 
+I0717 10:33:51.045918 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.041 ms
+I0717 10:33:51.162672 2462495616 main.cpp:133] frame #429, tracking faces: #0 
+I0717 10:33:51.250233 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.545 ms
+I0717 10:33:51.325122 2462495616 main.cpp:133] frame #430, tracking faces: #0 
+I0717 10:33:51.444007 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 114.106 ms
+I0717 10:33:51.529127 2462495616 main.cpp:133] frame #431, tracking faces: #0 
+I0717 10:33:51.633239 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 99.989 ms
+I0717 10:33:51.734724 2462495616 main.cpp:133] frame #432, tracking faces: #0 
+I0717 10:33:51.845782 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 105.997 ms
+I0717 10:33:51.929250 2462495616 main.cpp:133] frame #433, tracking faces: #0 
+I0717 10:33:52.030282 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 94.793 ms
+I0717 10:33:52.098829 2462495616 main.cpp:133] frame #434, tracking faces: #0 
+I0717 10:33:52.182219 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.603 ms
+I0717 10:33:52.266273 2462495616 main.cpp:133] frame #435, tracking faces: #0 
+I0717 10:33:52.365764 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 95.83 ms
+I0717 10:33:52.459185 2462495616 main.cpp:133] frame #436, tracking faces: #0 
+I0717 10:33:52.553406 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.777 ms
+I0717 10:33:52.635615 2462495616 main.cpp:133] frame #437, tracking faces: #0 
+I0717 10:33:52.722769 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.494 ms
+I0717 10:33:52.799880 2462495616 main.cpp:133] frame #438, tracking faces: #0 
+I0717 10:33:52.871335 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.529 ms
+I0717 10:33:52.933107 2462495616 main.cpp:133] frame #439, tracking faces: #0 
+I0717 10:33:53.020169 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83 ms
+I0717 10:33:53.099153 2462495616 main.cpp:133] frame #440, tracking faces: #0 
+I0717 10:33:53.203590 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 100.795 ms
+I0717 10:33:53.296082 2462495616 main.cpp:133] frame #441, tracking faces: #0 
+I0717 10:33:53.378496 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.417 ms
+I0717 10:33:53.465265 2462495616 main.cpp:133] frame #442, tracking faces: #0 
+I0717 10:33:53.543318 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.603 ms
+I0717 10:33:53.631826 2462495616 main.cpp:133] frame #443, tracking faces: #0 
+I0717 10:33:53.737999 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 101.96 ms
+I0717 10:33:53.827106 2462495616 main.cpp:133] frame #444, tracking faces: #0 
+I0717 10:33:53.960199 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 128.585 ms
+I0717 10:33:54.067760 2462495616 main.cpp:133] frame #445, tracking faces: #0 
+I0717 10:33:54.160513 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.574 ms
+I0717 10:33:54.243808 2462495616 main.cpp:133] frame #446, tracking faces: #0 
+I0717 10:33:54.342669 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 93.107 ms
+I0717 10:33:54.433091 2462495616 main.cpp:133] frame #447, tracking faces: #0 
+I0717 10:33:54.526365 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.114 ms
+I0717 10:33:54.596024 2462495616 main.cpp:133] frame #448, tracking faces: #0 
+I0717 10:33:54.688146 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.219 ms
+I0717 10:33:54.760571 2462495616 main.cpp:133] frame #449, tracking faces: #0 
+I0717 10:33:54.851011 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.122 ms
+I0717 10:33:54.928787 2462495616 main.cpp:133] frame #450, tracking faces: #0 
+I0717 10:33:55.009500 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.919 ms
+I0717 10:33:55.104413 2462495616 main.cpp:133] frame #451, tracking faces: #0 
+I0717 10:33:55.196893 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.206 ms
+I0717 10:33:55.267408 2462495616 main.cpp:133] frame #452, tracking faces: #0 
+I0717 10:33:55.358024 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.254 ms
+I0717 10:33:55.434257 2462495616 main.cpp:133] frame #453, tracking faces: #0 
+I0717 10:33:55.509888 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.426 ms
+I0717 10:33:55.605100 2462495616 main.cpp:133] frame #454, tracking faces: #0 
+I0717 10:33:55.675504 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.057 ms
+I0717 10:33:55.765962 2462495616 main.cpp:133] frame #455, tracking faces: #0 
+I0717 10:33:55.839514 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.864 ms
+I0717 10:33:55.931733 2462495616 main.cpp:133] frame #456, tracking faces: #0 
+I0717 10:33:56.000337 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.077 ms
+I0717 10:33:56.069396 2462495616 main.cpp:133] frame #457, tracking faces: #0 
+I0717 10:33:56.143668 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.044 ms
+I0717 10:33:56.239380 2462495616 main.cpp:133] frame #458, tracking faces: #0 
+I0717 10:33:56.311820 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.349 ms
+I0717 10:33:56.388172 2462495616 main.cpp:133] frame #459, tracking faces: #0 
+I0717 10:33:56.465232 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.287 ms
+I0717 10:33:56.534096 2462495616 main.cpp:133] frame #460, tracking faces: #0 
+I0717 10:33:56.618391 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.414 ms
+I0717 10:33:56.700274 2462495616 main.cpp:133] frame #461, tracking faces: #0 
+I0717 10:33:56.782181 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.09 ms
+I0717 10:33:56.867720 2462495616 main.cpp:133] frame #462, tracking faces: #0 
+I0717 10:33:56.943832 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.879 ms
+I0717 10:33:57.034940 2462495616 main.cpp:133] frame #463, tracking faces: #0 
+I0717 10:33:57.085465 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 47.237 ms
+I0717 10:33:57.085489 2462495616 main.cpp:251] 	stop tracking face #0, final score: 23.0924
+I0717 10:33:57.092866 2462495616 main.cpp:71] 	save face #0 to /Users/moon/Pictures/faces/0/0.jpg
+I0717 10:33:57.092887 2462495616 main.cpp:72] 	mtcnn score: 0.999786
+I0717 10:33:57.199887 2462495616 main.cpp:133] frame #464, tracking faces: 
+I0717 10:33:57.281311 2462495616 main.cpp:201] 	start tracking face #15, score: 16.5836
+I0717 10:33:57.281332 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.92 ms
+I0717 10:33:57.368203 2462495616 main.cpp:133] frame #465, tracking faces: #15 
+I0717 10:33:57.459723 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.101 ms
+I0717 10:33:57.534710 2462495616 main.cpp:133] frame #466, tracking faces: #15 
+I0717 10:33:57.605845 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.802 ms
+I0717 10:33:57.670964 2462495616 main.cpp:133] frame #467, tracking faces: #15 
+I0717 10:33:57.758239 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.626 ms
+I0717 10:33:57.834795 2462495616 main.cpp:133] frame #468, tracking faces: #15 
+I0717 10:33:57.907610 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.428 ms
+I0717 10:33:57.908294 2462495616 main.cpp:238] 	update selected face, new score: 17.1801
+I0717 10:33:58.007547 2462495616 main.cpp:133] frame #469, tracking faces: #15 
+I0717 10:33:58.078012 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.853 ms
+I0717 10:33:58.078657 2462495616 main.cpp:238] 	update selected face, new score: 18.3125
+I0717 10:33:58.170670 2462495616 main.cpp:133] frame #470, tracking faces: #15 
+I0717 10:33:58.266994 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 91.952 ms
+I0717 10:33:58.367959 2462495616 main.cpp:133] frame #471, tracking faces: #15 
+I0717 10:33:58.478477 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 105.623 ms
+I0717 10:33:58.571373 2462495616 main.cpp:133] frame #472, tracking faces: #15 
+I0717 10:33:58.674294 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 98.842 ms
+I0717 10:33:58.770385 2462495616 main.cpp:133] frame #473, tracking faces: #15 
+I0717 10:33:58.859136 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.355 ms
+I0717 10:33:58.940106 2462495616 main.cpp:133] frame #474, tracking faces: #15 
+I0717 10:33:59.021435 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.842 ms
+I0717 10:33:59.103096 2462495616 main.cpp:133] frame #475, tracking faces: #15 
+I0717 10:33:59.201542 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 93.398 ms
+I0717 10:33:59.297865 2462495616 main.cpp:133] frame #476, tracking faces: #15 
+I0717 10:33:59.405269 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 103.09 ms
+I0717 10:33:59.503693 2462495616 main.cpp:133] frame #477, tracking faces: #15 
+I0717 10:33:59.589360 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.165 ms
+I0717 10:33:59.670511 2462495616 main.cpp:133] frame #478, tracking faces: #15 
+I0717 10:33:59.737188 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.95 ms
+I0717 10:33:59.807034 2462495616 main.cpp:133] frame #479, tracking faces: #15 
+I0717 10:33:59.875675 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.074 ms
+I0717 10:33:59.975149 2462495616 main.cpp:133] frame #480, tracking faces: #15 
+I0717 10:34:00.052623 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.523 ms
+I0717 10:34:00.140132 2462495616 main.cpp:133] frame #481, tracking faces: #15 
+I0717 10:34:00.216157 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.694 ms
+I0717 10:34:00.310050 2462495616 main.cpp:133] frame #482, tracking faces: #15 
+I0717 10:34:00.384194 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.836 ms
+I0717 10:34:00.472298 2462495616 main.cpp:133] frame #483, tracking faces: #15 
+I0717 10:34:00.572423 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 95.803 ms
+I0717 10:34:00.638494 2462495616 main.cpp:133] frame #484, tracking faces: #15 
+I0717 10:34:00.705960 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.208 ms
+I0717 10:34:00.766468 2462495616 main.cpp:133] frame #485, tracking faces: #15 
+I0717 10:34:00.845208 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.077 ms
+I0717 10:34:00.954465 2462495616 main.cpp:133] frame #486, tracking faces: #15 
+I0717 10:34:01.053375 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 95.365 ms
+I0717 10:34:01.143487 2462495616 main.cpp:133] frame #487, tracking faces: #15 
+I0717 10:34:01.218214 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.306 ms
+I0717 10:34:01.298599 2462495616 main.cpp:133] frame #488, tracking faces: #15 
+I0717 10:34:01.389394 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.781 ms
+I0717 10:34:01.488380 2462495616 main.cpp:133] frame #489, tracking faces: #15 
+I0717 10:34:01.579001 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.352 ms
+I0717 10:34:01.676468 2462495616 main.cpp:133] frame #490, tracking faces: #15 
+I0717 10:34:01.759454 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.647 ms
+I0717 10:34:01.839800 2462495616 main.cpp:133] frame #491, tracking faces: #15 
+I0717 10:34:01.917763 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.73 ms
+I0717 10:34:02.011622 2462495616 main.cpp:133] frame #492, tracking faces: #15 
+I0717 10:34:02.086735 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.87 ms
+I0717 10:34:02.183332 2462495616 main.cpp:133] frame #493, tracking faces: #15 
+I0717 10:34:02.253543 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.625 ms
+I0717 10:34:02.334813 2462495616 main.cpp:133] frame #494, tracking faces: #15 
+I0717 10:34:02.415153 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.821 ms
+I0717 10:34:02.507752 2462495616 main.cpp:133] frame #495, tracking faces: #15 
+I0717 10:34:02.585053 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.687 ms
+I0717 10:34:02.679983 2462495616 main.cpp:133] frame #496, tracking faces: #15 
+I0717 10:34:02.751585 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.18 ms
+I0717 10:34:02.845880 2462495616 main.cpp:133] frame #497, tracking faces: #15 
+I0717 10:34:02.921944 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.787 ms
+I0717 10:34:03.008610 2462495616 main.cpp:133] frame #498, tracking faces: #15 
+I0717 10:34:03.081084 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.297 ms
+I0717 10:34:03.142782 2462495616 main.cpp:133] frame #499, tracking faces: #15 
+I0717 10:34:03.213475 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.218 ms
+I0717 10:34:03.276264 2462495616 main.cpp:133] frame #500, tracking faces: #15 
+I0717 10:34:03.369912 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.061 ms
+I0717 10:34:03.441498 2462495616 main.cpp:133] frame #501, tracking faces: #15 
+I0717 10:34:03.521415 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.101 ms
+I0717 10:34:03.613464 2462495616 main.cpp:133] frame #502, tracking faces: #15 
+I0717 10:34:03.681655 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.91 ms
+I0717 10:34:03.780424 2462495616 main.cpp:133] frame #503, tracking faces: #15 
+I0717 10:34:03.856297 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.55 ms
+I0717 10:34:03.941519 2462495616 main.cpp:133] frame #504, tracking faces: #15 
+I0717 10:34:04.000874 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 54.787 ms
+I0717 10:34:04.075173 2462495616 main.cpp:133] frame #505, tracking faces: #15 
+I0717 10:34:04.167274 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.808 ms
+I0717 10:34:04.240097 2462495616 main.cpp:133] frame #506, tracking faces: #15 
+I0717 10:34:04.322365 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.286 ms
+I0717 10:34:04.408309 2462495616 main.cpp:133] frame #507, tracking faces: #15 
+I0717 10:34:04.485559 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.309 ms
+I0717 10:34:04.581431 2462495616 main.cpp:133] frame #508, tracking faces: #15 
+I0717 10:34:04.656647 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.801 ms
+I0717 10:34:04.741514 2462495616 main.cpp:133] frame #509, tracking faces: #15 
+I0717 10:34:04.828524 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.21 ms
+I0717 10:34:04.910223 2462495616 main.cpp:133] frame #510, tracking faces: #15 
+I0717 10:34:04.988028 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.141 ms
+I0717 10:34:05.080714 2462495616 main.cpp:133] frame #511, tracking faces: #15 
+I0717 10:34:05.152247 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.167 ms
+I0717 10:34:05.243499 2462495616 main.cpp:133] frame #512, tracking faces: #15 
+I0717 10:34:05.316800 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.762 ms
+I0717 10:34:05.415087 2462495616 main.cpp:133] frame #513, tracking faces: #15 
+I0717 10:34:05.496707 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.298 ms
+I0717 10:34:05.578358 2462495616 main.cpp:133] frame #514, tracking faces: #15 
+I0717 10:34:05.650199 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.197 ms
+I0717 10:34:05.711043 2462495616 main.cpp:133] frame #515, tracking faces: #15 
+I0717 10:34:05.790449 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.862 ms
+I0717 10:34:05.880321 2462495616 main.cpp:133] frame #516, tracking faces: #15 
+I0717 10:34:05.970971 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 87.19 ms
+I0717 10:34:06.042261 2462495616 main.cpp:133] frame #517, tracking faces: #15 
+I0717 10:34:06.124264 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.632 ms
+I0717 10:34:06.225325 2462495616 main.cpp:133] frame #518, tracking faces: #15 
+I0717 10:34:06.301743 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.379 ms
+I0717 10:34:06.379153 2462495616 main.cpp:133] frame #519, tracking faces: #15 
+I0717 10:34:06.454236 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.575 ms
+I0717 10:34:06.544390 2462495616 main.cpp:133] frame #520, tracking faces: #15 
+I0717 10:34:06.625991 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.253 ms
+I0717 10:34:06.713223 2462495616 main.cpp:133] frame #521, tracking faces: #15 
+I0717 10:34:06.779520 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.408 ms
+I0717 10:34:06.844553 2462495616 main.cpp:133] frame #522, tracking faces: #15 
+I0717 10:34:06.945950 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 96.789 ms
+I0717 10:34:07.011731 2462495616 main.cpp:133] frame #523, tracking faces: #15 
+I0717 10:34:07.098165 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.218 ms
+I0717 10:34:07.178470 2462495616 main.cpp:133] frame #524, tracking faces: #15 
+I0717 10:34:07.262681 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.639 ms
+I0717 10:34:07.348218 2462495616 main.cpp:133] frame #525, tracking faces: #15 
+I0717 10:34:07.445530 2462495616 main.cpp:201] 	start tracking face #16, score: 12.2995
+I0717 10:34:07.445675 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 93.462 ms
+I0717 10:34:07.513813 2462495616 main.cpp:133] frame #526, tracking faces: #15 #16 
+I0717 10:34:07.603663 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.338 ms
+I0717 10:34:07.604450 2462495616 main.cpp:251] 	stop tracking face #16, final score: 12.2995
+I0717 10:34:07.605571 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:34:07.680580 2462495616 main.cpp:133] frame #527, tracking faces: #15 
+I0717 10:34:07.763707 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.554 ms
+I0717 10:34:07.845219 2462495616 main.cpp:133] frame #528, tracking faces: #15 
+I0717 10:34:07.930573 2462495616 main.cpp:201] 	start tracking face #17, score: 11.8309
+I0717 10:34:07.930718 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 80.322 ms
+I0717 10:34:08.008013 2462495616 main.cpp:133] frame #529, tracking faces: #15 #17 
+I0717 10:34:08.095973 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 84.182 ms
+I0717 10:34:08.096812 2462495616 main.cpp:238] 	update selected face, new score: 12.157
+I0717 10:34:08.187589 2462495616 main.cpp:133] frame #530, tracking faces: #15 #17 
+I0717 10:34:08.270171 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.194 ms
+I0717 10:34:08.270854 2462495616 main.cpp:251] 	stop tracking face #17, final score: 12.157
+I0717 10:34:08.271915 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:34:08.346745 2462495616 main.cpp:133] frame #531, tracking faces: #15 
+I0717 10:34:08.430785 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.414 ms
+I0717 10:34:08.533367 2462495616 main.cpp:133] frame #532, tracking faces: #15 
+I0717 10:34:08.617669 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.767 ms
+I0717 10:34:08.713624 2462495616 main.cpp:133] frame #533, tracking faces: #15 
+I0717 10:34:08.806190 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.038 ms
+I0717 10:34:08.879040 2462495616 main.cpp:133] frame #534, tracking faces: #15 
+I0717 10:34:08.961561 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.205 ms
+I0717 10:34:09.067868 2462495616 main.cpp:133] frame #535, tracking faces: #15 
+I0717 10:34:09.157479 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.245 ms
+I0717 10:34:09.246497 2462495616 main.cpp:133] frame #536, tracking faces: #15 
+I0717 10:34:09.340667 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.795 ms
+I0717 10:34:09.413658 2462495616 main.cpp:133] frame #537, tracking faces: #15 
+I0717 10:34:09.523337 2462495616 main.cpp:201] 	start tracking face #18, score: 12.2302
+I0717 10:34:09.523485 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 105.561 ms
+I0717 10:34:09.625763 2462495616 main.cpp:133] frame #538, tracking faces: #15 #18 
+I0717 10:34:09.719538 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.188 ms
+I0717 10:34:09.720780 2462495616 main.cpp:251] 	stop tracking face #18, final score: 12.2302
+I0717 10:34:09.722031 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:34:09.834002 2462495616 main.cpp:133] frame #539, tracking faces: #15 
+I0717 10:34:09.938591 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 97.568 ms
+I0717 10:34:10.012485 2462495616 main.cpp:133] frame #540, tracking faces: #15 
+I0717 10:34:10.111337 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 95.032 ms
+I0717 10:34:10.190134 2462495616 main.cpp:133] frame #541, tracking faces: #15 
+I0717 10:34:10.285550 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 92.09 ms
+I0717 10:34:10.383371 2462495616 main.cpp:133] frame #542, tracking faces: #15 
+I0717 10:34:10.482877 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 96.296 ms
+I0717 10:34:10.549998 2462495616 main.cpp:133] frame #543, tracking faces: #15 
+I0717 10:34:10.630275 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.667 ms
+I0717 10:34:10.720428 2462495616 main.cpp:133] frame #544, tracking faces: #15 
+I0717 10:34:10.803412 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.351 ms
+I0717 10:34:10.883525 2462495616 main.cpp:133] frame #545, tracking faces: #15 
+I0717 10:34:10.966678 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.88 ms
+I0717 10:34:11.053604 2462495616 main.cpp:133] frame #546, tracking faces: #15 
+I0717 10:34:11.118760 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.762 ms
+I0717 10:34:11.184933 2462495616 main.cpp:133] frame #547, tracking faces: #15 
+I0717 10:34:11.274130 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.513 ms
+I0717 10:34:11.350391 2462495616 main.cpp:133] frame #548, tracking faces: #15 
+I0717 10:34:11.430784 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.09 ms
+I0717 10:34:11.520355 2462495616 main.cpp:133] frame #549, tracking faces: #15 
+I0717 10:34:11.614107 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.342 ms
+I0717 10:34:11.684394 2462495616 main.cpp:133] frame #550, tracking faces: #15 
+I0717 10:34:11.765971 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.008 ms
+I0717 10:34:11.850634 2462495616 main.cpp:133] frame #551, tracking faces: #15 
+I0717 10:34:11.939831 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.797 ms
+I0717 10:34:12.021592 2462495616 main.cpp:133] frame #552, tracking faces: #15 
+I0717 10:34:12.096099 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.002 ms
+I0717 10:34:12.213510 2462495616 main.cpp:133] frame #553, tracking faces: #15 
+I0717 10:34:12.287761 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.859 ms
+I0717 10:34:12.382328 2462495616 main.cpp:133] frame #554, tracking faces: #15 
+I0717 10:34:12.459796 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.094 ms
+I0717 10:34:12.551307 2462495616 main.cpp:133] frame #555, tracking faces: #15 
+I0717 10:34:12.636996 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.329 ms
+I0717 10:34:12.722209 2462495616 main.cpp:133] frame #556, tracking faces: #15 
+I0717 10:34:12.806877 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.126 ms
+I0717 10:34:12.885037 2462495616 main.cpp:133] frame #557, tracking faces: #15 
+I0717 10:34:12.977676 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.745 ms
+I0717 10:34:13.068090 2462495616 main.cpp:133] frame #558, tracking faces: #15 
+I0717 10:34:13.132611 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.285 ms
+I0717 10:34:13.217113 2462495616 main.cpp:133] frame #559, tracking faces: #15 
+I0717 10:34:13.298982 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.501 ms
+I0717 10:34:13.403422 2462495616 main.cpp:133] frame #560, tracking faces: #15 
+I0717 10:34:13.465234 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 58.245 ms
+I0717 10:34:13.465898 2462495616 main.cpp:238] 	update selected face, new score: 18.5997
+I0717 10:34:13.552994 2462495616 main.cpp:133] frame #561, tracking faces: #15 
+I0717 10:34:13.631666 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.362 ms
+I0717 10:34:13.632378 2462495616 main.cpp:238] 	update selected face, new score: 18.7565
+I0717 10:34:13.719996 2462495616 main.cpp:133] frame #562, tracking faces: #15 
+I0717 10:34:13.781436 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 58.064 ms
+I0717 10:34:13.854063 2462495616 main.cpp:133] frame #563, tracking faces: #15 
+I0717 10:34:13.948379 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 91.003 ms
+I0717 10:34:14.021971 2462495616 main.cpp:133] frame #564, tracking faces: #15 
+I0717 10:34:14.091889 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.442 ms
+I0717 10:34:14.154291 2462495616 main.cpp:133] frame #565, tracking faces: #15 
+I0717 10:34:14.218381 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 59.743 ms
+I0717 10:34:14.284775 2462495616 main.cpp:133] frame #566, tracking faces: #15 
+I0717 10:34:14.361486 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.164 ms
+I0717 10:34:14.460525 2462495616 main.cpp:133] frame #567, tracking faces: #15 
+I0717 10:34:14.548977 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.069 ms
+I0717 10:34:14.621970 2462495616 main.cpp:133] frame #568, tracking faces: #15 
+I0717 10:34:14.722471 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 96.966 ms
+I0717 10:34:14.789948 2462495616 main.cpp:133] frame #569, tracking faces: #15 
+I0717 10:34:14.884105 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.714 ms
+I0717 10:34:14.992843 2462495616 main.cpp:133] frame #570, tracking faces: #15 
+I0717 10:34:15.062893 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.82 ms
+I0717 10:34:15.159396 2462495616 main.cpp:133] frame #571, tracking faces: #15 
+I0717 10:34:15.237821 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.094 ms
+I0717 10:34:15.326517 2462495616 main.cpp:133] frame #572, tracking faces: #15 
+I0717 10:34:15.415601 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.842 ms
+I0717 10:34:15.537962 2462495616 main.cpp:133] frame #573, tracking faces: #15 
+I0717 10:34:15.611364 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.9 ms
+I0717 10:34:15.679798 2462495616 main.cpp:133] frame #574, tracking faces: #15 
+I0717 10:34:15.766211 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.234 ms
+I0717 10:34:15.846637 2462495616 main.cpp:133] frame #575, tracking faces: #15 
+I0717 10:34:15.905654 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 55.164 ms
+I0717 10:34:15.980633 2462495616 main.cpp:133] frame #576, tracking faces: #15 
+I0717 10:34:16.058687 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.981 ms
+I0717 10:34:16.160588 2462495616 main.cpp:133] frame #577, tracking faces: #15 
+I0717 10:34:16.221899 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 57.998 ms
+I0717 10:34:16.292412 2462495616 main.cpp:133] frame #578, tracking faces: #15 
+I0717 10:34:16.355746 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 58.964 ms
+I0717 10:34:16.355767 2462495616 main.cpp:251] 	stop tracking face #15, final score: 18.7565
+I0717 10:34:16.359153 2462495616 main.cpp:71] 	save face #15 to /Users/moon/Pictures/faces/0/15.jpg
+I0717 10:34:16.359166 2462495616 main.cpp:72] 	mtcnn score: 0.99997
+I0717 10:34:16.427913 2462495616 main.cpp:133] frame #579, tracking faces: 
+I0717 10:34:16.521175 2462495616 main.cpp:201] 	start tracking face #19, score: 17.1765
+I0717 10:34:16.521198 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.87 ms
+I0717 10:34:16.628356 2462495616 main.cpp:133] frame #580, tracking faces: #19 
+I0717 10:34:16.693186 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.623 ms
+I0717 10:34:16.759446 2462495616 main.cpp:133] frame #581, tracking faces: #19 
+I0717 10:34:16.841408 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.926 ms
+I0717 10:34:16.842126 2462495616 main.cpp:238] 	update selected face, new score: 17.8366
+I0717 10:34:16.915048 2462495616 main.cpp:133] frame #582, tracking faces: #19 
+I0717 10:34:16.991027 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.702 ms
+I0717 10:34:17.094668 2462495616 main.cpp:133] frame #583, tracking faces: #19 
+I0717 10:34:17.184052 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.101 ms
+I0717 10:34:17.250002 2462495616 main.cpp:133] frame #584, tracking faces: #19 
+I0717 10:34:17.325685 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.223 ms
+I0717 10:34:17.394182 2462495616 main.cpp:133] frame #585, tracking faces: #19 
+I0717 10:34:17.477211 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.745 ms
+I0717 10:34:17.563016 2462495616 main.cpp:133] frame #586, tracking faces: #19 
+I0717 10:34:17.659485 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 92.473 ms
+I0717 10:34:17.722592 2462495616 main.cpp:133] frame #587, tracking faces: #19 
+I0717 10:34:17.816542 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.561 ms
+I0717 10:34:17.888392 2462495616 main.cpp:133] frame #588, tracking faces: #19 
+I0717 10:34:17.992861 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 99.231 ms
+I0717 10:34:18.087333 2462495616 main.cpp:133] frame #589, tracking faces: #19 
+I0717 10:34:18.165123 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.447 ms
+I0717 10:34:18.253175 2462495616 main.cpp:133] frame #590, tracking faces: #19 
+I0717 10:34:18.323263 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.682 ms
+I0717 10:34:18.396927 2462495616 main.cpp:133] frame #591, tracking faces: #19 
+I0717 10:34:18.492590 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 91.188 ms
+I0717 10:34:18.584223 2462495616 main.cpp:133] frame #592, tracking faces: #19 
+I0717 10:34:18.662922 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.841 ms
+I0717 10:34:18.751623 2462495616 main.cpp:133] frame #593, tracking faces: #19 
+I0717 10:34:18.840589 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.295 ms
+I0717 10:34:18.924306 2462495616 main.cpp:133] frame #594, tracking faces: #19 
+I0717 10:34:19.007153 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.423 ms
+I0717 10:34:19.092095 2462495616 main.cpp:133] frame #595, tracking faces: #19 
+I0717 10:34:19.166512 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.796 ms
+I0717 10:34:19.263523 2462495616 main.cpp:133] frame #596, tracking faces: #19 
+I0717 10:34:19.340082 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.364 ms
+I0717 10:34:19.420799 2462495616 main.cpp:133] frame #597, tracking faces: #19 
+I0717 10:34:19.498502 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.478 ms
+I0717 10:34:19.597827 2462495616 main.cpp:133] frame #598, tracking faces: #19 
+I0717 10:34:19.678989 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.694 ms
+I0717 10:34:19.758576 2462495616 main.cpp:133] frame #599, tracking faces: #19 
+I0717 10:34:19.833348 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.149 ms
+I0717 10:34:19.896268 2462495616 main.cpp:133] frame #600, tracking faces: #19 
+I0717 10:34:19.976897 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.588 ms
+I0717 10:34:20.059806 2462495616 main.cpp:133] frame #601, tracking faces: #19 
+I0717 10:34:20.140858 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.482 ms
+I0717 10:34:20.224354 2462495616 main.cpp:133] frame #602, tracking faces: #19 
+I0717 10:34:20.308145 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.17 ms
+I0717 10:34:20.398434 2462495616 main.cpp:133] frame #603, tracking faces: #19 
+I0717 10:34:20.467854 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.099 ms
+I0717 10:34:20.565765 2462495616 main.cpp:133] frame #604, tracking faces: #19 
+I0717 10:34:20.647035 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.057 ms
+I0717 10:34:20.735499 2462495616 main.cpp:133] frame #605, tracking faces: #19 
+I0717 10:34:20.828220 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.249 ms
+I0717 10:34:20.931531 2462495616 main.cpp:133] frame #606, tracking faces: #19 
+I0717 10:34:21.029852 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 95.047 ms
+I0717 10:34:21.129204 2462495616 main.cpp:133] frame #607, tracking faces: #19 
+I0717 10:34:21.203981 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.502 ms
+I0717 10:34:21.292506 2462495616 main.cpp:133] frame #608, tracking faces: #19 
+I0717 10:34:21.355039 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 58.188 ms
+I0717 10:34:21.425287 2462495616 main.cpp:133] frame #609, tracking faces: #19 
+I0717 10:34:21.523905 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 94.382 ms
+I0717 10:34:21.596946 2462495616 main.cpp:133] frame #610, tracking faces: #19 
+I0717 10:34:21.692236 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 91.819 ms
+I0717 10:34:21.760948 2462495616 main.cpp:133] frame #611, tracking faces: #19 
+I0717 10:34:21.875020 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 110.393 ms
+I0717 10:34:21.961304 2462495616 main.cpp:133] frame #612, tracking faces: #19 
+I0717 10:34:22.038655 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.858 ms
+I0717 10:34:22.129706 2462495616 main.cpp:133] frame #613, tracking faces: #19 
+I0717 10:34:22.217803 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.832 ms
+I0717 10:34:22.294947 2462495616 main.cpp:133] frame #614, tracking faces: #19 
+I0717 10:34:22.364699 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.377 ms
+I0717 10:34:22.458914 2462495616 main.cpp:133] frame #615, tracking faces: #19 
+I0717 10:34:22.531414 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.884 ms
+I0717 10:34:22.596199 2462495616 main.cpp:133] frame #616, tracking faces: #19 
+I0717 10:34:22.671667 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.105 ms
+I0717 10:34:22.767935 2462495616 main.cpp:133] frame #617, tracking faces: #19 
+I0717 10:34:22.860824 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 87.906 ms
+I0717 10:34:22.928468 2462495616 main.cpp:133] frame #618, tracking faces: #19 
+I0717 10:34:23.024391 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.981 ms
+I0717 10:34:23.105305 2462495616 main.cpp:133] frame #619, tracking faces: #19 
+I0717 10:34:23.210813 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 101.423 ms
+I0717 10:34:23.295908 2462495616 main.cpp:133] frame #620, tracking faces: #19 
+I0717 10:34:23.384732 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.361 ms
+I0717 10:34:23.462656 2462495616 main.cpp:133] frame #621, tracking faces: #19 
+I0717 10:34:23.580143 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 113.064 ms
+I0717 10:34:23.661846 2462495616 main.cpp:133] frame #622, tracking faces: #19 
+I0717 10:34:23.749279 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.915 ms
+I0717 10:34:23.823263 2462495616 main.cpp:133] frame #623, tracking faces: #19 
+I0717 10:34:23.906597 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.259 ms
+I0717 10:34:24.003496 2462495616 main.cpp:133] frame #624, tracking faces: #19 
+I0717 10:34:24.113369 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 106.244 ms
+I0717 10:34:24.208438 2462495616 main.cpp:133] frame #625, tracking faces: #19 
+I0717 10:34:24.293138 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.361 ms
+I0717 10:34:24.363277 2462495616 main.cpp:133] frame #626, tracking faces: #19 
+I0717 10:34:24.443241 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.791 ms
+I0717 10:34:24.526788 2462495616 main.cpp:133] frame #627, tracking faces: #19 
+I0717 10:34:24.612949 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.243 ms
+I0717 10:34:24.700994 2462495616 main.cpp:133] frame #628, tracking faces: #19 
+I0717 10:34:24.786618 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.248 ms
+I0717 10:34:24.858191 2462495616 main.cpp:133] frame #629, tracking faces: #19 
+I0717 10:34:24.947664 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.428 ms
+I0717 10:34:25.035298 2462495616 main.cpp:133] frame #630, tracking faces: #19 
+I0717 10:34:25.129678 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.399 ms
+I0717 10:34:25.201794 2462495616 main.cpp:133] frame #631, tracking faces: #19 
+I0717 10:34:25.286264 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.661 ms
+I0717 10:34:25.362618 2462495616 main.cpp:133] frame #632, tracking faces: #19 
+I0717 10:34:25.445446 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.161 ms
+I0717 10:34:25.528329 2462495616 main.cpp:133] frame #633, tracking faces: #19 
+I0717 10:34:25.611994 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.644 ms
+I0717 10:34:25.695502 2462495616 main.cpp:133] frame #634, tracking faces: #19 
+I0717 10:34:25.765223 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.215 ms
+I0717 10:34:25.858728 2462495616 main.cpp:133] frame #635, tracking faces: #19 
+I0717 10:34:25.941431 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.18 ms
+I0717 10:34:26.031242 2462495616 main.cpp:133] frame #636, tracking faces: #19 
+I0717 10:34:26.108685 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.655 ms
+I0717 10:34:26.204234 2462495616 main.cpp:133] frame #637, tracking faces: #19 
+I0717 10:34:26.292659 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.92 ms
+I0717 10:34:26.364843 2462495616 main.cpp:133] frame #638, tracking faces: #19 
+I0717 10:34:26.434206 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.868 ms
+I0717 10:34:26.498186 2462495616 main.cpp:133] frame #639, tracking faces: #19 
+I0717 10:34:26.570003 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.518 ms
+I0717 10:34:26.632949 2462495616 main.cpp:133] frame #640, tracking faces: #19 
+I0717 10:34:26.703877 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.227 ms
+I0717 10:34:26.770705 2462495616 main.cpp:133] frame #641, tracking faces: #19 
+I0717 10:34:26.865794 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 91.179 ms
+I0717 10:34:26.970268 2462495616 main.cpp:133] frame #642, tracking faces: #19 
+I0717 10:34:27.044086 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.276 ms
+I0717 10:34:27.128798 2462495616 main.cpp:133] frame #643, tracking faces: #19 
+I0717 10:34:27.211228 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.451 ms
+I0717 10:34:27.293473 2462495616 main.cpp:133] frame #644, tracking faces: #19 
+I0717 10:34:27.387652 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.531 ms
+I0717 10:34:27.468027 2462495616 main.cpp:133] frame #645, tracking faces: #19 
+I0717 10:34:27.539538 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.463 ms
+I0717 10:34:27.622692 2462495616 main.cpp:133] frame #646, tracking faces: #19 
+I0717 10:34:27.703975 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.876 ms
+I0717 10:34:27.768793 2462495616 main.cpp:133] frame #647, tracking faces: #19 
+I0717 10:34:27.854671 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.102 ms
+I0717 10:34:27.926785 2462495616 main.cpp:133] frame #648, tracking faces: #19 
+I0717 10:34:28.022071 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 91.085 ms
+I0717 10:34:28.097470 2462495616 main.cpp:133] frame #649, tracking faces: #19 
+I0717 10:34:28.191715 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.457 ms
+I0717 10:34:28.268718 2462495616 main.cpp:133] frame #650, tracking faces: #19 
+I0717 10:34:28.357403 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.321 ms
+I0717 10:34:28.434191 2462495616 main.cpp:133] frame #651, tracking faces: #19 
+I0717 10:34:28.518573 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.627 ms
+I0717 10:34:28.593379 2462495616 main.cpp:133] frame #652, tracking faces: #19 
+I0717 10:34:28.681953 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.818 ms
+I0717 10:34:28.761106 2462495616 main.cpp:133] frame #653, tracking faces: #19 
+I0717 10:34:28.844485 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.131 ms
+I0717 10:34:28.932160 2462495616 main.cpp:133] frame #654, tracking faces: #19 
+I0717 10:34:29.007845 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.615 ms
+I0717 10:34:29.099160 2462495616 main.cpp:133] frame #655, tracking faces: #19 
+I0717 10:34:29.168581 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.488 ms
+I0717 10:34:29.233707 2462495616 main.cpp:133] frame #656, tracking faces: #19 
+I0717 10:34:29.298844 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.883 ms
+I0717 10:34:29.397593 2462495616 main.cpp:133] frame #657, tracking faces: #19 
+I0717 10:34:29.468271 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.926 ms
+I0717 10:34:29.562306 2462495616 main.cpp:133] frame #658, tracking faces: #19 
+I0717 10:34:29.618885 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 53.17 ms
+I0717 10:34:29.697145 2462495616 main.cpp:133] frame #659, tracking faces: #19 
+I0717 10:34:29.767807 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.5 ms
+I0717 10:34:29.839680 2462495616 main.cpp:133] frame #660, tracking faces: #19 
+I0717 10:34:29.906302 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.913 ms
+I0717 10:34:29.997349 2462495616 main.cpp:133] frame #661, tracking faces: #19 
+I0717 10:34:30.063379 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.307 ms
+I0717 10:34:30.133352 2462495616 main.cpp:133] frame #662, tracking faces: #19 
+I0717 10:34:30.203338 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.019 ms
+I0717 10:34:30.281244 2462495616 main.cpp:133] frame #663, tracking faces: #19 
+I0717 10:34:30.347548 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.465 ms
+I0717 10:34:30.435560 2462495616 main.cpp:133] frame #664, tracking faces: #19 
+I0717 10:34:30.511446 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.609 ms
+I0717 10:34:30.603974 2462495616 main.cpp:133] frame #665, tracking faces: #19 
+I0717 10:34:30.678416 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.735 ms
+I0717 10:34:30.766222 2462495616 main.cpp:133] frame #666, tracking faces: #19 
+I0717 10:34:30.848634 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.266 ms
+I0717 10:34:30.933768 2462495616 main.cpp:133] frame #667, tracking faces: #19 
+I0717 10:34:31.010485 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.915 ms
+I0717 10:34:31.079743 2462495616 main.cpp:133] frame #668, tracking faces: #19 
+I0717 10:34:31.160204 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.243 ms
+I0717 10:34:31.234370 2462495616 main.cpp:133] frame #669, tracking faces: #19 
+I0717 10:34:31.307530 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.875 ms
+I0717 10:34:31.410558 2462495616 main.cpp:133] frame #670, tracking faces: #19 
+I0717 10:34:31.479089 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.008 ms
+I0717 10:34:31.572206 2462495616 main.cpp:133] frame #671, tracking faces: #19 
+I0717 10:34:31.662469 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.171 ms
+I0717 10:34:31.738759 2462495616 main.cpp:133] frame #672, tracking faces: #19 
+I0717 10:34:31.818121 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.72 ms
+I0717 10:34:31.898088 2462495616 main.cpp:133] frame #673, tracking faces: #19 
+I0717 10:34:31.984987 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.273 ms
+I0717 10:34:32.065294 2462495616 main.cpp:133] frame #674, tracking faces: #19 
+I0717 10:34:32.151502 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.503 ms
+I0717 10:34:32.240721 2462495616 main.cpp:133] frame #675, tracking faces: #19 
+I0717 10:34:32.321808 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.529 ms
+I0717 10:34:32.402201 2462495616 main.cpp:133] frame #676, tracking faces: #19 
+I0717 10:34:32.483718 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.403 ms
+I0717 10:34:32.565332 2462495616 main.cpp:133] frame #677, tracking faces: #19 
+I0717 10:34:32.649358 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.276 ms
+I0717 10:34:32.745554 2462495616 main.cpp:133] frame #678, tracking faces: #19 
+I0717 10:34:32.810847 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.934 ms
+I0717 10:34:32.910957 2462495616 main.cpp:133] frame #679, tracking faces: #19 
+I0717 10:34:32.981848 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.57 ms
+I0717 10:34:33.077946 2462495616 main.cpp:133] frame #680, tracking faces: #19 
+I0717 10:34:33.142024 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 60.745 ms
+I0717 10:34:33.245848 2462495616 main.cpp:133] frame #681, tracking faces: #19 
+I0717 10:34:33.323351 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.933 ms
+I0717 10:34:33.405514 2462495616 main.cpp:133] frame #682, tracking faces: #19 
+I0717 10:34:33.483064 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.968 ms
+I0717 10:34:33.595851 2462495616 main.cpp:133] frame #683, tracking faces: #19 
+I0717 10:34:33.703770 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 102.065 ms
+I0717 10:34:33.798936 2462495616 main.cpp:133] frame #684, tracking faces: #19 
+I0717 10:34:33.894011 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.382 ms
+I0717 10:34:33.970569 2462495616 main.cpp:133] frame #685, tracking faces: #19 
+I0717 10:34:34.053046 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.904 ms
+I0717 10:34:34.146939 2462495616 main.cpp:133] frame #686, tracking faces: #19 
+I0717 10:34:34.226122 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.65 ms
+I0717 10:34:34.301388 2462495616 main.cpp:133] frame #687, tracking faces: #19 
+I0717 10:34:34.387466 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.836 ms
+I0717 10:34:34.466259 2462495616 main.cpp:133] frame #688, tracking faces: #19 
+I0717 10:34:34.547283 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.632 ms
+I0717 10:34:34.638249 2462495616 main.cpp:133] frame #689, tracking faces: #19 
+I0717 10:34:34.721781 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.242 ms
+I0717 10:34:34.845701 2462495616 main.cpp:133] frame #690, tracking faces: #19 
+I0717 10:34:34.917732 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.199 ms
+I0717 10:34:35.003517 2462495616 main.cpp:133] frame #691, tracking faces: #19 
+I0717 10:34:35.106075 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 99.126 ms
+I0717 10:34:35.206584 2462495616 main.cpp:133] frame #692, tracking faces: #19 
+I0717 10:34:35.319766 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 109.648 ms
+I0717 10:34:35.404044 2462495616 main.cpp:133] frame #693, tracking faces: #19 
+I0717 10:34:35.509868 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 100.119 ms
+I0717 10:34:35.609668 2462495616 main.cpp:133] frame #694, tracking faces: #19 
+I0717 10:34:35.709056 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 93.518 ms
+I0717 10:34:35.800709 2462495616 main.cpp:133] frame #695, tracking faces: #19 
+I0717 10:34:35.873317 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.03 ms
+I0717 10:34:35.944766 2462495616 main.cpp:133] frame #696, tracking faces: #19 
+I0717 10:34:36.037329 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.229 ms
+I0717 10:34:36.149406 2462495616 main.cpp:133] frame #697, tracking faces: #19 
+I0717 10:34:36.253536 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 100.073 ms
+I0717 10:34:36.335417 2462495616 main.cpp:133] frame #698, tracking faces: #19 
+I0717 10:34:36.413774 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.872 ms
+I0717 10:34:36.512958 2462495616 main.cpp:133] frame #699, tracking faces: #19 
+I0717 10:34:36.582237 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.586 ms
+I0717 10:34:36.683039 2462495616 main.cpp:133] frame #700, tracking faces: #19 
+I0717 10:34:36.758289 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.793 ms
+I0717 10:34:36.835757 2462495616 main.cpp:133] frame #701, tracking faces: #19 
+I0717 10:34:36.923224 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.144 ms
+I0717 10:34:36.924068 2462495616 main.cpp:238] 	update selected face, new score: 18.6438
+I0717 10:34:37.000499 2462495616 main.cpp:133] frame #702, tracking faces: #19 
+I0717 10:34:37.079607 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.519 ms
+I0717 10:34:37.142789 2462495616 main.cpp:133] frame #703, tracking faces: #19 
+I0717 10:34:37.228013 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.717 ms
+I0717 10:34:37.228819 2462495616 main.cpp:238] 	update selected face, new score: 18.8216
+I0717 10:34:37.312976 2462495616 main.cpp:133] frame #704, tracking faces: #19 
+I0717 10:34:37.384364 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.145 ms
+I0717 10:34:37.475301 2462495616 main.cpp:133] frame #705, tracking faces: #19 
+I0717 10:34:37.565138 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.71 ms
+I0717 10:34:37.641055 2462495616 main.cpp:133] frame #706, tracking faces: #19 
+I0717 10:34:37.721060 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.69 ms
+I0717 10:34:37.803983 2462495616 main.cpp:133] frame #707, tracking faces: #19 
+I0717 10:34:37.915925 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 108.086 ms
+I0717 10:34:38.010789 2462495616 main.cpp:133] frame #708, tracking faces: #19 
+I0717 10:34:38.087819 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.363 ms
+I0717 10:34:38.180670 2462495616 main.cpp:133] frame #709, tracking faces: #19 
+I0717 10:34:38.257200 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.074 ms
+I0717 10:34:38.343030 2462495616 main.cpp:133] frame #710, tracking faces: #19 
+I0717 10:34:38.438622 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.694 ms
+I0717 10:34:38.518376 2462495616 main.cpp:133] frame #711, tracking faces: #19 
+I0717 10:34:38.638594 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 115.271 ms
+I0717 10:34:38.718816 2462495616 main.cpp:133] frame #712, tracking faces: #19 
+I0717 10:34:38.829041 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 102.33 ms
+I0717 10:34:38.903852 2462495616 main.cpp:133] frame #713, tracking faces: #19 
+I0717 10:34:38.997818 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.076 ms
+I0717 10:34:39.074766 2462495616 main.cpp:133] frame #714, tracking faces: #19 
+I0717 10:34:39.152705 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.744 ms
+I0717 10:34:39.252540 2462495616 main.cpp:133] frame #715, tracking faces: #19 
+I0717 10:34:39.338116 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.101 ms
+I0717 10:34:39.408180 2462495616 main.cpp:133] frame #716, tracking faces: #19 
+I0717 10:34:39.509145 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 97.025 ms
+I0717 10:34:39.576179 2462495616 main.cpp:133] frame #717, tracking faces: #19 
+I0717 10:34:39.666316 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.989 ms
+I0717 10:34:39.744365 2462495616 main.cpp:133] frame #718, tracking faces: #19 
+I0717 10:34:39.834367 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.734 ms
+I0717 10:34:39.909024 2462495616 main.cpp:133] frame #719, tracking faces: #19 
+I0717 10:34:39.986006 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.921 ms
+I0717 10:34:40.081423 2462495616 main.cpp:133] frame #720, tracking faces: #19 
+I0717 10:34:40.153662 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.068 ms
+I0717 10:34:40.249217 2462495616 main.cpp:133] frame #721, tracking faces: #19 
+I0717 10:34:40.331185 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.529 ms
+I0717 10:34:40.412468 2462495616 main.cpp:133] frame #722, tracking faces: #19 
+I0717 10:34:40.487752 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.296 ms
+I0717 10:34:40.581527 2462495616 main.cpp:133] frame #723, tracking faces: #19 
+I0717 10:34:40.662021 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.099 ms
+I0717 10:34:40.752229 2462495616 main.cpp:133] frame #724, tracking faces: #19 
+I0717 10:34:40.832623 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.021 ms
+I0717 10:34:40.910842 2462495616 main.cpp:133] frame #725, tracking faces: #19 
+I0717 10:34:40.995396 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.46 ms
+I0717 10:34:41.078125 2462495616 main.cpp:133] frame #726, tracking faces: #19 
+I0717 10:34:41.160229 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.391 ms
+I0717 10:34:41.244904 2462495616 main.cpp:133] frame #727, tracking faces: #19 
+I0717 10:34:41.323637 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.438 ms
+I0717 10:34:41.415968 2462495616 main.cpp:133] frame #728, tracking faces: #19 
+I0717 10:34:41.507040 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 87.77 ms
+I0717 10:34:41.580085 2462495616 main.cpp:133] frame #729, tracking faces: #19 
+I0717 10:34:41.659665 2462495616 main.cpp:201] 	start tracking face #20, score: 13.0179
+I0717 10:34:41.659808 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 75.748 ms
+I0717 10:34:41.746680 2462495616 main.cpp:133] frame #730, tracking faces: #19 #20 
+I0717 10:34:41.828085 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.377 ms
+I0717 10:34:41.830060 2462495616 main.cpp:251] 	stop tracking face #20, final score: 13.0179
+I0717 10:34:41.831320 2462495616 main.cpp:71] 	save face #20 to /Users/moon/Pictures/faces/0/20.jpg
+I0717 10:34:41.831331 2462495616 main.cpp:72] 	mtcnn score: 0.812267
+I0717 10:34:41.926518 2462495616 main.cpp:133] frame #731, tracking faces: #19 
+I0717 10:34:42.008903 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.363 ms
+I0717 10:34:42.080849 2462495616 main.cpp:133] frame #732, tracking faces: #19 
+I0717 10:34:42.149884 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.589 ms
+I0717 10:34:42.216075 2462495616 main.cpp:133] frame #733, tracking faces: #19 
+I0717 10:34:42.298135 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.584 ms
+I0717 10:34:42.375274 2462495616 main.cpp:133] frame #734, tracking faces: #19 
+I0717 10:34:42.469233 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.55 ms
+I0717 10:34:42.551638 2462495616 main.cpp:133] frame #735, tracking faces: #19 
+I0717 10:34:42.629990 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.047 ms
+I0717 10:34:42.711079 2462495616 main.cpp:133] frame #736, tracking faces: #19 
+I0717 10:34:42.807767 2462495616 main.cpp:201] 	start tracking face #21, score: 14.78
+I0717 10:34:42.807905 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 89.977 ms
+I0717 10:34:42.877534 2462495616 main.cpp:133] frame #737, tracking faces: #19 #21 
+I0717 10:34:42.964846 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.896 ms
+I0717 10:34:42.965746 2462495616 main.cpp:251] 	stop tracking face #21, final score: 14.78
+I0717 10:34:42.966946 2462495616 main.cpp:71] 	save face #21 to /Users/moon/Pictures/faces/0/21.jpg
+I0717 10:34:42.966956 2462495616 main.cpp:72] 	mtcnn score: 0.801464
+I0717 10:34:43.047561 2462495616 main.cpp:133] frame #738, tracking faces: #19 
+I0717 10:34:43.112211 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 60.953 ms
+I0717 10:34:43.181219 2462495616 main.cpp:133] frame #739, tracking faces: #19 
+I0717 10:34:43.272747 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.064 ms
+I0717 10:34:43.340898 2462495616 main.cpp:133] frame #740, tracking faces: #19 
+I0717 10:34:43.424860 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.415 ms
+I0717 10:34:43.510702 2462495616 main.cpp:133] frame #741, tracking faces: #19 
+I0717 10:34:43.586320 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.133 ms
+I0717 10:34:43.679908 2462495616 main.cpp:133] frame #742, tracking faces: #19 
+I0717 10:34:43.749078 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.634 ms
+I0717 10:34:43.811868 2462495616 main.cpp:133] frame #743, tracking faces: #19 
+I0717 10:34:43.890940 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.536 ms
+I0717 10:34:44.024158 2462495616 main.cpp:133] frame #744, tracking faces: #19 
+I0717 10:34:44.104537 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.531 ms
+I0717 10:34:44.180069 2462495616 main.cpp:133] frame #745, tracking faces: #19 
+I0717 10:34:44.260303 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.566 ms
+I0717 10:34:44.355034 2462495616 main.cpp:133] frame #746, tracking faces: #19 
+I0717 10:34:44.448098 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 87.592 ms
+I0717 10:34:44.546923 2462495616 main.cpp:133] frame #747, tracking faces: #19 
+I0717 10:34:44.638792 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.306 ms
+I0717 10:34:44.722074 2462495616 main.cpp:133] frame #748, tracking faces: #19 
+I0717 10:34:44.795418 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.539 ms
+I0717 10:34:44.887558 2462495616 main.cpp:133] frame #749, tracking faces: #19 
+I0717 10:34:44.969187 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.783 ms
+I0717 10:34:45.054916 2462495616 main.cpp:133] frame #750, tracking faces: #19 
+I0717 10:34:45.150087 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.703 ms
+I0717 10:34:45.244068 2462495616 main.cpp:133] frame #751, tracking faces: #19 
+I0717 10:34:45.336750 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.097 ms
+I0717 10:34:45.411342 2462495616 main.cpp:133] frame #752, tracking faces: #19 
+I0717 10:34:45.496117 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.092 ms
+I0717 10:34:45.577955 2462495616 main.cpp:133] frame #753, tracking faces: #19 
+I0717 10:34:45.652366 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.15 ms
+I0717 10:34:45.755959 2462495616 main.cpp:133] frame #754, tracking faces: #19 
+I0717 10:34:45.838098 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.589 ms
+I0717 10:34:45.913676 2462495616 main.cpp:133] frame #755, tracking faces: #19 
+I0717 10:34:46.007438 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.236 ms
+I0717 10:34:46.080652 2462495616 main.cpp:133] frame #756, tracking faces: #19 
+I0717 10:34:46.185012 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 100.769 ms
+I0717 10:34:46.247067 2462495616 main.cpp:133] frame #757, tracking faces: #19 
+I0717 10:34:46.323477 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.698 ms
+I0717 10:34:46.416869 2462495616 main.cpp:133] frame #758, tracking faces: #19 
+I0717 10:34:46.495756 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.424 ms
+I0717 10:34:46.585109 2462495616 main.cpp:133] frame #759, tracking faces: #19 
+I0717 10:34:46.673034 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.149 ms
+I0717 10:34:46.751859 2462495616 main.cpp:133] frame #760, tracking faces: #19 
+I0717 10:34:46.835463 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.042 ms
+I0717 10:34:46.916069 2462495616 main.cpp:133] frame #761, tracking faces: #19 
+I0717 10:34:46.999011 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.249 ms
+I0717 10:34:47.083189 2462495616 main.cpp:133] frame #762, tracking faces: #19 
+I0717 10:34:47.161898 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.816 ms
+I0717 10:34:47.250628 2462495616 main.cpp:133] frame #763, tracking faces: #19 
+I0717 10:34:47.329731 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.011 ms
+I0717 10:34:47.418233 2462495616 main.cpp:133] frame #764, tracking faces: #19 
+I0717 10:34:47.504124 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.539 ms
+I0717 10:34:47.582131 2462495616 main.cpp:133] frame #765, tracking faces: #19 
+I0717 10:34:47.661432 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.705 ms
+I0717 10:34:47.749191 2462495616 main.cpp:133] frame #766, tracking faces: #19 
+I0717 10:34:47.828287 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.017 ms
+I0717 10:34:47.919193 2462495616 main.cpp:133] frame #767, tracking faces: #19 
+I0717 10:34:47.995407 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.024 ms
+I0717 10:34:48.087188 2462495616 main.cpp:133] frame #768, tracking faces: #19 
+I0717 10:34:48.162314 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.132 ms
+I0717 10:34:48.265426 2462495616 main.cpp:133] frame #769, tracking faces: #19 
+I0717 10:34:48.336819 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.48 ms
+I0717 10:34:48.415051 2462495616 main.cpp:133] frame #770, tracking faces: #19 
+I0717 10:34:48.483805 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.39 ms
+I0717 10:34:48.553076 2462495616 main.cpp:133] frame #771, tracking faces: #19 
+I0717 10:34:48.631537 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.191 ms
+I0717 10:34:48.719053 2462495616 main.cpp:133] frame #772, tracking faces: #19 
+I0717 10:34:48.794941 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.83 ms
+I0717 10:34:48.886659 2462495616 main.cpp:133] frame #773, tracking faces: #19 
+I0717 10:34:48.953302 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 57.639 ms
+I0717 10:34:49.030177 2462495616 main.cpp:133] frame #774, tracking faces: #19 
+I0717 10:34:49.113375 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.114 ms
+I0717 10:34:49.184615 2462495616 main.cpp:133] frame #775, tracking faces: #19 
+I0717 10:34:49.269094 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.084 ms
+I0717 10:34:49.353024 2462495616 main.cpp:133] frame #776, tracking faces: #19 
+I0717 10:34:49.434191 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.411 ms
+I0717 10:34:49.518209 2462495616 main.cpp:133] frame #777, tracking faces: #19 
+I0717 10:34:49.603368 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.848 ms
+I0717 10:34:49.686719 2462495616 main.cpp:133] frame #778, tracking faces: #19 
+I0717 10:34:49.763536 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.763 ms
+I0717 10:34:49.866082 2462495616 main.cpp:133] frame #779, tracking faces: #19 
+I0717 10:34:49.948412 2462495616 main.cpp:201] 	start tracking face #22, score: 12.7078
+I0717 10:34:49.948554 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 78.334 ms
+I0717 10:34:50.021838 2462495616 main.cpp:133] frame #780, tracking faces: #19 #22 
+I0717 10:34:50.110854 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.552 ms
+I0717 10:34:50.111660 2462495616 main.cpp:251] 	stop tracking face #22, final score: 12.7078
+I0717 10:34:50.112725 2462495616 main.cpp:71] 	save face #22 to /Users/moon/Pictures/faces/0/22.jpg
+I0717 10:34:50.112735 2462495616 main.cpp:72] 	mtcnn score: 0.871319
+I0717 10:34:50.186658 2462495616 main.cpp:133] frame #781, tracking faces: #19 
+I0717 10:34:50.265718 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.448 ms
+I0717 10:34:50.353098 2462495616 main.cpp:133] frame #782, tracking faces: #19 
+I0717 10:34:50.426669 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.632 ms
+I0717 10:34:50.495733 2462495616 main.cpp:133] frame #783, tracking faces: #19 
+I0717 10:34:50.579021 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.948 ms
+I0717 10:34:50.652859 2462495616 main.cpp:133] frame #784, tracking faces: #19 
+I0717 10:34:50.726263 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.22 ms
+I0717 10:34:50.789001 2462495616 main.cpp:133] frame #785, tracking faces: #19 
+I0717 10:34:50.861260 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.963 ms
+I0717 10:34:50.922227 2462495616 main.cpp:133] frame #786, tracking faces: #19 
+I0717 10:34:51.002815 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.326 ms
+I0717 10:34:51.086920 2462495616 main.cpp:133] frame #787, tracking faces: #19 
+I0717 10:34:51.162986 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.039 ms
+I0717 10:34:51.249941 2462495616 main.cpp:133] frame #788, tracking faces: #19 
+I0717 10:34:51.357075 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 103.543 ms
+I0717 10:34:51.466259 2462495616 main.cpp:133] frame #789, tracking faces: #19 
+I0717 10:34:51.530952 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.083 ms
+I0717 10:34:51.620712 2462495616 main.cpp:133] frame #790, tracking faces: #19 
+I0717 10:34:51.701727 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.682 ms
+I0717 10:34:51.787638 2462495616 main.cpp:133] frame #791, tracking faces: #19 
+I0717 10:34:51.851667 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 60.802 ms
+I0717 10:34:51.922502 2462495616 main.cpp:133] frame #792, tracking faces: #19 
+I0717 10:34:51.999976 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.8 ms
+I0717 10:34:52.098799 2462495616 main.cpp:133] frame #793, tracking faces: #19 
+I0717 10:34:52.172219 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.861 ms
+I0717 10:34:52.255925 2462495616 main.cpp:133] frame #794, tracking faces: #19 
+I0717 10:34:52.328809 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.248 ms
+I0717 10:34:52.390523 2462495616 main.cpp:133] frame #795, tracking faces: #19 
+I0717 10:34:52.466022 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.085 ms
+I0717 10:34:52.557898 2462495616 main.cpp:133] frame #796, tracking faces: #19 
+I0717 10:34:52.635130 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.146 ms
+I0717 10:34:52.723348 2462495616 main.cpp:133] frame #797, tracking faces: #19 
+I0717 10:34:52.818235 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.191 ms
+I0717 10:34:52.895740 2462495616 main.cpp:133] frame #798, tracking faces: #19 
+I0717 10:34:53.006530 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 106.808 ms
+I0717 10:34:53.099840 2462495616 main.cpp:133] frame #799, tracking faces: #19 
+I0717 10:34:53.222522 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 117.651 ms
+I0717 10:34:53.294216 2462495616 main.cpp:133] frame #800, tracking faces: #19 
+I0717 10:34:53.407188 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 107.814 ms
+I0717 10:34:53.491761 2462495616 main.cpp:133] frame #801, tracking faces: #19 
+I0717 10:34:53.606791 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 111.431 ms
+I0717 10:34:53.690713 2462495616 main.cpp:133] frame #802, tracking faces: #19 
+I0717 10:34:53.794535 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 99.106 ms
+I0717 10:34:53.896024 2462495616 main.cpp:133] frame #803, tracking faces: #19 
+I0717 10:34:53.988415 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.798 ms
+I0717 10:34:54.060144 2462495616 main.cpp:133] frame #804, tracking faces: #19 
+I0717 10:34:54.133275 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.276 ms
+I0717 10:34:54.222705 2462495616 main.cpp:133] frame #805, tracking faces: #19 
+I0717 10:34:54.310215 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.227 ms
+I0717 10:34:54.390782 2462495616 main.cpp:133] frame #806, tracking faces: #19 
+I0717 10:34:54.461099 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.876 ms
+I0717 10:34:54.525789 2462495616 main.cpp:133] frame #807, tracking faces: #19 
+I0717 10:34:54.604051 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.826 ms
+I0717 10:34:54.692276 2462495616 main.cpp:133] frame #808, tracking faces: #19 
+I0717 10:34:54.779628 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.091 ms
+I0717 10:34:54.858409 2462495616 main.cpp:133] frame #809, tracking faces: #19 
+I0717 10:34:54.929903 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.6 ms
+I0717 10:34:55.024478 2462495616 main.cpp:133] frame #810, tracking faces: #19 
+I0717 10:34:55.114385 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.179 ms
+I0717 10:34:55.189966 2462495616 main.cpp:133] frame #811, tracking faces: #19 
+I0717 10:34:55.272555 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.945 ms
+I0717 10:34:55.357406 2462495616 main.cpp:133] frame #812, tracking faces: #19 
+I0717 10:34:55.429975 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.672 ms
+I0717 10:34:55.523268 2462495616 main.cpp:133] frame #813, tracking faces: #19 
+I0717 10:34:55.594311 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.521 ms
+I0717 10:34:55.698674 2462495616 main.cpp:133] frame #814, tracking faces: #19 
+I0717 10:34:55.770421 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.353 ms
+I0717 10:34:55.852985 2462495616 main.cpp:133] frame #815, tracking faces: #19 
+I0717 10:34:55.934739 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.647 ms
+I0717 10:34:55.998570 2462495616 main.cpp:133] frame #816, tracking faces: #19 
+I0717 10:34:56.087132 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.114 ms
+I0717 10:34:56.157330 2462495616 main.cpp:133] frame #817, tracking faces: #19 
+I0717 10:34:56.232821 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.305 ms
+I0717 10:34:56.294044 2462495616 main.cpp:133] frame #818, tracking faces: #19 
+I0717 10:34:56.368520 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.721 ms
+I0717 10:34:56.459823 2462495616 main.cpp:133] frame #819, tracking faces: #19 
+I0717 10:34:56.549612 2462495616 main.cpp:201] 	start tracking face #23, score: 12.5722
+I0717 10:34:56.549751 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 80.134 ms
+I0717 10:34:56.623869 2462495616 main.cpp:133] frame #820, tracking faces: #19 #23 
+I0717 10:34:56.706368 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.086 ms
+I0717 10:34:56.707363 2462495616 main.cpp:251] 	stop tracking face #23, final score: 12.5722
+I0717 10:34:56.708343 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:34:56.801234 2462495616 main.cpp:133] frame #821, tracking faces: #19 
+I0717 10:34:56.892904 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.137 ms
+I0717 10:34:56.964747 2462495616 main.cpp:133] frame #822, tracking faces: #19 
+I0717 10:34:57.059312 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.418 ms
+I0717 10:34:57.130466 2462495616 main.cpp:133] frame #823, tracking faces: #19 
+I0717 10:34:57.213479 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.302 ms
+I0717 10:34:57.297981 2462495616 main.cpp:133] frame #824, tracking faces: #19 
+I0717 10:34:57.381290 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.98 ms
+I0717 10:34:57.460520 2462495616 main.cpp:133] frame #825, tracking faces: #19 
+I0717 10:34:57.543587 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.585 ms
+I0717 10:34:57.642474 2462495616 main.cpp:133] frame #826, tracking faces: #19 
+I0717 10:34:57.710077 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.264 ms
+I0717 10:34:57.802635 2462495616 main.cpp:133] frame #827, tracking faces: #19 
+I0717 10:34:57.894466 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.254 ms
+I0717 10:34:57.959406 2462495616 main.cpp:133] frame #828, tracking faces: #19 
+I0717 10:34:58.054013 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.203 ms
+I0717 10:34:58.124850 2462495616 main.cpp:133] frame #829, tracking faces: #19 
+I0717 10:34:58.207394 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.955 ms
+I0717 10:34:58.295315 2462495616 main.cpp:133] frame #830, tracking faces: #19 
+I0717 10:34:58.372344 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.021 ms
+I0717 10:34:58.471192 2462495616 main.cpp:133] frame #831, tracking faces: #19 
+I0717 10:34:58.542493 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.592 ms
+I0717 10:34:58.625835 2462495616 main.cpp:133] frame #832, tracking faces: #19 
+I0717 10:34:58.706809 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.71 ms
+I0717 10:34:58.793020 2462495616 main.cpp:133] frame #833, tracking faces: #19 
+I0717 10:34:58.901635 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 104.867 ms
+I0717 10:34:58.993723 2462495616 main.cpp:133] frame #834, tracking faces: #19 
+I0717 10:34:59.079857 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.154 ms
+I0717 10:34:59.157780 2462495616 main.cpp:133] frame #835, tracking faces: #19 
+I0717 10:34:59.236449 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.262 ms
+I0717 10:34:59.304312 2462495616 main.cpp:133] frame #836, tracking faces: #19 
+I0717 10:34:59.399015 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.89 ms
+I0717 10:34:59.493618 2462495616 main.cpp:133] frame #837, tracking faces: #19 
+I0717 10:34:59.566826 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.499 ms
+I0717 10:34:59.670773 2462495616 main.cpp:133] frame #838, tracking faces: #19 
+I0717 10:34:59.741811 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.44 ms
+I0717 10:34:59.827813 2462495616 main.cpp:133] frame #839, tracking faces: #19 
+I0717 10:34:59.897992 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.428 ms
+I0717 10:35:00.005975 2462495616 main.cpp:133] frame #840, tracking faces: #19 
+I0717 10:35:00.063205 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 53.588 ms
+I0717 10:35:00.131656 2462495616 main.cpp:133] frame #841, tracking faces: #19 
+I0717 10:35:00.196183 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 59.488 ms
+I0717 10:35:00.262624 2462495616 main.cpp:133] frame #842, tracking faces: #19 
+I0717 10:35:00.341543 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.369 ms
+I0717 10:35:00.431322 2462495616 main.cpp:133] frame #843, tracking faces: #19 
+I0717 10:35:00.514943 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.088 ms
+I0717 10:35:00.599570 2462495616 main.cpp:133] frame #844, tracking faces: #19 
+I0717 10:35:00.693538 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.572 ms
+I0717 10:35:00.767602 2462495616 main.cpp:133] frame #845, tracking faces: #19 
+I0717 10:35:00.857331 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.996 ms
+I0717 10:35:00.932170 2462495616 main.cpp:133] frame #846, tracking faces: #19 
+I0717 10:35:01.021003 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.408 ms
+I0717 10:35:01.099293 2462495616 main.cpp:133] frame #847, tracking faces: #19 
+I0717 10:35:01.190973 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 88.001 ms
+I0717 10:35:01.263784 2462495616 main.cpp:133] frame #848, tracking faces: #19 
+I0717 10:35:01.350600 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.12 ms
+I0717 10:35:01.429819 2462495616 main.cpp:133] frame #849, tracking faces: #19 
+I0717 10:35:01.491178 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 55.56 ms
+I0717 10:35:01.565467 2462495616 main.cpp:133] frame #850, tracking faces: #19 
+I0717 10:35:01.637732 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.642 ms
+I0717 10:35:01.700449 2462495616 main.cpp:133] frame #851, tracking faces: #19 
+I0717 10:35:01.773705 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.394 ms
+I0717 10:35:01.868474 2462495616 main.cpp:133] frame #852, tracking faces: #19 
+I0717 10:35:01.931893 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 60.119 ms
+I0717 10:35:02.000514 2462495616 main.cpp:133] frame #853, tracking faces: #19 
+I0717 10:35:02.084769 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.173 ms
+I0717 10:35:02.165688 2462495616 main.cpp:133] frame #854, tracking faces: #19 
+I0717 10:35:02.245050 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.007 ms
+I0717 10:35:02.330040 2462495616 main.cpp:133] frame #855, tracking faces: #19 
+I0717 10:35:02.414899 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.802 ms
+I0717 10:35:02.497802 2462495616 main.cpp:133] frame #856, tracking faces: #19 
+I0717 10:35:02.571713 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.093 ms
+I0717 10:35:02.662381 2462495616 main.cpp:133] frame #857, tracking faces: #19 
+I0717 10:35:02.740118 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.423 ms
+I0717 10:35:02.833043 2462495616 main.cpp:133] frame #858, tracking faces: #19 
+I0717 10:35:02.941289 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 104.001 ms
+I0717 10:35:03.031931 2462495616 main.cpp:133] frame #859, tracking faces: #19 
+I0717 10:35:03.138334 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 102.437 ms
+I0717 10:35:03.235774 2462495616 main.cpp:133] frame #860, tracking faces: #19 
+I0717 10:35:03.324280 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.644 ms
+I0717 10:35:03.404383 2462495616 main.cpp:133] frame #861, tracking faces: #19 
+I0717 10:35:03.489877 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.125 ms
+I0717 10:35:03.562752 2462495616 main.cpp:133] frame #862, tracking faces: #19 
+I0717 10:35:03.654536 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.112 ms
+I0717 10:35:03.731269 2462495616 main.cpp:133] frame #863, tracking faces: #19 
+I0717 10:35:03.813746 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.595 ms
+I0717 10:35:03.898444 2462495616 main.cpp:133] frame #864, tracking faces: #19 
+I0717 10:35:03.969188 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.889 ms
+I0717 10:35:04.033619 2462495616 main.cpp:133] frame #865, tracking faces: #19 
+I0717 10:35:04.116796 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.239 ms
+I0717 10:35:04.196986 2462495616 main.cpp:133] frame #866, tracking faces: #19 
+I0717 10:35:04.272900 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.936 ms
+I0717 10:35:04.343122 2462495616 main.cpp:133] frame #867, tracking faces: #19 
+I0717 10:35:04.443930 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 94.076 ms
+I0717 10:35:04.541934 2462495616 main.cpp:133] frame #868, tracking faces: #19 
+I0717 10:35:04.629659 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.772 ms
+I0717 10:35:04.706506 2462495616 main.cpp:133] frame #869, tracking faces: #19 
+I0717 10:35:04.799270 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.264 ms
+I0717 10:35:04.873697 2462495616 main.cpp:133] frame #870, tracking faces: #19 
+I0717 10:35:04.971043 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 93.233 ms
+I0717 10:35:05.038408 2462495616 main.cpp:133] frame #871, tracking faces: #19 
+I0717 10:35:05.125447 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.925 ms
+I0717 10:35:05.201012 2462495616 main.cpp:133] frame #872, tracking faces: #19 
+I0717 10:35:05.274652 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.114 ms
+I0717 10:35:05.420528 2462495616 main.cpp:133] frame #873, tracking faces: #19 
+I0717 10:35:05.534843 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 106.354 ms
+I0717 10:35:05.535562 2462495616 main.cpp:238] 	update selected face, new score: 18.9346
+I0717 10:35:05.596968 2462495616 main.cpp:133] frame #874, tracking faces: #19 
+I0717 10:35:05.672144 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.564 ms
+I0717 10:35:05.774803 2462495616 main.cpp:133] frame #875, tracking faces: #19 
+I0717 10:35:05.849339 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.123 ms
+I0717 10:35:05.933503 2462495616 main.cpp:133] frame #876, tracking faces: #19 
+I0717 10:35:06.016273 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.249 ms
+I0717 10:35:06.111109 2462495616 main.cpp:133] frame #877, tracking faces: #19 
+I0717 10:35:06.182866 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.363 ms
+I0717 10:35:06.275297 2462495616 main.cpp:133] frame #878, tracking faces: #19 
+I0717 10:35:06.349838 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.988 ms
+I0717 10:35:06.450616 2462495616 main.cpp:133] frame #879, tracking faces: #19 
+I0717 10:35:06.549868 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 95.023 ms
+I0717 10:35:06.631183 2462495616 main.cpp:133] frame #880, tracking faces: #19 
+I0717 10:35:06.705240 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.514 ms
+I0717 10:35:06.812669 2462495616 main.cpp:133] frame #881, tracking faces: #19 
+I0717 10:35:06.888515 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.243 ms
+I0717 10:35:06.971346 2462495616 main.cpp:133] frame #882, tracking faces: #19 
+I0717 10:35:07.054226 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.884 ms
+I0717 10:35:07.139003 2462495616 main.cpp:133] frame #883, tracking faces: #19 
+I0717 10:35:07.224329 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.89 ms
+I0717 10:35:07.305838 2462495616 main.cpp:133] frame #884, tracking faces: #19 
+I0717 10:35:07.383329 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.064 ms
+I0717 10:35:07.472482 2462495616 main.cpp:133] frame #885, tracking faces: #19 
+I0717 10:35:07.565073 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.099 ms
+I0717 10:35:07.640241 2462495616 main.cpp:133] frame #886, tracking faces: #19 
+I0717 10:35:07.716657 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.026 ms
+I0717 10:35:07.807902 2462495616 main.cpp:133] frame #887, tracking faces: #19 
+I0717 10:35:07.890885 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.602 ms
+I0717 10:35:07.964211 2462495616 main.cpp:133] frame #888, tracking faces: #19 
+I0717 10:35:08.049952 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.298 ms
+I0717 10:35:08.141777 2462495616 main.cpp:133] frame #889, tracking faces: #19 
+I0717 10:35:08.206431 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 61.259 ms
+I0717 10:35:08.275424 2462495616 main.cpp:133] frame #890, tracking faces: #19 
+I0717 10:35:08.355084 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.151 ms
+I0717 10:35:08.440663 2462495616 main.cpp:133] frame #891, tracking faces: #19 
+I0717 10:35:08.544900 2462495616 main.cpp:201] 	start tracking face #24, score: 13.0219
+I0717 10:35:08.545135 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 100.141 ms
+I0717 10:35:08.617295 2462495616 main.cpp:133] frame #892, tracking faces: #19 #24 
+I0717 10:35:08.684711 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 63.238 ms
+I0717 10:35:08.685755 2462495616 main.cpp:251] 	stop tracking face #24, final score: 13.0219
+I0717 10:35:08.687268 2462495616 main.cpp:71] 	save face #24 to /Users/moon/Pictures/faces/0/24.jpg
+I0717 10:35:08.687283 2462495616 main.cpp:72] 	mtcnn score: 0.823017
+I0717 10:35:08.774641 2462495616 main.cpp:133] frame #893, tracking faces: #19 
+I0717 10:35:08.847976 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.818 ms
+I0717 10:35:08.941262 2462495616 main.cpp:133] frame #894, tracking faces: #19 
+I0717 10:35:09.052376 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 107.177 ms
+I0717 10:35:09.141652 2462495616 main.cpp:133] frame #895, tracking faces: #19 
+I0717 10:35:09.222251 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.557 ms
+I0717 10:35:09.309200 2462495616 main.cpp:133] frame #896, tracking faces: #19 
+I0717 10:35:09.404311 2462495616 main.cpp:201] 	start tracking face #25, score: 15.95
+I0717 10:35:09.404458 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 91.138 ms
+I0717 10:35:09.466104 2462495616 main.cpp:133] frame #897, tracking faces: #19 #25 
+I0717 10:35:09.560946 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 91.315 ms
+I0717 10:35:09.561769 2462495616 main.cpp:251] 	stop tracking face #25, final score: 15.95
+I0717 10:35:09.562927 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:35:09.634335 2462495616 main.cpp:133] frame #898, tracking faces: #19 
+I0717 10:35:09.721244 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.171 ms
+I0717 10:35:09.799891 2462495616 main.cpp:133] frame #899, tracking faces: #19 
+I0717 10:35:09.891973 2462495616 main.cpp:201] 	start tracking face #26, score: 14.3828
+I0717 10:35:09.892105 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 88.051 ms
+I0717 10:35:09.966835 2462495616 main.cpp:133] frame #900, tracking faces: #19 #26 
+I0717 10:35:10.056376 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 85.792 ms
+I0717 10:35:10.057317 2462495616 main.cpp:238] 	update selected face, new score: 15.8258
+I0717 10:35:10.143530 2462495616 main.cpp:133] frame #901, tracking faces: #19 #26 
+I0717 10:35:10.216815 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 69.807 ms
+I0717 10:35:10.309844 2462495616 main.cpp:133] frame #902, tracking faces: #19 #26 
+I0717 10:35:10.388335 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 75.009 ms
+I0717 10:35:10.475308 2462495616 main.cpp:133] frame #903, tracking faces: #19 #26 
+I0717 10:35:10.544543 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.859 ms
+I0717 10:35:10.545416 2462495616 main.cpp:251] 	stop tracking face #26, final score: 15.8258
+I0717 10:35:10.546417 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:35:10.644628 2462495616 main.cpp:133] frame #904, tracking faces: #19 
+I0717 10:35:10.730787 2462495616 main.cpp:201] 	start tracking face #27, score: 14.0689
+I0717 10:35:10.730923 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 82.307 ms
+I0717 10:35:10.810518 2462495616 main.cpp:133] frame #905, tracking faces: #19 #27 
+I0717 10:35:10.888103 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.087 ms
+I0717 10:35:10.889046 2462495616 main.cpp:251] 	stop tracking face #27, final score: 14.0689
+I0717 10:35:10.890174 2462495616 main.cpp:71] 	save face #27 to /Users/moon/Pictures/faces/0/27.jpg
+I0717 10:35:10.890183 2462495616 main.cpp:72] 	mtcnn score: 0.973911
+I0717 10:35:10.977074 2462495616 main.cpp:133] frame #906, tracking faces: #19 
+I0717 10:35:11.066293 2462495616 main.cpp:201] 	start tracking face #28, score: 15.202
+I0717 10:35:11.066494 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 85.066 ms
+I0717 10:35:11.139485 2462495616 main.cpp:133] frame #907, tracking faces: #19 #28 
+I0717 10:35:11.222054 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.232 ms
+I0717 10:35:11.223095 2462495616 main.cpp:251] 	stop tracking face #28, final score: 15.202
+I0717 10:35:11.224277 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:35:11.314007 2462495616 main.cpp:133] frame #908, tracking faces: #19 
+I0717 10:35:11.398056 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.203 ms
+I0717 10:35:11.468621 2462495616 main.cpp:133] frame #909, tracking faces: #19 
+I0717 10:35:11.545326 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.37 ms
+I0717 10:35:11.636394 2462495616 main.cpp:133] frame #910, tracking faces: #19 
+I0717 10:35:11.731518 2462495616 main.cpp:201] 	start tracking face #29, score: 15.1625
+I0717 10:35:11.731657 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 90.927 ms
+I0717 10:35:11.803149 2462495616 main.cpp:133] frame #911, tracking faces: #19 #29 
+I0717 10:35:11.890017 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 83.533 ms
+I0717 10:35:11.969542 2462495616 main.cpp:133] frame #912, tracking faces: #19 #29 
+I0717 10:35:12.062846 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 89.794 ms
+I0717 10:35:12.063861 2462495616 main.cpp:238] 	update selected face, new score: 15.1864
+I0717 10:35:12.143412 2462495616 main.cpp:133] frame #913, tracking faces: #19 #29 
+I0717 10:35:12.224086 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 77.12 ms
+I0717 10:35:12.310235 2462495616 main.cpp:133] frame #914, tracking faces: #19 #29 
+I0717 10:35:12.417421 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 103.351 ms
+I0717 10:35:12.478492 2462495616 main.cpp:133] frame #915, tracking faces: #19 #29 
+I0717 10:35:12.575064 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 93.074 ms
+I0717 10:35:12.645967 2462495616 main.cpp:133] frame #916, tracking faces: #19 #29 
+I0717 10:35:12.732090 2462495616 main.cpp:215] 	detected 2 Persons. time eclipsed: 82.638 ms
+I0717 10:35:12.812855 2462495616 main.cpp:133] frame #917, tracking faces: #19 #29 
+I0717 10:35:12.873986 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 57.63 ms
+I0717 10:35:12.875268 2462495616 main.cpp:251] 	stop tracking face #29, final score: 15.1864
+I0717 10:35:12.876245 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:35:12.945677 2462495616 main.cpp:133] frame #918, tracking faces: #19 
+I0717 10:35:13.034440 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.061 ms
+I0717 10:35:13.111363 2462495616 main.cpp:133] frame #919, tracking faces: #19 
+I0717 10:35:13.180766 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 66.022 ms
+I0717 10:35:13.243867 2462495616 main.cpp:133] frame #920, tracking faces: #19 
+I0717 10:35:13.323879 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.458 ms
+I0717 10:35:13.412370 2462495616 main.cpp:133] frame #921, tracking faces: #19 
+I0717 10:35:13.478822 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.798 ms
+I0717 10:35:13.479702 2462495616 main.cpp:238] 	update selected face, new score: 19.0587
+I0717 10:35:13.546643 2462495616 main.cpp:133] frame #922, tracking faces: #19 
+I0717 10:35:13.622920 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.724 ms
+I0717 10:35:13.623736 2462495616 main.cpp:238] 	update selected face, new score: 19.2102
+I0717 10:35:13.713740 2462495616 main.cpp:133] frame #923, tracking faces: #19 
+I0717 10:35:13.800274 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.13 ms
+I0717 10:35:13.801107 2462495616 main.cpp:238] 	update selected face, new score: 19.614
+I0717 10:35:13.880553 2462495616 main.cpp:133] frame #924, tracking faces: #19 
+I0717 10:35:13.970681 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.8 ms
+I0717 10:35:14.046051 2462495616 main.cpp:133] frame #925, tracking faces: #19 
+I0717 10:35:14.130404 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.817 ms
+I0717 10:35:14.131134 2462495616 main.cpp:238] 	update selected face, new score: 19.6897
+I0717 10:35:14.213219 2462495616 main.cpp:133] frame #926, tracking faces: #19 
+I0717 10:35:14.288645 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.895 ms
+I0717 10:35:14.379438 2462495616 main.cpp:133] frame #927, tracking faces: #19 
+I0717 10:35:14.463582 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.224 ms
+I0717 10:35:14.547109 2462495616 main.cpp:133] frame #928, tracking faces: #19 
+I0717 10:35:14.636348 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.721 ms
+I0717 10:35:14.713924 2462495616 main.cpp:133] frame #929, tracking faces: #19 
+I0717 10:35:14.845669 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 127.754 ms
+I0717 10:35:14.966960 2462495616 main.cpp:133] frame #930, tracking faces: #19 
+I0717 10:35:15.123785 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 152.125 ms
+I0717 10:35:15.242542 2462495616 main.cpp:133] frame #931, tracking faces: #19 
+I0717 10:35:15.366408 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 118.367 ms
+I0717 10:35:15.513420 2462495616 main.cpp:133] frame #932, tracking faces: #19 
+I0717 10:35:15.698477 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 163.665 ms
+I0717 10:35:15.809823 2462495616 main.cpp:133] frame #933, tracking faces: #19 
+I0717 10:35:15.937724 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 124.362 ms
+I0717 10:35:16.045178 2462495616 main.cpp:133] frame #934, tracking faces: #19 
+I0717 10:35:16.156925 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 108.526 ms
+I0717 10:35:16.245218 2462495616 main.cpp:133] frame #935, tracking faces: #19 
+I0717 10:35:16.351944 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 103.531 ms
+I0717 10:35:16.447033 2462495616 main.cpp:133] frame #936, tracking faces: #19 
+I0717 10:35:16.544392 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 92.937 ms
+I0717 10:35:16.627812 2462495616 main.cpp:133] frame #937, tracking faces: #19 
+I0717 10:35:16.743846 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 111.075 ms
+I0717 10:35:16.850242 2462495616 main.cpp:133] frame #938, tracking faces: #19 
+I0717 10:35:16.966404 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 112.834 ms
+I0717 10:35:17.049147 2462495616 main.cpp:133] frame #939, tracking faces: #19 
+I0717 10:35:17.152076 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 99.721 ms
+I0717 10:35:17.249924 2462495616 main.cpp:133] frame #940, tracking faces: #19 
+I0717 10:35:17.349460 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 96.321 ms
+I0717 10:35:17.448926 2462495616 main.cpp:133] frame #941, tracking faces: #19 
+I0717 10:35:17.557889 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 105.708 ms
+I0717 10:35:17.558614 2462495616 main.cpp:238] 	update selected face, new score: 19.7992
+I0717 10:35:17.650226 2462495616 main.cpp:133] frame #942, tracking faces: #19 
+I0717 10:35:17.745913 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.764 ms
+I0717 10:35:17.752347 2462495616 main.cpp:238] 	update selected face, new score: 19.9311
+I0717 10:35:17.849164 2462495616 main.cpp:133] frame #943, tracking faces: #19 
+I0717 10:35:17.933909 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 81.494 ms
+I0717 10:35:18.016008 2462495616 main.cpp:133] frame #944, tracking faces: #19 
+I0717 10:35:18.128031 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 107.034 ms
+I0717 10:35:18.130808 2462495616 main.cpp:238] 	update selected face, new score: 20.2971
+I0717 10:35:18.202920 2462495616 main.cpp:133] frame #945, tracking faces: #19 
+I0717 10:35:18.323515 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 116.949 ms
+I0717 10:35:18.417840 2462495616 main.cpp:133] frame #946, tracking faces: #19 
+I0717 10:35:18.531886 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 109.517 ms
+I0717 10:35:18.615562 2462495616 main.cpp:133] frame #947, tracking faces: #19 
+I0717 10:35:18.701723 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.921 ms
+I0717 10:35:18.783404 2462495616 main.cpp:133] frame #948, tracking faces: #19 
+I0717 10:35:18.868365 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 81.796 ms
+I0717 10:35:18.868386 2462495616 main.cpp:251] 	stop tracking face #19, final score: 20.2971
+I0717 10:35:18.877266 2462495616 main.cpp:71] 	save face #19 to /Users/moon/Pictures/faces/0/19.jpg
+I0717 10:35:18.877459 2462495616 main.cpp:72] 	mtcnn score: 0.994919
+I0717 10:35:18.950678 2462495616 main.cpp:133] frame #949, tracking faces: 
+I0717 10:35:19.044411 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 86.999 ms
+I0717 10:35:19.117187 2462495616 main.cpp:133] frame #950, tracking faces: 
+I0717 10:35:19.192054 2462495616 main.cpp:201] 	start tracking face #30, score: 18.2297
+I0717 10:35:19.192077 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.372 ms
+I0717 10:35:19.275305 2462495616 main.cpp:133] frame #951, tracking faces: #30 
+I0717 10:35:19.357674 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.836 ms
+I0717 10:35:19.358522 2462495616 main.cpp:238] 	update selected face, new score: 18.3147
+I0717 10:35:19.452353 2462495616 main.cpp:133] frame #952, tracking faces: #30 
+I0717 10:35:19.539275 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.751 ms
+I0717 10:35:19.613001 2462495616 main.cpp:133] frame #953, tracking faces: #30 
+I0717 10:35:19.693401 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.164 ms
+I0717 10:35:19.779948 2462495616 main.cpp:133] frame #954, tracking faces: #30 
+I0717 10:35:19.858028 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.119 ms
+I0717 10:35:19.948727 2462495616 main.cpp:133] frame #955, tracking faces: #30 
+I0717 10:35:20.034050 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 80.922 ms
+I0717 10:35:20.116570 2462495616 main.cpp:133] frame #956, tracking faces: #30 
+I0717 10:35:20.211359 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 91.438 ms
+I0717 10:35:20.284356 2462495616 main.cpp:133] frame #957, tracking faces: #30 
+I0717 10:35:20.365131 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.534 ms
+I0717 10:35:20.451148 2462495616 main.cpp:133] frame #958, tracking faces: #30 
+I0717 10:35:20.540786 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.04 ms
+I0717 10:35:20.618528 2462495616 main.cpp:133] frame #959, tracking faces: #30 
+I0717 10:35:20.708258 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 86.471 ms
+I0717 10:35:20.785658 2462495616 main.cpp:133] frame #960, tracking faces: #30 
+I0717 10:35:20.865897 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.983 ms
+I0717 10:35:20.953552 2462495616 main.cpp:133] frame #961, tracking faces: #30 
+I0717 10:35:21.048457 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 91.576 ms
+I0717 10:35:21.121316 2462495616 main.cpp:133] frame #962, tracking faces: #30 
+I0717 10:35:21.207298 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.508 ms
+I0717 10:35:21.287292 2462495616 main.cpp:133] frame #963, tracking faces: #30 
+I0717 10:35:21.386165 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 95.523 ms
+I0717 10:35:21.453550 2462495616 main.cpp:133] frame #964, tracking faces: #30 
+I0717 10:35:21.546846 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.042 ms
+I0717 10:35:21.547827 2462495616 main.cpp:238] 	update selected face, new score: 18.5134
+I0717 10:35:21.653301 2462495616 main.cpp:133] frame #965, tracking faces: #30 
+I0717 10:35:21.736117 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.588 ms
+I0717 10:35:21.821408 2462495616 main.cpp:133] frame #966, tracking faces: #30 
+I0717 10:35:21.902263 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.469 ms
+I0717 10:35:21.987864 2462495616 main.cpp:133] frame #967, tracking faces: #30 
+I0717 10:35:22.092532 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 101.309 ms
+I0717 10:35:22.187163 2462495616 main.cpp:133] frame #968, tracking faces: #30 
+I0717 10:35:22.292793 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 102.335 ms
+I0717 10:35:22.388425 2462495616 main.cpp:133] frame #969, tracking faces: #30 
+I0717 10:35:22.480918 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.116 ms
+I0717 10:35:22.481876 2462495616 main.cpp:238] 	update selected face, new score: 18.5932
+I0717 10:35:22.556021 2462495616 main.cpp:133] frame #970, tracking faces: #30 
+I0717 10:35:22.637323 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.879 ms
+I0717 10:35:22.638273 2462495616 main.cpp:238] 	update selected face, new score: 18.6601
+I0717 10:35:22.713413 2462495616 main.cpp:133] frame #971, tracking faces: #30 
+I0717 10:35:22.793943 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.192 ms
+I0717 10:35:22.888069 2462495616 main.cpp:133] frame #972, tracking faces: #30 
+I0717 10:35:22.970710 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.374 ms
+I0717 10:35:23.054611 2462495616 main.cpp:133] frame #973, tracking faces: #30 
+I0717 10:35:23.141930 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 84.015 ms
+I0717 10:35:23.221493 2462495616 main.cpp:133] frame #974, tracking faces: #30 
+I0717 10:35:23.314513 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.275 ms
+I0717 10:35:23.388100 2462495616 main.cpp:133] frame #975, tracking faces: #30 
+I0717 10:35:23.467838 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.426 ms
+I0717 10:35:23.553983 2462495616 main.cpp:133] frame #976, tracking faces: #30 
+I0717 10:35:23.621515 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 64.3 ms
+I0717 10:35:23.687047 2462495616 main.cpp:133] frame #977, tracking faces: #30 
+I0717 10:35:23.768311 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 77.976 ms
+I0717 10:35:23.852002 2462495616 main.cpp:133] frame #978, tracking faces: #30 
+I0717 10:35:23.931020 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.716 ms
+I0717 10:35:23.931890 2462495616 main.cpp:238] 	update selected face, new score: 18.9287
+I0717 10:35:24.021781 2462495616 main.cpp:133] frame #979, tracking faces: #30 
+I0717 10:35:24.107515 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.469 ms
+I0717 10:35:24.187767 2462495616 main.cpp:133] frame #980, tracking faces: #30 
+I0717 10:35:24.282486 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 91.469 ms
+I0717 10:35:24.354084 2462495616 main.cpp:133] frame #981, tracking faces: #30 
+I0717 10:35:24.435619 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 78.316 ms
+I0717 10:35:24.435638 2462495616 main.cpp:251] 	stop tracking face #30, final score: 18.9287
+I0717 10:35:24.439775 2462495616 main.cpp:71] 	save face #30 to /Users/moon/Pictures/faces/0/30.jpg
+I0717 10:35:24.439792 2462495616 main.cpp:72] 	mtcnn score: 0.971467
+I0717 10:35:24.520535 2462495616 main.cpp:133] frame #982, tracking faces: 
+I0717 10:35:24.605724 2462495616 main.cpp:201] 	start tracking face #31, score: 17.4304
+I0717 10:35:24.605746 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.55 ms
+I0717 10:35:24.688467 2462495616 main.cpp:133] frame #983, tracking faces: #31 
+I0717 10:35:24.770534 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 78.662 ms
+I0717 10:35:24.771833 2462495616 main.cpp:238] 	update selected face, new score: 18.3876
+I0717 10:35:24.852738 2462495616 main.cpp:133] frame #984, tracking faces: #31 
+I0717 10:35:24.928810 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 72.856 ms
+I0717 10:35:24.929620 2462495616 main.cpp:238] 	update selected face, new score: 18.4392
+I0717 10:35:25.019088 2462495616 main.cpp:133] frame #985, tracking faces: #31 
+I0717 10:35:25.099920 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.814 ms
+I0717 10:35:25.164099 2462495616 main.cpp:133] frame #986, tracking faces: #31 
+I0717 10:35:25.257761 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 90.11 ms
+I0717 10:35:25.354300 2462495616 main.cpp:133] frame #987, tracking faces: #31 
+I0717 10:35:25.471942 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 114.379 ms
+I0717 10:35:25.556895 2462495616 main.cpp:133] frame #988, tracking faces: #31 
+I0717 10:35:25.663774 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 103.448 ms
+I0717 10:35:25.734575 2462495616 main.cpp:133] frame #989, tracking faces: #31 
+I0717 10:35:25.840054 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 102.108 ms
+I0717 10:35:25.841089 2462495616 main.cpp:238] 	update selected face, new score: 18.9052
+I0717 10:35:25.921669 2462495616 main.cpp:133] frame #990, tracking faces: #31 
+I0717 10:35:26.028062 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 102.452 ms
+I0717 10:35:26.029081 2462495616 main.cpp:238] 	update selected face, new score: 19.0773
+I0717 10:35:26.126858 2462495616 main.cpp:133] frame #991, tracking faces: #31 
+I0717 10:35:26.223289 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 92.603 ms
+I0717 10:35:26.224293 2462495616 main.cpp:238] 	update selected face, new score: 19.7046
+I0717 10:35:26.319957 2462495616 main.cpp:133] frame #992, tracking faces: #31 
+I0717 10:35:26.390899 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 67.368 ms
+I0717 10:35:26.454412 2462495616 main.cpp:133] frame #993, tracking faces: #31 
+I0717 10:35:26.528693 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.777 ms
+I0717 10:35:26.590528 2462495616 main.cpp:133] frame #994, tracking faces: #31 
+I0717 10:35:26.669713 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.713 ms
+I0717 10:35:26.670419 2462495616 main.cpp:238] 	update selected face, new score: 19.9717
+I0717 10:35:26.760442 2462495616 main.cpp:133] frame #995, tracking faces: #31 
+I0717 10:35:26.834883 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.829 ms
+I0717 10:35:26.925559 2462495616 main.cpp:133] frame #996, tracking faces: #31 
+I0717 10:35:27.011360 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 82.378 ms
+I0717 10:35:27.011384 2462495616 main.cpp:251] 	stop tracking face #31, final score: 19.9717
+I0717 10:35:27.014760 2462495616 face_align.cpp:37] 	skip face alignment
+I0717 10:35:27.092509 2462495616 main.cpp:133] frame #997, tracking faces: 
+I0717 10:35:27.159883 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 63.95 ms
+I0717 10:35:27.224385 2462495616 main.cpp:133] frame #998, tracking faces: 
+I0717 10:35:27.297754 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 69.816 ms
+I0717 10:35:27.357492 2462495616 main.cpp:133] frame #999, tracking faces: 
+I0717 10:35:27.442031 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 80.967 ms
+I0717 10:35:27.525960 2462495616 main.cpp:133] frame #1000, tracking faces: 
+I0717 10:35:27.592654 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 63.152 ms
+I0717 10:35:27.657415 2462495616 main.cpp:133] frame #1001, tracking faces: 
+I0717 10:35:27.730628 2462495616 main.cpp:201] 	start tracking face #32, score: 13.629
+I0717 10:35:27.730651 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.065 ms
+I0717 10:35:27.793246 2462495616 main.cpp:133] frame #1002, tracking faces: #32 
+I0717 10:35:27.854569 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 57.853 ms
+I0717 10:35:27.854589 2462495616 main.cpp:251] 	stop tracking face #32, final score: 13.629
+I0717 10:35:27.859869 2462495616 main.cpp:71] 	save face #32 to /Users/moon/Pictures/faces/0/32.jpg
+I0717 10:35:27.859880 2462495616 main.cpp:72] 	mtcnn score: 0.956703
+I0717 10:35:27.925565 2462495616 main.cpp:133] frame #1003, tracking faces: 
+I0717 10:35:27.986495 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 57.279 ms
+I0717 10:35:28.058728 2462495616 main.cpp:133] frame #1004, tracking faces: 
+I0717 10:35:28.124286 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 61.833 ms
+I0717 10:35:28.192426 2462495616 main.cpp:133] frame #1005, tracking faces: 
+I0717 10:35:28.254063 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 57.838 ms
+I0717 10:35:28.324808 2462495616 main.cpp:133] frame #1006, tracking faces: 
+I0717 10:35:28.390928 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 62.405 ms
+I0717 10:35:28.459133 2462495616 main.cpp:133] frame #1007, tracking faces: 
+I0717 10:35:28.528455 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 65.568 ms
+I0717 10:35:28.593261 2462495616 main.cpp:133] frame #1008, tracking faces: 
+I0717 10:35:28.667405 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 70.309 ms
+I0717 10:35:28.727267 2462495616 main.cpp:133] frame #1009, tracking faces: 
+I0717 10:35:28.805727 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 74.651 ms
+I0717 10:35:28.893821 2462495616 main.cpp:133] frame #1010, tracking faces: 
+I0717 10:35:28.968365 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 70.692 ms
+I0717 10:35:29.029594 2462495616 main.cpp:133] frame #1011, tracking faces: 
+I0717 10:35:29.099642 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 65.82 ms
+I0717 10:35:29.189525 2462495616 main.cpp:133] frame #1012, tracking faces: 
+I0717 10:35:29.265488 2462495616 main.cpp:201] 	start tracking face #33, score: 17.4966
+I0717 10:35:29.265512 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.422 ms
+I0717 10:35:29.356238 2462495616 main.cpp:133] frame #1013, tracking faces: #33 
+I0717 10:35:29.448534 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 89.031 ms
+I0717 10:35:29.448556 2462495616 main.cpp:251] 	stop tracking face #33, final score: 17.4966
+I0717 10:35:29.451740 2462495616 main.cpp:71] 	save face #33 to /Users/moon/Pictures/faces/0/33.jpg
+I0717 10:35:29.451756 2462495616 main.cpp:72] 	mtcnn score: 0.849896
+I0717 10:35:29.521721 2462495616 main.cpp:133] frame #1014, tracking faces: 
+I0717 10:35:29.609215 2462495616 main.cpp:215] 	detected 0 Persons. time eclipsed: 84.239 ms
+I0717 10:35:29.688381 2462495616 main.cpp:133] frame #1015, tracking faces: 
+I0717 10:35:29.770306 2462495616 main.cpp:201] 	start tracking face #34, score: 14.8163
+I0717 10:35:29.770328 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 76.979 ms
+I0717 10:35:29.859045 2462495616 main.cpp:133] frame #1016, tracking faces: #34 
+I0717 10:35:29.946421 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 83.875 ms
+I0717 10:35:30.027858 2462495616 main.cpp:133] frame #1017, tracking faces: #34 
+I0717 10:35:30.106170 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.614 ms
+I0717 10:35:30.195549 2462495616 main.cpp:133] frame #1018, tracking faces: #34 
+I0717 10:35:30.284744 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 85.606 ms
+I0717 10:35:30.362282 2462495616 main.cpp:133] frame #1019, tracking faces: #34 
+I0717 10:35:30.461359 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 95.47 ms
+I0717 10:35:30.527959 2462495616 main.cpp:133] frame #1020, tracking faces: #34 
+I0717 10:35:30.631983 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 100.43 ms
+I0717 10:35:30.695360 2462495616 main.cpp:133] frame #1021, tracking faces: #34 
+I0717 10:35:30.781709 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 82.747 ms
+I0717 10:35:30.860992 2462495616 main.cpp:133] frame #1022, tracking faces: #34 
+I0717 10:35:30.929953 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 65.399 ms
+I0717 10:35:30.930784 2462495616 main.cpp:238] 	update selected face, new score: 15.4906
+I0717 10:35:30.993343 2462495616 main.cpp:133] frame #1023, tracking faces: #34 
+I0717 10:35:31.065469 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 68.599 ms
+I0717 10:35:31.125634 2462495616 main.cpp:133] frame #1024, tracking faces: #34 
+I0717 10:35:31.209044 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 79.828 ms
+I0717 10:35:31.293290 2462495616 main.cpp:133] frame #1025, tracking faces: #34 
+I0717 10:35:31.386867 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 89.687 ms
+I0717 10:35:31.462700 2462495616 main.cpp:133] frame #1026, tracking faces: #34 
+I0717 10:35:31.542250 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.956 ms
+I0717 10:35:31.630740 2462495616 main.cpp:133] frame #1027, tracking faces: #34 
+I0717 10:35:31.707777 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.36 ms
+I0717 10:35:31.708542 2462495616 main.cpp:238] 	update selected face, new score: 15.8062
+I0717 10:35:31.798591 2462495616 main.cpp:133] frame #1028, tracking faces: #34 
+I0717 10:35:31.872795 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 70.67 ms
+I0717 10:35:31.966339 2462495616 main.cpp:133] frame #1029, tracking faces: #34 
+I0717 10:35:32.044409 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 74.577 ms
+I0717 10:35:32.134052 2462495616 main.cpp:133] frame #1030, tracking faces: #34 
+I0717 10:35:32.199898 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.174 ms
+I0717 10:35:32.300437 2462495616 main.cpp:133] frame #1031, tracking faces: #34 
+I0717 10:35:32.379263 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 75.378 ms
+I0717 10:35:32.466485 2462495616 main.cpp:133] frame #1032, tracking faces: #34 
+I0717 10:35:32.532434 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 62.46 ms
+I0717 10:35:32.600592 2462495616 main.cpp:133] frame #1033, tracking faces: #34 
+I0717 10:35:32.659770 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 55.744 ms
+I0717 10:35:32.723923 2462495616 main.cpp:133] frame #1034, tracking faces: #34 
+I0717 10:35:32.783133 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 55.819 ms
+I0717 10:35:32.859345 2462495616 main.cpp:133] frame #1035, tracking faces: #34 
+I0717 10:35:32.934340 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 71.592 ms
+I0717 10:35:33.026880 2462495616 main.cpp:133] frame #1036, tracking faces: #34 
+I0717 10:35:33.100025 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 69.588 ms
+I0717 10:35:33.164230 2462495616 main.cpp:133] frame #1037, tracking faces: #34 
+I0717 10:35:33.241268 2462495616 main.cpp:215] 	detected 1 Persons. time eclipsed: 73.438 ms
