@@ -158,14 +158,14 @@ void test_video(int argc, char* argv[]) {
 
                     // get face bounding box
                     auto box = *it;
-                    Rect2d detectedFace(Point(box.x1, box.y1),Point(box.x2, box.y2));
+                    Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
 
                     // test whether is a new face
                     bool newFace = true;
                     unsigned i=0;
                     for (i=0;i<boxesKCF.size();i++) {
                         Rect2d trackedFace = boxesKCF[i];
-                        if (isSameFace(detectedFace, trackedFace)) {
+                        if (isSameFace(detected_face, trackedFace)) {
                             newFace = false;
                             break;
                         }
@@ -174,21 +174,21 @@ void test_video(int argc, char* argv[]) {
                     if (newFace) {
                         // create a tracker if a new face is detected
                         Ptr<Tracker> tracker = TrackerKCF::create(kcf_param);
-                        tracker->init(frame, detectedFace);
+                        tracker->init(frame, detected_face);
                         tracker->id = faceIdKCF;
                         trackersKCF.push_back(tracker);
-                        boxesKCF.push_back(detectedFace);
+                        boxesKCF.push_back(detected_face);
                         cout << "frame " << frameCounter << ":KCF start tracking face #" << tracker->id << endl;
 
                         if (!outputFolder.empty()) {
                             // save face
-                            saveFace(frame, detectedFace, faceIdKCF, outputFolder);
+                            saveFace(frame, detected_face, faceIdKCF, outputFolder);
                         }
                         
                         faceIdKCF++;
                     } else {
                         // update tracker's bounding box
-                        trackersKCF[i]->reset(frame, detectedFace);
+                        trackersKCF[i]->reset(frame, detected_face);
                     }
 
                     // add staple
@@ -196,7 +196,7 @@ void test_video(int argc, char* argv[]) {
                     i = 0;
                     for (i=0;i<boxesStaple.size();i++) {
                         Rect2d trackedFace = boxesStaple[i];
-                        if (isSameFace(detectedFace, trackedFace)) {
+                        if (isSameFace(detected_face, trackedFace)) {
                             newFace = false;
                             break;
                         }
@@ -205,16 +205,16 @@ void test_video(int argc, char* argv[]) {
                     if (newFace) {
                         // create a tracker if a new face is detected
                         STAPLE_TRACKER * tracker2 = new STAPLE_TRACKER(staple_cfg);
-                        tracker2->tracker_staple_initialize(frame,detectedFace);
+                        tracker2->tracker_staple_initialize(frame,detected_face);
                         tracker2->tracker_staple_train(frame,true);
                         tracker2->id = faceIdStaple;
                         trackersStaple.push_back(tracker2);
-                        boxesStaple.push_back(detectedFace);
+                        boxesStaple.push_back(detected_face);
                         cout << "frame " << frameCounter << ":Staple start tracking face #" << tracker2->id << endl;
 
                         if (!outputFolder.empty()) {
                             // save face
-                            saveFace(frame, detectedFace, faceIdStaple, outputFolder);
+                            saveFace(frame, detected_face, faceIdStaple, outputFolder);
                         }
                         
                         faceIdStaple++;
@@ -225,7 +225,7 @@ void test_video(int argc, char* argv[]) {
                         delete tracker2;
                         tracker2 = new STAPLE_TRACKER(staple_cfg);
                         tracker2->id = id_;
-                        tracker2->tracker_staple_initialize(frame,detectedFace);
+                        tracker2->tracker_staple_initialize(frame,detected_face);
                         tracker2->tracker_staple_train(frame,true);
                         trackersStaple[i] = tracker2;
                     }
@@ -244,8 +244,8 @@ void test_video(int argc, char* argv[]) {
                     Bbox box = *it;
                     if ((*it).exist) {
                         Bbox box = *it;
-                        Rect2d detectedFace(Point(box.x1, box.y1),Point(box.x2, box.y2));
-                        if (isSameFace(detectedFace, trackedFace)) {
+                        Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
+                        if (isSameFace(detected_face, trackedFace)) {
                             isFace = true;
                             break;
                         }
@@ -270,8 +270,8 @@ void test_video(int argc, char* argv[]) {
                     Bbox box = *it;
                     if ((*it).exist) {
                         Bbox box = *it;
-                        Rect2d detectedFace(Point(box.x1, box.y1),Point(box.x2, box.y2));
-                        if (isSameFace(detectedFace, trackedFace)) {
+                        Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
+                        if (isSameFace(detected_face, trackedFace)) {
                             isFace = true;
                             break;
                         }

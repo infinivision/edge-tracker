@@ -47,12 +47,19 @@ bool overlap(Rect2d &box1, Rect2d &box2) {
  */
 void saveFace(const Mat &frame, const Bbox &box, long faceId, string outputFolder) {
 
+    string current_time = get_current_time();
+
     Rect2d roi(Point(box.x1, box.y1),Point(box.x2, box.y2));
     Mat cropped(frame, roi);
-    string output = outputFolder + "/original/" + to_string(faceId) + ".jpg";
-    imwrite(output, cropped);
+    string output = outputFolder + "/original/" + current_time + ".jpg";
+    if ( imwrite(output, cropped) ) {
+        LOG(INFO) << "\tsave face #" << faceId << " to " << output;
+        cout << "save face #" << faceId << " to " << output << endl;
+    } else {
+        LOG(ERROR) << "\tfail to save face #" << faceId << " to " << output;
+    }
 
-    namedWindow("output", WINDOW_NORMAL);
+    //namedWindow("output", WINDOW_NORMAL);
 
     std::vector<cv::Point2f> points;
     for(int num=0;num<5;num++) {
@@ -67,15 +74,16 @@ void saveFace(const Mat &frame, const Bbox &box, long faceId, string outputFolde
         return;
     }
 
-    output = outputFolder + "/" + to_string(faceId) + ".jpg";
+    output = outputFolder + "/" + current_time + ".jpg";
     if ( imwrite(output, image) ) {
         LOG(INFO) << "\tsave face #" << faceId << " to " << output;
+        cout << "save face #" << faceId << " to " << output << endl;
         LOG(INFO) << "\tmtcnn score: " << box.score;
     } else {
-        LOG(INFO) << "\tfail to save face #" << faceId << " to " << output;
+        LOG(ERROR) << "\tfail to save face #" << faceId << " to " << output;
     }
 
-    imshow("output", image);
+    //imshow("output", image);
 }
 
 // prepare (clean output folder), output_folder argument will be changed!
@@ -89,10 +97,10 @@ void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
         exit(1);
     }
 
-    cmd = "rm -f " + output_folder + "/*";
-    system(cmd.c_str());
-    cmd = "rm -f " + output_folder + "/original/*";
-    system(cmd.c_str());
+    // cmd = "rm -f " + output_folder + "/*";
+    // system(cmd.c_str());
+    // cmd = "rm -f " + output_folder + "/original/*";
+    // system(cmd.c_str());
 }
 
 void process_camera(const string model_path, const CameraConfig &camera, string output_folder) {
@@ -139,7 +147,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
         bool enable_detection = false;
         cap >> frame;
         if (!frame.data) {
-            cerr << "Capture video failed" << endl;
+            LOG(ERROR) << "Capture video failed: " << camera.identity();
             continue;
         }
 

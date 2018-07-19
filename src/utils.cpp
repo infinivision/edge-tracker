@@ -14,6 +14,25 @@ float getElapse(struct timeval *tv1,struct timeval *tv2)
     return t;
 }
 
+std::string get_current_time() {
+    char buffer[26];
+    char full[30];
+    int millisec;
+    struct tm* tm_info;
+    struct timeval tv;
+
+    gettimeofday(&tv, NULL);
+
+    millisec = tv.tv_usec % 1000;
+    tm_info = localtime(&tv.tv_sec);
+
+    strftime(buffer, 26, "%Y-%m-%d.%H-%M-%S", tm_info);
+    sprintf(full, "%s.%03d", buffer, millisec);
+    std::string output = full;
+
+    return output;
+}
+
 int trave_dir(std::string& path, std::vector<std::string>& file_list)
 {
     DIR *d; //声明一个句柄
@@ -60,3 +79,11 @@ int trave_dir(std::string& path, std::vector<std::string>& file_list)
     closedir(d);
     return 0;
 }
+
+// int main() {
+//     std::string time = get_current_time();
+
+//     std::cout << time << std::endl;
+
+//     return 0;
+// }
