@@ -50,9 +50,14 @@ void saveFace(const Mat &frame, const Bbox &box, long faceId, string outputFolde
     Rect2d roi(Point(box.x1, box.y1),Point(box.x2, box.y2));
     Mat cropped(frame, roi);
     string output = outputFolder + "/original/" + to_string(faceId) + ".jpg";
-    imwrite(output, cropped);
+    if ( imwrite(output, cropped) ) {
+        LOG(INFO) << "\tsave face #" << faceId << " to " << output;
+        cout << "\tsave face #" << faceId << " to " << output << endl;
+    } else {
+        LOG(ERROR) << "\tfail to save face #" << faceId << " to " << output;
+    }
 
-    namedWindow("output", WINDOW_NORMAL);
+    //namedWindow("output", WINDOW_NORMAL);
 
     std::vector<cv::Point2f> points;
     for(int num=0;num<5;num++) {
@@ -70,12 +75,13 @@ void saveFace(const Mat &frame, const Bbox &box, long faceId, string outputFolde
     output = outputFolder + "/" + to_string(faceId) + ".jpg";
     if ( imwrite(output, image) ) {
         LOG(INFO) << "\tsave face #" << faceId << " to " << output;
+        cout << "\tsave face #" << faceId << " to " << output << endl;
         LOG(INFO) << "\tmtcnn score: " << box.score;
     } else {
-        LOG(INFO) << "\tfail to save face #" << faceId << " to " << output;
+        LOG(ERROR) << "\tfail to save face #" << faceId << " to " << output;
     }
 
-    imshow("output", image);
+    //imshow("output", image);
 }
 
 // prepare (clean output folder), output_folder argument will be changed!

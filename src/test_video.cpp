@@ -145,14 +145,14 @@ void test_video(int argc, char* argv[]) {
                     // get face bounding box
                     Bbox box = *it;
                     std::vector<double> qualities = fa.GetPoseQuality(cimg, box.x1, box.y1, box.x2, box.y2);
-                    Rect2d detectedFace(Point(box.x1, box.y1),Point(box.x2, box.y2));
+                    Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
 
                     // test whether is a new face
                     bool newFace = true;
                     unsigned i;
                     for (i=0;i<boxes.size();i++) {
                         Rect2d trackedFace = boxes[i];
-                        if (isSameFace(detectedFace, trackedFace)) {
+                        if (isSameFace(detected_face, trackedFace)) {
                             newFace = false;
                             break;
                         }
@@ -161,10 +161,10 @@ void test_video(int argc, char* argv[]) {
                     if (newFace) {
                         // create a tracker if a new face is detected
                         Ptr<Tracker> tracker = TrackerKCF::create(kcf_param);
-                        tracker->init(frame, detectedFace);
+                        tracker->init(frame, detected_face);
                         tracker->id = faceId;
                         trackers.push_back(tracker);
-                        boxes.push_back(detectedFace);
+                        boxes.push_back(detected_face);
                         cout << "frame " << frameCounter << ": start tracking face #" << tracker->id << endl;
 
                         if (!outputFolder.empty()) {
@@ -175,7 +175,7 @@ void test_video(int argc, char* argv[]) {
                         faceId++;
                     } else {
                         // update tracker's bounding box
-                        trackers[i]->reset(frame, detectedFace);
+                        trackers[i]->reset(frame, detected_face);
                     }
                 }
             }
@@ -192,8 +192,8 @@ void test_video(int argc, char* argv[]) {
                     Bbox box = *it;
                     if ((*it).exist) {
                         Bbox box = *it;
-                        Rect2d detectedFace(Point(box.x1, box.y1),Point(box.x2, box.y2));
-                        if (isSameFace(detectedFace, trackedFace)) {
+                        Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
+                        if (isSameFace(detected_face, trackedFace)) {
                             isFace = true;
                             break;
                         }
