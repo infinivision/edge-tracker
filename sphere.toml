@@ -1,0 +1,5 @@
+[[camera]]
+  ip = "192.168.150.242"
+  username = "admin"
+  password = "mcd12345678"
+  detection_period = 10
