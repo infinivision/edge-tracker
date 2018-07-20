@@ -159,10 +159,10 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
             trackers[i]->update(frame, tracker_boxes[i]);
             log += "#" + to_string(trackers[i]->id) + " ";
         }
-        LOG(INFO) << log;
 
         if (frameCounter % camera.detection_period == 0)
         {
+            LOG(INFO) << log;
             enable_detection = true;
             Mat small_frame;
             bool resized = false;
