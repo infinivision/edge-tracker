@@ -16,16 +16,19 @@ void process_camera(const CameraConfig &camera) {
 
     VideoCapture cap = camera.GetCapture();
     if (!cap.isOpened()) {
-        cerr << "failed to open camera" << endl;
+        LOG(ERROR) << "failed to open camera";
         return;
     }
+
+    cap.set(CAP_PROP_FRAME_WIDTH, 1280);
+    cap.set(CAP_PROP_FRAME_HEIGHT, 720);
 
     Mat frame;
 
     do {
         cap >> frame;
         if (!frame.data) {
-            cerr << "Capture video failed" << endl;
+            LOG(ERROR) << "Capture video failed";
             continue;
         }
 

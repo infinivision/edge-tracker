@@ -83,6 +83,9 @@ void saveFace(const Mat &frame, const Bbox &box, long faceId, string outputFolde
         LOG(ERROR) << "\tfail to save face #" << faceId << " to " << output;
     }
 
+    output = outputFolder + "/aligned/" + current_time + ".jpg";
+    imwrite(output, image);
+
     //imshow("output", image);
 }
 
@@ -92,6 +95,13 @@ void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
 
     string cmd = "mkdir -p " + output_folder + "/original";
     int dir_err = system(cmd.c_str());
+    if (-1 == dir_err) {
+        LOG(ERROR) << "Error creating directory";
+        exit(1);
+    }
+
+    cmd = "mkdir -p " + output_folder + "/aligned";
+    dir_err = system(cmd.c_str());
     if (-1 == dir_err) {
         LOG(ERROR) << "Error creating directory";
         exit(1);
