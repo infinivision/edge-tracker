@@ -20,10 +20,7 @@ void process_camera(const CameraConfig &camera) {
         return;
     }
 
-    cap.set(CAP_PROP_FRAME_WIDTH, 1280);
-    cap.set(CAP_PROP_FRAME_HEIGHT, 720);
-
-    Mat frame;
+    Mat frame, resized;
 
     do {
         cap >> frame;
@@ -32,7 +29,8 @@ void process_camera(const CameraConfig &camera) {
             continue;
         }
 
-        imshow("window", frame);
+        resize(frame, resized, Size(1280, 720), 0, 0, INTER_NEAREST);
+        imshow("window", resized);
 
     } while (QUIT_KEY != waitKey(1));
 }
