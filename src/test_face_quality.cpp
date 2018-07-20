@@ -1,6 +1,7 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include "face_attr.h"
+#include <image_quality.h>
 #include "utils.h"
 
 using namespace std;
@@ -34,14 +35,14 @@ int test_picture(string imagepath) {
 
 
     gettimeofday(&tv1,&tz1);
-    double quality = fa.GetImageQuality(plimg, 0, 0, image.rows-1, image.cols-1);
+    double quality = GetImageQuality(plimg, 0, 0, image.rows-1, image.cols-1);
     gettimeofday(&tv2,&tz2);
     std::cout << "Image quality: " << quality << ", time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms" << std::endl;
 
     gettimeofday(&tv1,&tz1);
-    double blur = fa.GetVarianceOfLaplacianSharpness(gray);
+    double blur = GetVarianceOfLaplacianSharpness(gray);
     gettimeofday(&tv2,&tz2);
-    std::cout << "Blur (variance of laplacian): " << blur << ", time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms" << std::endl;
+    std::cout << "Sharpness (variance of laplacian): " << blur << ", time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms" << std::endl;
 
     return 0;
 }

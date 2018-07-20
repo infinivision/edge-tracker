@@ -186,7 +186,7 @@ void MTCNN::refineAndSquareBbox(vector<Bbox> &vecBbox, const int &height, const 
     }
 }
 
-void MTCNN::detect(ncnn::Mat& img_, std::vector<Bbox>& finalBbox_){
+void MTCNN::detect(ncnn::Mat& img_, std::vector<Bbox>& finalBbox_) {
     firstBbox_.clear();
     firstOrderScore_.clear();
     secondBbox_.clear();

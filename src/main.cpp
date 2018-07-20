@@ -8,8 +8,9 @@
 #include <cstdlib>
 #include "tracker.hpp" // use optimised tracker instead of OpenCV version of KCF tracker
 #include "utils.h"
-#include "face_attr.h"
-#include "face_align.h"
+#include <face_attr.h>
+#include <face_align.h>
+#include <image_quality.h>
 #include <glog/logging.h>
 #include <thread>
 
@@ -113,16 +114,11 @@ void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
     // system(cmd.c_str());
 }
 
-void process_camera(const string model_path, const CameraConfig &camera, string output_folder) {
+void process_camera(const string &model_path, const CameraConfig &camera, string output_folder, const FaceAttr &fa) {
 
     cout << "processing camera: " << camera.identity() << endl;
 
     prepare_output_folder(camera, output_folder);
-    
-    MTCNN mm(model_path);
-    FaceAttr fa;
-    fa.Load();
-    FaceAlign align;
 
     VideoCapture cap = camera.GetCapture();
     if (!cap.isOpened()) {
@@ -135,6 +131,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     struct timeval  tv1,tv2;
     struct timezone tz1,tz2;
 
+    MTCNN mm(model_path);
     vector<Bbox> detected_bounding_boxes;
     Rect2d roi;
     vector<Ptr<Tracker>> trackers;
@@ -241,7 +238,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                         selected_frames.push_back(cloned_frame);
                         // calculate score of the selected face
                         Mat face(frame, detected_face);
-                        double score = fa.GetVarianceOfLaplacianSharpness(face);
+                        double score = GetVarianceOfLaplacianSharpness(face);
                         scores.push_back(score);
                         LOG(INFO) << "\tstart tracking face #" << tracker->id << ", score: " << score;
                         
@@ -274,7 +271,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                             isFace = true;
                             // update face score
                             Mat face(frame, tracker_boxes[i]);
-                            double score = fa.GetVarianceOfLaplacianSharpness(face);
+                            double score = GetVarianceOfLaplacianSharpness(face);
                             if (score > scores[i]) {
                                 // select a better face
                                 LOG(INFO) << "\tupdate selected face, new score: " << score;
@@ -348,13 +345,15 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+    FaceAttr fa;
+    fa.Load();
     vector<CameraConfig> cameras = LoadCameraConfig(config_path);
 
     // LOG(INFO) << "detection period: " << camera.detection_period;
 
     for (CameraConfig camera: cameras) {
         // start processing video
-        thread t {process_camera, model_path, camera, output_folder};
+        thread t {process_camera, model_path, camera, output_folder, fa};
         t.detach();
     }
 
