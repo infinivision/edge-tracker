@@ -12,7 +12,7 @@ using namespace cv;
 
 void process_camera(const CameraConfig &camera) {
 
-    cout << "processing camera: " << camera.identity() << endl;
+    cout << "read camera: " << camera.identity() << endl;
 
     VideoCapture cap = camera.GetCapture();
     if (!cap.isOpened()) {
@@ -26,7 +26,7 @@ void process_camera(const CameraConfig &camera) {
         cap >> frame;
         if (!frame.data) {
             LOG(ERROR) << "Capture video failed";
-            continue;
+            exit(1);
         }
 
         resize(frame, resized, Size(1280, 720), 0, 0, INTER_NEAREST);

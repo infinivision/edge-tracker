@@ -156,11 +156,12 @@ void process_camera(const string &model_path, const CameraConfig &camera, string
         if (!frame.data) {
             LOG(ERROR) << "Capture video failed: " << camera.identity();
             cap.release();
-            VideoCapture cap = camera.GetCapture();
+            cap = camera.GetCapture();
             if (!cap.isOpened()) {
                 LOG(ERROR) << "failed to open camera: " << camera.identity();
                 return;
             }
+            LOG(INFO) << "reopen camera: " << camera.identity();
             continue;
         }
 
