@@ -271,7 +271,8 @@ void process_camera(const string &model_path, const CameraConfig &camera, string
                         if (overlap(detected_face, tracker_boxes[i])) {
                             isFace = true;
                             // update face score
-                            Mat face(frame, tracker_boxes[i]);
+                            // Mat face(frame, tracker_boxes[i]);
+                            Mat face(frame, detected_face);
                             double score = GetVarianceOfLaplacianSharpness(face);
                             if (score > scores[i]) {
                                 // select a better face
