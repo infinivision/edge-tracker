@@ -1,0 +1,29 @@
+[[face3dpoint]] # Right eye right corner
+  x = 155.0
+  y = 170.0
+  z = -100.0
+[[face3dpoint]] # Left eye left corner
+  x = -155.0
+  y = 170.0
+  z = -100.0
+[[face3dpoint]] # Nose tip
+  x = 0
+  y = 0
+  z = 0
+[[face3dpoint]] # Right mouth corner
+  x = 150.0
+  y = -150.0
+  z = -125.0
+[[face3dpoint]] # Left Mouth corner
+  x = 150.0
+  y = -150.0
+  z = -125.0
+[pnp]
+  use_default_intrinsic = false
+  pnp_algo = ""
+
+[faceModel]
+  eyeCornerLength = 105
+  male     =  1.05
+  female   =  0.95
+  child    =  0.66

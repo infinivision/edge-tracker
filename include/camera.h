@@ -16,6 +16,19 @@ public:
     int resize_rows, resize_cols;
     int detection_period;
 
+    std::string tracker;
+
+    // add for pose estimate
+    std::string mat_file;
+    std::string dist_file;
+    cv::Mat matrix;
+    cv::Mat dist_coeff;
+    std::string r_file;
+    std::string t_file;
+    cv::Mat rvec;
+    cv::Mat tvec;
+    cv::Mat rmtx;
+
     CameraConfig(){};
 
     // return ip, or index if no ip is given

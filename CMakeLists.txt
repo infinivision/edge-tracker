@@ -7,6 +7,8 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE release CACHE STRING "Choose the type of build" FORCE)
 endif()
 
+add_definitions("-Wall -g -O0")
+
 if(CMAKE_BUILD_TYPE STREQUAL debug)
     message(STATUS "debug mode")
     ADD_DEFINITIONS(-D__DEBUG__)
@@ -47,7 +49,7 @@ link_directories(
   ${PROJECT_SOURCE_DIR}/lib/ncnn
 )
 
-add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp)
+add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp src/face_pose_estimate.cpp)
 target_link_libraries(main ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f dlib::dlib glog)
 set_target_properties(main
         PROPERTIES 

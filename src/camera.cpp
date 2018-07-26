@@ -1,5 +1,10 @@
 #include <camera.h>
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+
 std::string CameraConfig::identity() const {
 	if (ip.empty()) {
         return std::to_string(index);
@@ -23,6 +28,56 @@ cv::VideoCapture CameraConfig::GetCapture() const {
         cv::VideoCapture capture(camera_stream);
         return capture;
     }
+}
+
+cv::Mat read_csv2d(std::string file, int row, int col) {
+    char separator = ' ';
+    cv::Mat result(row,col,CV_32FC1);
+    std::string line, item;
+    std::ifstream in( file );
+    if(!in.is_open()){
+        std::cout << "open csv file: " << file << " fail! " << std::endl;
+        exit(1);
+    }
+    int i = 0, j = 0;
+    while(1) {
+        std::getline( in, line );
+        if(!in.eof()){
+            if(i > row-1) {
+                std::cout<< "csv file[" << file << "] format wrong, too many row" << std::endl;
+                exit(1);
+            }
+            std::stringstream ss( line );
+            j = 0;
+            while(1){
+                getline ( ss, item, separator );
+                if(!ss.eof()){
+                    if(j>col-1){
+                        std::cout<< "csv file[" << file << "] format wrong, too many col" << std::endl;
+                        exit(1);
+                    }
+                    result.at<float>(i,j) = atof(item.c_str());
+                    j++;                    
+                }
+                else {
+                    if(j != col-1 ){
+                        std::cout<< "csv file[" << file << "] format wrong, col is not enough" << std::endl;
+                        exit(1);
+                    }
+                    result.at<float>(i,j) = atof(item.c_str());
+                    break;
+                }
+            }
+            i++;
+        } else {
+            if(i != row ){
+                std::cout<< "csv file[" << file << "] format wrong, row is not enough" << std::endl;
+                exit(1);
+            }
+            break;
+        }
+   }
+   return result;
 }
 
 /*
@@ -58,6 +113,23 @@ std::vector<CameraConfig> LoadCameraConfig(std::string config_path) {
                 camera.password = *password_ptr;
             }
 
+            camera.tracker = table->get_as<std::string>("tracker").value_or("staple");
+
+            camera.mat_file = table->get_as<std::string>("matrix").value_or("");
+            if(camera.mat_file != "")
+                camera.matrix = read_csv2d(camera.mat_file,3,3);
+            camera.dist_file = table->get_as<std::string>("dist_coeff").value_or("");
+            if(camera.dist_file!="")
+                camera.dist_coeff = read_csv2d(camera.dist_file,1,5);
+            camera.r_file = table->get_as<std::string>("rvector").value_or("");
+            if(camera.r_file != ""){
+                camera.rvec = read_csv2d(camera.r_file,3,1);
+                cv::Rodrigues(camera.rvec,camera.rmtx);
+            }
+            camera.t_file = table->get_as<std::string>("tvector").value_or("");
+            if(camera.t_file != "")
+                camera.tvec = read_csv2d(camera.t_file,3,1);
+            
             cameras.push_back(camera);
         }
     }
