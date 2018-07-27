@@ -2,9 +2,9 @@
   ip = "192.168.150.244"
   username = "admin"
   password = "mcd12345678"
-  detection_period = 10
+  detection_period = 20
 [[camera]]
   ip = "192.168.150.243"
   username = "admin"
   password = "mcd12345678"
-  detection_period = 10
+  detection_period = 20

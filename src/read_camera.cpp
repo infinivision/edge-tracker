@@ -20,10 +20,13 @@ void process_camera(const CameraConfig &camera) {
         return;
     }
 
+    int fps = cap.get(CAP_PROP_FPS);
+    cout << "camera fps: " << fps << endl;
+
     Mat frame, resized;
 
     do {
-        cap >> frame;
+        cap.read(frame);
         if (!frame.data) {
             LOG(ERROR) << "Capture video failed";
             exit(1);

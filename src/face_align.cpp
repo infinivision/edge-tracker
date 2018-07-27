@@ -157,10 +157,10 @@ cv::Mat FaceAlign::Align(const cv::Mat& input, const std::vector<cv::Point2f>& a
   // }
 
   // cout << "\testimate rigid transform ...";
-  // cv::Mat R = cv::estimateRigidTransform(align_dst,align_src_,false);
-  cv::Mat src = points2mat(align_src_);
-  cv::Mat des = points2mat(align_dst);
-  cv::Mat R = similarTransform(des, src);
+  cv::Mat R = cv::estimateRigidTransform(align_dst,align_src_,false);
+  // cv::Mat src = points2mat(align_src_);
+  // cv::Mat des = points2mat(align_dst);
+  // cv::Mat R = similarTransform(des, src);
   // cout << " end, R size: " << R.size() << endl;
 
   if (R.empty()) {

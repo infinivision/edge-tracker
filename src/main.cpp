@@ -17,6 +17,7 @@
 #define QUIT_KEY 'q'
 
 using namespace std;
+using namespace std::chrono_literals;
 using namespace cv;
 
 FaceAlign faceAlign = FaceAlign();
@@ -154,8 +155,12 @@ void process_camera(const string &model_path, const CameraConfig &camera, string
         bool enable_detection = false;
         cap >> frame;
         if (!frame.data) {
-            LOG(ERROR) << "Capture video failed: " << camera.identity();
+            LOG(ERROR) << "Capture video failed: " << camera.identity() << ", opened: " << cap.isOpened();
             cap.release();
+
+            LOG(ERROR) << "sleep for 5 seconds ...";
+            std::this_thread::sleep_for(5s);
+
             cap = camera.GetCapture();
             if (!cap.isOpened()) {
                 LOG(ERROR) << "failed to open camera: " << camera.identity();
