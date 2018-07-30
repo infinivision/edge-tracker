@@ -20,7 +20,7 @@ cv::VideoCapture CameraConfig::GetCapture() const {
     } else {
         LOG(INFO) << "camera ip: " << this->ip << std::endl;
         std::string camera_stream = "rtsp://" + this->username +  ":" + this->password + "@" + this->ip + ":554//Streaming/Channels/1";
-        cv::VideoCapture capture(camera_stream);
+        cv::VideoCapture capture(camera_stream, cv::CAP_FFMPEG);
         return capture;
     }
 }
