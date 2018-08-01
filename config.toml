@@ -1,14 +1,4 @@
 [[camera]]
-  ip = "192.168.150.244"
-  username = "admin"
-  password = "mcd12345678"
-  detection_period = 10
-  matrix     = "mtx244.csv"
-  dist_coeff = "dist244.csv"
-  rvector = "rvec244.csv"
-  tvector = "tvec244.csv"
-  tracker = "staple"
-[[camera]]
   ip = "192.168.150.242"
   username = "admin"
   password = "mcd12345678"
@@ -18,7 +8,12 @@
   rvector = "rvec242.csv"
   tvector = "tvec242.csv"
 [[camera]]
-  index = 0
+  ip = "192.168.150.244"
+  username = "admin"
+  password = "mcd12345678"
   detection_period = 10
-  rvector = "rvec242.csv"
-  tvector = "tvec242.csv"
+  matrix     = "mtx244.csv"
+  dist_coeff = "dist244.csv"
+  rvector = "rvec244.csv"
+  tvector = "tvec244.csv"
+  tracker = "staple"

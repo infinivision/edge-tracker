@@ -76,24 +76,34 @@ void compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
     
     cv::Mat rotation_vector; // Rotation in axis-angle form
     cv::Mat translation_vector;
-
+    std::vector<cv::Point3d> model_points_clone;
+    Point3d point;
     if(age > 18){
         if(sex == 1)
-            for(size_t i =0;i< model_points.size();i++)
-                model_points[i] = model_points[i] * male_weight;
+            for(size_t i =0;i< model_points.size();i++){
+                point = model_points[i];
+                point *= male_weight;
+                model_points_clone.push_back(point);
+            }
         else
-            for(size_t i =0;i< model_points.size();i++)
-                model_points[i] = model_points[i] * female_weight;
+            for(size_t i =0;i< model_points.size();i++){
+                point = model_points[i];
+                point *= female_weight;
+                model_points_clone.push_back(point);
+            }
     } else if(age >= 6){
-            for(size_t i =0;i< model_points.size();i++)
-                model_points[i] = model_points[i] * (child_weight * ((age- 6) / 12.0f + 1));
+            for(size_t i =0;i< model_points.size();i++){
+                point = model_points[i];
+                point *= (child_weight * ((age- 6) / 12.0f + 1));
+                model_points_clone.push_back(point);
+            }
     } else {
         LOG(INFO) << "can't compute for child age less than six!";
         return;
     }
 
     // Solve for pose
-    cv::solvePnP(model_points, image_points, camera_matrix, dist_coeffs,    \
+    cv::solvePnP(model_points_clone, image_points, camera_matrix, dist_coeffs,    \
                     rotation_vector, translation_vector, false, pnp_algo);
     /*
     string points_str;
