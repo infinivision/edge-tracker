@@ -2,6 +2,8 @@
 #include "cpptoml.h"
 #include "camera.h"
 #include <string>
+#include <math.h>
+#include <stdlib.h> 
 
 using namespace std;
 using namespace cv;
@@ -13,7 +15,7 @@ float male_weight;
 float female_weight;
 float child_weight;
 
-bool read3D_conf(){
+void read3D_conf(){
     model_points.clear();
     char * pnpConfPath = getenv("pnpPath");
     if(pnpConfPath == nullptr){
@@ -25,7 +27,7 @@ bool read3D_conf(){
         male_weight = g->get_qualified_as<double>("faceModel.male").value_or(1.05);
         female_weight = g->get_qualified_as<double>("faceModel.female").value_or(0.95);
         child_weight = g->get_qualified_as<double>("faceModel.child").value_or(0.66);
-        auto array = g->get_table_array("face3d");
+        auto array = g->get_table_array("face3dpoint");
         for (const auto &table : *array) {
         	auto x = table->get_as<double>("x");
             auto y = table->get_as<double>("y");
@@ -34,8 +36,9 @@ bool read3D_conf(){
             point = point / 450 * eyeCornerLength;
             model_points.push_back(point);
         }
-        use_default_intrinsic = g->get_qualified_as<bool>("pnp.use_default_intrinsic").value_or(false);
-        std::string algo = g->get_qualified_as<std::string>("pnp.pnp_algo").value_or("");
+        use_default_intrinsic = g->get_qualified_as<bool>("pnp.use_default_intrinsic").value_or("false");
+        cout <<"use_default_intrinsic: " << use_default_intrinsic << endl;
+        std::string algo = g->get_qualified_as<std::string>("pnp.pnp_algo").value_or("EPNP");
         if( algo == "EPNP")
             pnp_algo = cv::SOLVEPNP_EPNP;
         else if (algo == "UPNP"){
@@ -49,7 +52,6 @@ bool read3D_conf(){
         std::cerr << "Failed to parse 3dpnp.toml: " << e.what() << std::endl;
         exit(1);
     }
-    return true;
 }
 
 void compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, int age, int sex) {
@@ -93,14 +95,26 @@ void compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
     // Solve for pose
     cv::solvePnP(model_points, image_points, camera_matrix, dist_coeffs,    \
                     rotation_vector, translation_vector, false, pnp_algo);
- 
+    /*
+    string points_str;
+    for(auto point: image_points){
+        points_str += to_string(point.x) + "," + to_string(point.y) + ";";
+    }
+    LOG(INFO) << "ip[" << camera.ip << "] image point: " << points_str;
+    
+    std::cout << "camera_matrix\n" << camera_matrix << endl;
+    std::cout << "model_points\n" << model_points << endl;
+    std::cout << "image_points\n" << image_points << endl;
+    */
+
     // Project a 3D point (0, 0, 1000.0) onto the image plane.
     // We use this to draw a line sticking out of the nose
+    LOG(INFO) << "ip[" << camera.ip << "] tvec: "<< translation_vector.t()/1000;
     cv::Mat world_coordinate;
-    if(camera.r_file!="" && camera.t_file!=""){
-        world_coordinate = (translation_vector - camera.tvec) * camera.rmtx.t();
-        LOG(INFO) << "world_coordinate: " << world_coordinate ; 
-    } else
-        LOG(INFO) << "can't compute coordinate without camera rotation matrix of the world coordinate" ;
 
+    if(camera.r_file!="" && camera.t_file!="") {
+        world_coordinate = camera.rmtx.t() * (translation_vector - camera.tvec);
+        LOG(INFO) << "ip[" << camera.ip <<"] w coordinate: " << world_coordinate.t() / 1000;
+    } else
+        LOG(INFO) << "camera.ip[" << camera.ip << "] can't compute coordinate without camera rotation matrix of the world coordinate" ;
 }

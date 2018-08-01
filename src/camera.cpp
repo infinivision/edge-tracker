@@ -32,7 +32,7 @@ cv::VideoCapture CameraConfig::GetCapture() const {
 
 cv::Mat read_csv2d(std::string file, int row, int col) {
     char separator = ' ';
-    cv::Mat result(row,col,CV_32FC1);
+    cv::Mat result(row,col,CV_64FC1);
     std::string line, item;
     std::ifstream in( file );
     if(!in.is_open()){
@@ -56,7 +56,7 @@ cv::Mat read_csv2d(std::string file, int row, int col) {
                         std::cout<< "csv file[" << file << "] format wrong, too many col" << std::endl;
                         exit(1);
                     }
-                    result.at<float>(i,j) = atof(item.c_str());
+                    result.at<double>(i,j) = atof(item.c_str());
                     j++;                    
                 }
                 else {
@@ -64,7 +64,7 @@ cv::Mat read_csv2d(std::string file, int row, int col) {
                         std::cout<< "csv file[" << file << "] format wrong, col is not enough" << std::endl;
                         exit(1);
                     }
-                    result.at<float>(i,j) = atof(item.c_str());
+                    result.at<double>(i,j) = atof(item.c_str());
                     break;
                 }
             }

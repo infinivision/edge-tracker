@@ -20,6 +20,7 @@ using namespace std;
 using namespace cv;
 
 void compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, int age, int sex);
+void read3D_conf();
 
 FaceAlign faceAlign = FaceAlign();
 
@@ -159,24 +160,8 @@ void process_camera_kcf(const string model_path, const CameraConfig &camera, str
         if (frameCounter % camera.detection_period == 0)
         {
             enable_detection = true;
-            Mat small_frame;
-            bool resized = false;
-            float resize_factor_x, resize_factor_y = 1;
 
-            if ( camera.resize_rows > 0 && frame.rows > camera.resize_rows) {
-                // resize
-                gettimeofday(&tv1,&tz1);
-                resize(frame, small_frame, Size(camera.resize_cols, camera.resize_rows), 0, 0, INTER_NEAREST);
-                gettimeofday(&tv2,&tz2);
-                LOG(INFO) << "\tresize to (" << camera.resize_cols << " * " << camera.resize_rows << "), time eclipsed: " << getElapse(&tv1, &tv2) << " ms";
-                resized = true;
-                resize_factor_x = (float)frame.cols / camera.resize_cols;
-                resize_factor_y = (float)frame.rows / camera.resize_rows;
-            } else {
-                small_frame = frame;
-            }
-
-            ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(small_frame.data, ncnn::Mat::PIXEL_BGR2RGB, small_frame.cols, small_frame.rows);
+            ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
 
             gettimeofday(&tv1,&tz1);
             mm.detect(ncnn_img, detected_bounding_boxes);
@@ -190,17 +175,13 @@ void process_camera_kcf(const string model_path, const CameraConfig &camera, str
 
                     // get face bounding box
                     Bbox box = *it;
-                    if (resized) {
-                        box.scale(resize_factor_x, resize_factor_y);
-                        *it = box;
-                    }
 
                     std::vector<cv::Point2d> image_points;
                     for(int i =0;i<10;i+=2){
                         cv::Point2d point(box.ppoint[i],box.ppoint[i+1]);
                         image_points.push_back(point);
                     }
-                    compute_coordinate(frame, image_points, camera, 1, 20);
+                    compute_coordinate(frame, image_points, camera, 20, 1);
                     //std::vector<double> qualities = fa.GetQuality(cimg, box.x1, box.y1, box.x2, box.y2);
                     Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
 
@@ -337,7 +318,7 @@ void process_camera_staple(const string model_path, const CameraConfig &camera, 
     staple_cfg.read(fs.root());
 
     // namedWindow("window", WINDOW_NORMAL);
-
+    std::vector<cv::Point2d> image_points;
     do {
         detected_bounding_boxes.clear();
         bool enable_detection = false;
@@ -358,28 +339,12 @@ void process_camera_staple(const string model_path, const CameraConfig &camera, 
             log += "#" + to_string(trackers[i]->id) + " ";
         }
         LOG(INFO) << log;
-
+        
         if (frameCounter % camera.detection_period == 0)
         {
             enable_detection = true;
-            Mat small_frame;
-            bool resized = false;
-            float resize_factor_x, resize_factor_y = 1;
-
-            if ( camera.resize_rows > 0 && frame.rows > camera.resize_rows) {
-                // resize
-                gettimeofday(&tv1,&tz1);
-                resize(frame, small_frame, Size(camera.resize_cols, camera.resize_rows), 0, 0, INTER_NEAREST);
-                gettimeofday(&tv2,&tz2);
-                LOG(INFO) << "\tresize to (" << camera.resize_cols << " * " << camera.resize_rows << "), time eclipsed: " << getElapse(&tv1, &tv2) << " ms";
-                resized = true;
-                resize_factor_x = (float)frame.cols / camera.resize_cols;
-                resize_factor_y = (float)frame.rows / camera.resize_rows;
-            } else {
-                small_frame = frame;
-            }
-
-            ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(small_frame.data, ncnn::Mat::PIXEL_BGR2RGB, small_frame.cols, small_frame.rows);
+            image_points.clear();
+            ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
 
             gettimeofday(&tv1,&tz1);
             mm.detect(ncnn_img, detected_bounding_boxes);
@@ -393,20 +358,34 @@ void process_camera_staple(const string model_path, const CameraConfig &camera, 
 
                     // get face bounding box
                     Bbox box = *it;
-                    if (resized) {
-                        box.scale(resize_factor_x, resize_factor_y);
-                        *it = box;
-                    }
-
-                    std::vector<cv::Point2d> image_points;
-                    for(int i =0;i<10;i+=2){
-                        cv::Point2d point(box.ppoint[i],box.ppoint[i+1]);
+                    for(int i =0;i<5;i++){
+                        cv::Point2d point(box.ppoint[i],box.ppoint[i+5]);
                         image_points.push_back(point);
                     }
-                    compute_coordinate(frame, image_points, camera, 1, 20);
+                    compute_coordinate(frame, image_points, camera, 20, 1);
                     //std::vector<double> qualities = fa.GetQuality(cimg, box.x1, box.y1, box.x2, box.y2);
                     Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
-
+                    // calculate score of face
+                    Mat face(frame, detected_face);                    
+                    double score = fa.GetVarianceOfLaplacianSharpness(face);
+                    LOG(INFO) << "ip[" << camera.ip <<"] dlib score: " << score
+                                                    <<" mtcnn score: " << box.score <<" frame count: " << frameCounter;
+                    
+                    // draw detected face
+                    if(mainThread){
+                        rectangle( show_frame, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
+                        // show face id
+                        Point middleHighPoint = Point(detected_face.x+detected_face.width/2, detected_face.y);
+                        putText(show_frame, to_string(faceId), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
+                        for(auto point: image_points){
+                            drawMarker(show_frame, point,  cv::Scalar(0, 255, 0), cv::MARKER_CROSS, 10, 1);
+                        }
+                    }
+                    string output = output_folder + "/" + to_string(faceId) + "_" + to_string(frameCounter) + ".jpg";             
+                    imwrite(output,show_frame);
+                    output = output_folder + "/original/"+to_string(faceId) + "_" + to_string(frameCounter) + ".jpg";
+                    imwrite(output,frame);
+                    // LOG(INFO) << "save faceId[" << faceId << "]" << frameCounter << " to " << output;
                     // test whether is a new face
                     bool newFace = true;
                     unsigned i;
@@ -425,15 +404,7 @@ void process_camera_staple(const string model_path, const CameraConfig &camera, 
                         tracker->id = faceId;
                         trackers.push_back(tracker);
                         tracker_boxes.push_back(detected_face);
-                        selected_faces.push_back(box);
-                        Mat cloned_frame = frame.clone();
-                        selected_frames.push_back(cloned_frame);
-                        // calculate score of the selected face
-                        Mat face(frame, detected_face);
-                        double score = fa.GetVarianceOfLaplacianSharpness(face);
-                        scores.push_back(score);
-                        LOG(INFO) << "\tstart tracking face #" << tracker->id << ", score: " << score;
-                        
+                        LOG(INFO) << "start tracking face #" << tracker->id << ", score: " << score;                        
                         faceId++;
                     } else {
                         // update tracker's bounding box
@@ -448,17 +419,17 @@ void process_camera_staple(const string model_path, const CameraConfig &camera, 
                     }
                 }
             }
+            LOG(INFO) << "trackers size after decect: " << trackers.size();
+            LOG(INFO) << "detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms";
+            if(total == 0) {
+                string output = output_folder + "/original/"+ "none" + "_" + to_string(frameCounter) + ".jpg";             
+                imwrite(output,frame);
+            }
 
-            LOG(INFO) << "\tdetected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms";
-        }
-
-        // clean up trackers if the tracker doesn't follow a face
-        for (unsigned i=0; i < trackers.size(); i++) {
-            STAPLE_TRACKER *tracker = trackers[i];
-            Rect2d tracker_box = tracker_boxes[i];
-
-            if (enable_detection)
-            {
+            // clean up trackers if the tracker doesn't follow a face
+            for (unsigned i=0; i < trackers.size(); i++) {
+                STAPLE_TRACKER *tracker = trackers[i];
+                Rect2d tracker_box = tracker_boxes[i];
                 bool isFace = false;
                 for (vector<Bbox>::iterator it=detected_bounding_boxes.begin(); it!=detected_bounding_boxes.end();it++) {
                     if ((*it).exist) {
@@ -466,53 +437,25 @@ void process_camera_staple(const string model_path, const CameraConfig &camera, 
 
                         Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
                         if (overlap(detected_face, tracker_boxes[i])) {
-                            isFace = true;
-                            // update face score
-                            // Mat face(frame, tracker_boxes[i]);
-                            Mat face(frame, detected_face);
-                            double score = fa.GetVarianceOfLaplacianSharpness(face);
-                            if (score > scores[i]) {
-                                // select a better face
-                                LOG(INFO) << "\tupdate selected face, new score: " << score;
-                                Mat cloned_frame = frame.clone();
-                                selected_frames[i] = cloned_frame;
-                                selected_faces[i] = box;
-                                scores[i] = score;
-                            }
+                            isFace = true;                                                          
                             break;
                         }
-                    } 
+                    }
                 }
-
-                if (!isFace) {
-                    /* clean up tracker */
-                    LOG(INFO) << "\tstop tracking face #" << tracker->id << ", final score: " << scores[i];
-                    saveFace(selected_frames[i], selected_faces[i], tracker->id, output_folder);
-
+                if (!isFace) 
+                {
+                    LOG(INFO) << "stop tracking face #" << tracker->id;
                     delete tracker;
                     trackers.erase(trackers.begin() + i);
                     tracker_boxes.erase(tracker_boxes.begin() + i);
-                    selected_faces.erase(selected_faces.begin() + i);
-                    selected_frames.erase(selected_frames.begin() + i);
-                    scores.erase(scores.begin() + i);
                     i--;
-                    continue;
                 }
             }
-
-            // draw tracked face
-            if(mainThread){
-                if(tracker_box.x<0) tracker_box.x = 0;
-                if(tracker_box.y<0) tracker_box.y = 0;
-                if(tracker_box.x>show_frame.cols) tracker_box.x = show_frame.cols;
-                if(tracker_box.y>show_frame.rows) tracker_box.x = show_frame.rows;
-                rectangle( show_frame, tracker_box, Scalar( 255, 0, 0 ), 2, 1 );
-                // show face id
-                Point middleHighPoint = Point(tracker_box.x+tracker_box.width/2, tracker_box.y);
-                putText(show_frame, to_string(tracker->id), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
-            }
         }
-        if(mainThread){
+
+        frameCounter++;
+
+        if(enable_detection && mainThread) {
             Mat small_show_frame;
             if(show_frame.cols>1500)
                 resize(show_frame,small_show_frame,frame.size()/2);
@@ -524,8 +467,6 @@ void process_camera_staple(const string model_path, const CameraConfig &camera, 
             if(QUIT_KEY == waitKey(1)) break;
         }
 
-        frameCounter++;
-
         google::FlushLogFiles(google::GLOG_INFO);
 
     } while (true);
@@ -534,8 +475,10 @@ void process_camera_staple(const string model_path, const CameraConfig &camera, 
 
 int main(int argc, char* argv[]) {
 
-    google::InitGoogleLogging(argv[0]);
-
+    google::InitGoogleLogging("multi-camera-trakcing");
+    FLAGS_log_dir = "./";
+//    FLAGS_logtostderr = true;
+    read3D_conf();
     const String keys =
         "{help h usage ? |                         | print this message   }"
         "{model        |models/ncnn                | path to mtcnn model  }"

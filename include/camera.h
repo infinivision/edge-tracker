@@ -40,4 +40,6 @@ public:
 
 std::vector<CameraConfig> LoadCameraConfig(std::string config_path);
 
+cv::Mat read_csv2d(std::string file, int row, int col);
+
 #endif

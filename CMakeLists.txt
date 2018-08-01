@@ -90,3 +90,9 @@ add_executable(export src/export.cpp)
 target_link_libraries(export fftw3f)
 set_target_properties(export PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 
+add_executable(pnp src/test_solvePnP.cpp src/utils.cpp src/mtcnn.cpp src/camera.cpp)
+target_link_libraries(pnp ncnn ${OpenCV_LIBS} glog)
+set_target_properties(pnp
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+)
