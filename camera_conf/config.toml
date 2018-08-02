@@ -17,3 +17,5 @@
   rvector = "rvec244.csv"
   tvector = "tvec244.csv"
   tracker = "staple"
+ [global]
+  min_score = 16
