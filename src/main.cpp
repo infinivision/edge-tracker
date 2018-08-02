@@ -343,7 +343,6 @@ void process_camera_staple(const string model_path, const CameraConfig &camera, 
         if (frameCounter % camera.detection_period == 0)
         {
             enable_detection = true;
-            image_points.clear();
             ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
 
             gettimeofday(&tv1,&tz1);
@@ -358,6 +357,7 @@ void process_camera_staple(const string model_path, const CameraConfig &camera, 
 
                     // get face bounding box
                     Bbox box = *it;
+                    image_points.clear();
                     for(int i =0;i<5;i++){
                         cv::Point2d point(box.ppoint[i],box.ppoint[i+5]);
                         image_points.push_back(point);
