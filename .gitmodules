@@ -8,5 +8,8 @@
 	path = 3rdparty/staple
 	url = https://github.com/infinivision/staple
 [submodule "ncnn"]
-	path = ncnn
+	path = 3rdparty/ncnn
 	url = git@github.com:Tencent/ncnn.git
+[submodule "3rdparty/mxnet"]
+	path = 3rdparty/mxnet
+	url = https://github.com/apache/incubator-mxnet.git

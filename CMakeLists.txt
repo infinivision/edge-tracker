@@ -21,7 +21,11 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 find_package(OpenMP)
 if(OpenMP_CXX_FOUND OR OPENMP_FOUND)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    if(APPLE)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -openmp")
+    else()
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+	endif()
 endif()
 
 find_package( OpenCV REQUIRED )
@@ -38,6 +42,7 @@ message(STATUS "CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/ncnn)
+include_directories(${PROJECT_SOURCE_DIR}/3rdparty/mxnet/include)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/staple/staple)
 add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
@@ -47,6 +52,7 @@ add_subdirectory(../dlib dlib_build)
 link_directories(
   ${OpenCV_Install}/lib
   ${PROJECT_SOURCE_DIR}/lib/ncnn
+  ${PROJECT_SOURCE_DIR}/3rdparty/mxnet/lib
 )
 
 add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp src/face_pose_estimate.cpp)
@@ -88,11 +94,21 @@ set_target_properties(test_video
 
 add_executable(export src/export.cpp)
 target_link_libraries(export fftw3f)
-set_target_properties(export PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
+set_target_properties(export 
+        PROPERTIES 
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+)
 
 add_executable(pnp src/test_solvePnP.cpp src/utils.cpp src/mtcnn.cpp src/camera.cpp)
 target_link_libraries(pnp ncnn ${OpenCV_LIBS} glog)
 set_target_properties(pnp
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+)
+
+add_executable(face-predict src/face_predict_example.cpp src/face_predict.cpp)
+target_link_libraries(face-predict mxnet ${OpenCV_LIBS})
+set_target_properties(face-predict 
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
 )

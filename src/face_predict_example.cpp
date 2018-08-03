@@ -34,7 +34,7 @@
 #include <vector>
 #include <opencv2/opencv.hpp>
 // Path for c_predict_api
-#include <mxnet/c_predict_api.h>
+#include "mxnet/c_predict_api.h"
 
 #include "face_predict.h"
 
