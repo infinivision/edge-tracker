@@ -36,13 +36,20 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <list>
 #include <memory>
 #include <iomanip>
 #include <opencv2/opencv.hpp>
-// Path for c_predict_api
-#include "mxnet/c_predict_api.h"
 
 #include "face_predict.h"
+
+int m_channel=0;
+int m_width=0;
+int m_height=0;
+int output_feature = 0;
+PredictorHandle embd_hd=nullptr;
+
+std::list<cv::Mat> face_vec_list;
 
 BufferFile::BufferFile(const std::string& file_path):file_path_(file_path) {
 
@@ -69,9 +76,49 @@ InputShape::InputShape(int width, int height, int channels) {
     input_shape_data[3] = static_cast<mx_uint>(width);
 }
 
-// input image (height, width, channel)
-// output image (channel, 112, 112)
-// the out image_data shape(3, 112, 112)
+// input opencv image matrix
+// output image vecotr for mxnet
+// input mat will be resize if it does not have a shape equal to the mxnet model
+void imgFormConvert( const cv::Mat input, std::vector<mx_float> & img_vec) {
+  cv::Mat ori,im;
+  if(!input.isContinuous()){
+    input.copyTo(ori);
+    if(!ori.isContinuous()){
+      std::cerr << "not enough continous memory for opencv mat\n";
+      exit(1);
+    }
+  } else {
+    ori = input;
+  }
+  if(ori.channels()!=m_channel){
+      std::cerr << "mat channel is " << ori.channels()  << " ,can not proccess!\n";
+      exit(1);
+  }
+
+  if(ori.cols*ori.rows!= m_width*m_height) {
+    cv::resize(ori,im,cv::Size(m_width,m_height));
+  } else
+    im = ori;
+
+  int size = m_channel * m_width * m_height;
+  img_vec.resize(size);
+  mx_float* image_data  = img_vec.data();
+  mx_float* ptr_image_r = image_data;
+  mx_float* ptr_image_g = image_data + size / 3;
+  mx_float* ptr_image_b = image_data + size / 3 * 2;
+
+  for (int i = 0; i < im.rows; i++) {
+    auto data = im.ptr<uchar>(i);
+
+    for (int j = 0; j < im.cols; j++) {
+        *ptr_image_b++ = static_cast<mx_float>(*data++);
+        *ptr_image_g++ = static_cast<mx_float>(*data++);
+        *ptr_image_r++ = static_cast<mx_float>(*data++);
+    }
+  }
+
+}
+
 void GetImageFile(const std::string& image_file,
                   mx_float* image_data, int channels,
                   cv::Size resize_size) {
@@ -136,9 +183,10 @@ void Infer ( PredictorHandle pred_hnd,         /* mxnet model */
 }
 
 void PrintOutputResult(const std::vector<float>& output) {
+    std::cout<< "embedding size: " << output.size() <<"\n";
     for(int i=0; i < output.size(); ++i) {
     std::cout << output[i];
-    if((i+1) % 6 == 0) {
+    if((i+1) % 16 == 0) {
       std::cout << std::endl;
     } else {
       std::cout << " ";
@@ -195,4 +243,42 @@ void LoadMXNetModel ( PredictorHandle* pred_hnd, /* Output */
                shape.input_shape_data,
                pred_hnd);
   assert(pred_hnd);
+}
+
+void LoadMxModelConf() {
+  char * conf_path = getenv("mxModelPath");
+   std::string mx_model_conf;
+  if(conf_path==nullptr)
+    mx_model_conf = std::string("mxModel.toml");   /* model conf file path */
+  else
+    mx_model_conf = std::string(conf_path);
+
+  try {
+      auto g = cpptoml::parse_file(mx_model_conf);
+      m_width   = g->get_qualified_as<int>("shape.width").value_or(112);
+      m_height  = g->get_qualified_as<int>("shape.height").value_or(112);
+      m_channel = g->get_qualified_as<int>("shape.channel").value_or(3);
+      output_feature = g->get_qualified_as<int>("shape.output_feature").value_or(128);
+  }
+  catch (const cpptoml::parse_exception& e) {
+      std::cerr << "Failed to parse mxModel.toml: " << e.what() << std::endl;
+      exit(1);
+  }
+
+  InputShape input_shape(m_width, m_height, m_channel);
+  std::cout << "load mx model shape: " << m_width << ","
+                                       << m_height << ","
+                                       << m_channel << "\n";
+  try {
+      auto g = cpptoml::parse_file(mx_model_conf);
+      std::string json_file  = g->get_qualified_as<std::string>("embedding.json").value_or("");
+      std::string param_file = g->get_qualified_as<std::string>("embedding.param").value_or("");
+      LoadMXNetModel(&embd_hd, json_file, param_file, input_shape);
+      std::cout << "embedding modle has been loaded!\n";
+  }
+  catch (const cpptoml::parse_exception& e) {
+      std::cerr << "Failed to parse mxModel.toml: " << e.what() << std::endl;
+      exit(1);
+  }
+
 }

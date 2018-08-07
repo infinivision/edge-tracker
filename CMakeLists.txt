@@ -55,8 +55,8 @@ link_directories(
   ${PROJECT_SOURCE_DIR}/3rdparty/mxnet/lib
 )
 
-add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp src/face_pose_estimate.cpp)
-target_link_libraries(main ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f dlib::dlib glog)
+add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp src/face_pose_estimate.cpp src/face_predict.cpp)
+target_link_libraries(main ncnn trackerKCF trackerStaple mxnet ${OpenCV_LIBS} fftw3f dlib::dlib glog)
 set_target_properties(main
         PROPERTIES 
 #        ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"

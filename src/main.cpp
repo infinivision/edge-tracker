@@ -11,6 +11,7 @@
 #include "utils.h"
 #include "face_attr.h"
 #include "face_align.h"
+#include "face_predict.h"
 #include <glog/logging.h>
 #include <thread>
 
@@ -179,7 +180,11 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                     double score = fa.GetVarianceOfLaplacianSharpness(face);
                     LOG(INFO) << "ip[" << camera.ip <<"] dlib score: " << score 
                                        << ", frame " << frameCounter << ",faceId: " << thisFace;
-
+                    std::vector<mx_float> face_vec;
+                    std::vector<float> face_embed_vec;
+                    imgFormConvert(face,face_vec);
+                    Infer(embd_hd,face_vec,face_embed_vec);
+                    PrintOutputResult(face_embed_vec);
                     if(score>min_score){
                         image_points.clear();
                         for(int i =0;i<5;i++){
@@ -265,6 +270,7 @@ int main(int argc, char* argv[]) {
     FLAGS_log_dir = "./";
 //    FLAGS_logtostderr = true;
     read3D_conf();
+    LoadMxModelConf();
     const String keys =
         "{help h usage ? |                         | print this message   }"
         "{model        |models/ncnn                | path to mtcnn model  }"

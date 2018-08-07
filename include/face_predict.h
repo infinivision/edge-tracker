@@ -2,6 +2,16 @@
 #define _FACE_PREDICT_H_
 
 #include <vector>
+#include "cpptoml.h"
+
+// Path for c_predict_api
+#include "mxnet/c_predict_api.h"
+
+extern int m_channel;
+extern int m_width;
+extern int m_height;
+extern int output_feature;
+extern PredictorHandle embd_hd;
 
 // Read file to buffer
 class BufferFile {
@@ -59,5 +69,9 @@ void Infer ( PredictorHandle pred_hnd,           /* mxnet model */
 	         std::vector<float> &data);          /* output vector */
 
 void PrintOutputResult(const std::vector<float>& output);
+
+void imgFormConvert( const cv::Mat input, std::vector<mx_float> & img_vec);
+
+void LoadMxModelConf();
 
 #endif // _FACE_PREDICT_H_
