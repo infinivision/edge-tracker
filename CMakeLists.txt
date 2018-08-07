@@ -19,7 +19,6 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(OpenMP)
 if(OpenMP_CXX_FOUND OR OPENMP_FOUND)
-    message(STATUS "OpenMP_CXX_FLAGS: ${OpenMP_CXX_FLAGS}")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
     if(APPLE)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -openmp")
