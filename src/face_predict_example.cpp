@@ -39,17 +39,31 @@
 #include "face_predict.h"
 
 int main(int argc, char* argv[]) {
-  if (argc < 2) {
-    std::cout << "No test image here." << std::endl
-              << "Usage: ./image-classification-predict apple.jpg" << std::endl;
-    return EXIT_FAILURE;
+
+  const std::string keys =
+      "{help h usage ? |                | print this message   }"
+      "{model          |models/y1-test2 | path to mtcnn model  }"
+      "{@image         |                | input image          }"
+  ;
+
+  cv::CommandLineParser parser(argc, argv, keys);
+  parser.about("face predict");
+  if (parser.has("help")) {
+      parser.printMessage();
+      return 0;
   }
 
-  std::string image_path(argv[1]);
+  if (!parser.check()) {
+      parser.printErrors();
+      return EXIT_FAILURE;
+  }
+
+  std::string model_path = parser.get<std::string>("model");
+  std::string image_path = parser.get<std::string>(0);
 
   // Models path for your model, you have to modify it
-  std::string json_file = "/Users/moon/abc/AI/Models/model-r50-am-lfw/model-symbol.json";
-  std::string param_file = "/Users/moon/abc/AI/Models/model-r50-am-lfw/model-0000.params";
+  std::string json_file = model_path + "/model-symbol.json";
+  std::string param_file = model_path + "/model-0000.params";
 
   // Image size and channels
   int width = 112;
