@@ -13,3 +13,6 @@
 [submodule "3rdparty/mxnet"]
 	path = 3rdparty/mxnet
 	url = https://github.com/apache/incubator-mxnet.git
+[submodule "3rdparty/vectdb"]
+	path = 3rdparty/vectdb
+	url = https://github.com/infinivision/vectodb
