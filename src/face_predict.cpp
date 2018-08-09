@@ -36,7 +36,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <list>
+#include <mutex>
 #include <memory>
 #include <iomanip>
 #include <opencv2/opencv.hpp>
@@ -49,7 +49,7 @@ int m_height=0;
 int output_feature = 0;
 PredictorHandle embd_hd=nullptr;
 
-std::list<cv::Mat> face_vec_list;
+std::mutex vec_mutex;
 
 BufferFile::BufferFile(const std::string& file_path):file_path_(file_path) {
 
@@ -281,4 +281,35 @@ void LoadMxModelConf() {
       exit(1);
   }
 
+  try {
+      auto g = cpptoml::parse_file(mx_model_conf);
+      auto work_dir   = g->get_qualified_as<std::string>("vectdb.path").value_or("demo_sift_vectodb");
+      VectoDB vdb(work_dir.c_str(), output_feature, 1, "IVF4096,PQ32", "nprobe=256,ht=256", 260000.0f);
+      long vectdb_size = vdb.GetTotal();
+      if(vectdb_size==0){
+        long nb = 1024;
+        long* xids = new long[nb];
+        float* xb = new float[nb];
+        for (long i = 0; i < (long)nb; i++) {
+            xids[i] = i;
+        }
+        vdb.AddWithIds(nb, xb, xids);
+        std::cout<< "vdb is null ,insert vecotors: " << nb << "\n";
+      } else
+        std::cout<< "vdb is has[" << vectdb_size << "] vectors when start \n";
+  }
+  catch (const cpptoml::parse_exception& e) {
+      std::cerr << "Failed to parse mxModel.toml: " << e.what() << std::endl;
+      exit(1);
+  }
+
+}
+
+// Find the similar vector in the list, if no similar vector found, insert into the list head
+// If list len is bigger than threshold, delete vecotors from the list tail
+// output id,vector,coordinate,timestamp?
+bool proc_embd_vec(std::vector<float> &data) {
+  vec_mutex.lock();
+  vec_mutex.unlock();
+  return true;
 }

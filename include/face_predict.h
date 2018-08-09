@@ -7,6 +7,8 @@
 // Path for c_predict_api
 #include "mxnet/c_predict_api.h"
 
+#include "vectodb.hpp"
+
 extern int m_channel;
 extern int m_width;
 extern int m_height;
