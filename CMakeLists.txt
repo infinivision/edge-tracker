@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 
 project(edge-tracker)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+
 if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "build type not defined")
     set(CMAKE_BUILD_TYPE release CACHE STRING "Choose the type of build" FORCE)
@@ -36,11 +38,9 @@ if (NOT OpenCV_FOUND)
 else()
     message(STATUS "OpenCV_LIBS: ${OpenCV_LIBS}")
     message(STATUS "OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}")
-    message(STATUS "OpenCV_DIR: ${OpenCV_DIR}")
+    message(STATUS "OpenCV_LIBRARY_DIRS: ${OpenCV_LIBRARY_DIRS}")
 endif (NOT OpenCV_FOUND)
 
-#message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
-#message(STATUS "CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/ncnn)
