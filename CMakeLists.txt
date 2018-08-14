@@ -36,6 +36,7 @@ if (NOT OpenCV_FOUND)
 else()
     message(STATUS "OpenCV_LIBS: ${OpenCV_LIBS}")
     message(STATUS "OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}")
+    message(STATUS "OpenCV_LIB_DIRS: ${OpenCV_LIB_DIRS}")
 endif (NOT OpenCV_FOUND)
 
 #message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
