@@ -7,6 +7,8 @@
   dist_coeff = "dist242.csv"
   rvector = "rvec242.csv"
   tvector = "tvec242.csv"
+  euler_alpa = 10.0
+  euler_beta = 35.0
 [[camera]]
   ip = "192.168.150.244"
   username = "admin"
@@ -17,5 +19,7 @@
   rvector = "rvec244.csv"
   tvector = "tvec244.csv"
   tracker = "staple"
+  euler_alpa = 10.0
+  euler_beta = 25.0
  [global]
   min_score = 16

@@ -131,6 +131,9 @@ std::vector<CameraConfig> LoadCameraConfig(std::string config_path) {
             camera.t_file = table->get_as<std::string>("tvector").value_or("");
             if(camera.t_file != "")
                 camera.tvec = read_csv2d(camera.t_file,3,1);
+
+            camera.euler_alpha = table->get_as<double>("euler_alpha").value_or(10.0);
+            camera.euler_beta  = table->get_as<double>("euler_beta").value_or(35.0);
             
             cameras.push_back(camera);
         }

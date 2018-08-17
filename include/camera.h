@@ -29,6 +29,9 @@ public:
     cv::Mat tvec;
     cv::Mat rmtx;
 
+    double euler_alpha;
+    double euler_beta;
+
     CameraConfig(){};
 
     // return ip, or index if no ip is given

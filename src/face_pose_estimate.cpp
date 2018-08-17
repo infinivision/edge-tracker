@@ -54,7 +54,38 @@ void read3D_conf(){
     }
 }
 
-void compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, int age, int sex) {
+bool isRotationMatrix(Mat &R)
+{
+    Mat Rt;
+    transpose(R, Rt);
+    Mat shouldBeIdentity = Rt * R;
+    Mat I = Mat::eye(3,3, shouldBeIdentity.type());
+    return  norm(I, shouldBeIdentity) < 1e-6; 
+}
+
+Vec3f rotationMatrixToEulerAngles(Mat &R)
+{
+    assert(isRotationMatrix(R));
+    float sy = sqrt(R.at<double>(0,0) * R.at<double>(0,0) +  R.at<double>(1,0) * R.at<double>(1,0) );
+    bool singular = sy < 1e-6; // If
+    float x, y, z;
+    if (!singular)
+    {
+        x = atan2(R.at<double>(2,1) , R.at<double>(2,2));
+        y = atan2(-R.at<double>(2,0), sy);
+        z = atan2(R.at<double>(1,0), R.at<double>(0,0));
+    }
+    else
+    {
+        x = atan2(-R.at<double>(1,2), R.at<double>(1,1));
+        y = atan2(-R.at<double>(2,0), sy);
+        z = 0;
+    }
+    return Vec3f(x, y, z); 
+}
+
+bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, \
+                         cv::Mat & world_coordinate, int age, int sex, int frameCount,int faceId) {
     cv::Mat camera_matrix;
     cv::Mat dist_coeffs;
     double focal_length = im.cols; // Approximate focal length.
@@ -99,7 +130,7 @@ void compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
             }
     } else {
         LOG(INFO) << "can't compute for child age less than six!";
-        return;
+        return false;
     }
 
     // Solve for pose
@@ -119,12 +150,34 @@ void compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
 
     // Project a 3D point (0, 0, 1000.0) onto the image plane.
     // We use this to draw a line sticking out of the nose
-    LOG(INFO) << "ip[" << camera.ip << "] tvec: "<< translation_vector.t()/1000;
-    cv::Mat world_coordinate;
+    // LOG(INFO) << camera.ip << " tvec: "<< translation_vector.t()/1000;
 
     if(camera.r_file!="" && camera.t_file!="") {
         world_coordinate = camera.rmtx.t() * (translation_vector - camera.tvec);
-        LOG(INFO) << "ip[" << camera.ip <<"] w coordinate: " << world_coordinate.t() / 1000;
+        LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId 
+                  << "] w coordinate: " << world_coordinate.t() / 1000;
     } else
-        LOG(INFO) << "camera.ip[" << camera.ip << "] can't compute coordinate without camera rotation matrix of the world coordinate" ;
+        LOG(INFO) << camera.ip << " can't compute coordinate without camera rotation matrix";
+
+    cv::Mat r_mat;
+    cv::Rodrigues(rotation_vector,r_mat);
+
+    auto euler_angle = rotationMatrixToEulerAngles(r_mat);
+    euler_angle = euler_angle / M_PI*180;
+
+    LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId
+              << "] euler_angle: " << euler_angle;
+
+    auto x = abs(euler_angle[0]);
+    if(x>90)
+        x = 180 - x;
+    auto y = abs(euler_angle[1]);
+    auto z = abs(euler_angle[2]);
+    if(z>90)
+        z = 180 - z;
+    if(x>camera.euler_alpha || z>camera.euler_alpha)
+        return false;
+    if(y>camera.euler_beta)
+        return false;
+    return true;
 }
