@@ -6,7 +6,7 @@
 #include <string.h>
 #include <chrono>
 #include <cstdlib>
-#include "tracker.hpp" // use optimised tracker instead of OpenCV version of KCF tracker
+//#include "tracker.hpp" // use optimised tracker instead of OpenCV version of KCF tracker
 #include "staple_tracker.hpp" // staple trakcer
 #include "utils.h"
 #include "face_attr.h"
@@ -20,7 +20,8 @@
 using namespace std;
 using namespace cv;
 extern int min_score;
-void compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, int age, int sex);
+bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, \
+                         cv::Mat & world_coordinate, int age, int sex, int frameCount,int faceId);
 void read3D_conf();
 
 FaceAlign faceAlign = FaceAlign();
@@ -50,18 +51,15 @@ bool overlap(Rect2d &box1, Rect2d &box2) {
 // prepare (clean output folder), output_folder argument will be changed!
 void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
     output_folder += "/" + camera.identity();
+    string cmd = "rm -rf " + output_folder + "";
+    system(cmd.c_str());
 
-    string cmd = "mkdir -p " + output_folder + "/original";
+    cmd = "mkdir -p " + output_folder + "/original";
     int dir_err = system(cmd.c_str());
     if (-1 == dir_err) {
         LOG(ERROR) << "Error creating directory";
         exit(1);
     }
-
-    cmd = "rm -f " + output_folder + "/*";
-    system(cmd.c_str());
-    cmd = "rm -f " + output_folder + "/original/*";
-    system(cmd.c_str());
 }
 
 void process_camera(const string model_path, const CameraConfig &camera, string output_folder, bool mainThread) {
@@ -91,10 +89,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     Rect2d roi;
     vector<STAPLE_TRACKER *>  trackers;
     vector<Rect2d> tracker_boxes;
-    // selected_faces[i] on frame[i] is a selected face
-    vector<Mat> selected_frames;
-    vector<Bbox> selected_faces;
-    vector<double> scores; // scores[i] is the face score of selected_faces[i]
+    vector<long int> reids;
     Mat frame;
 
     FileStorage fs;
@@ -123,7 +118,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
             tracker->tracker_staple_train(frame,false);
             log += "#" + to_string(trackers[i]->id) + " ";
         }
-        LOG(INFO) << log;
+        //LOG(INFO) << log;
         
         if (frameCounter % camera.detection_period == 0)
         {
@@ -159,6 +154,8 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                         tracker->id = faceId;
                         trackers.push_back(tracker);
                         tracker_boxes.push_back(detected_face);
+                        std::list<cv::Mat> point_list;
+                        reids.push_back(-1);
                         LOG(INFO) << "start tracking face #" << tracker->id;
                         thisFace = faceId;
                         faceId++;
@@ -176,23 +173,65 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                     }
 
                     // calculate score of face
-                    Mat face(frame, detected_face);                    
+                    Mat face(frame, detected_face);
+                    bool front_side =false;
+                    bool position_appriaprote=false;
                     double score = fa.GetVarianceOfLaplacianSharpness(face);
-                    LOG(INFO) << "ip[" << camera.ip <<"] dlib score: " << score 
-                                       << ", frame " << frameCounter << ",faceId: " << thisFace;
-                    std::vector<mx_float> face_vec;
-                    std::vector<float> face_embed_vec;
-                    imgFormConvert(face,face_vec);
-                    Infer(embd_hd,face_vec,face_embed_vec);
-                    PrintOutputResult(face_embed_vec);
+                    LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace 
+                              << "], LaplacianSharpness score: " << score;
                     if(score>min_score){
                         image_points.clear();
                         for(int i =0;i<5;i++){
                             cv::Point2d point(box.ppoint[i],box.ppoint[i+5]);
                             image_points.push_back(point);
                         }
-                        compute_coordinate(frame, image_points, camera, 20, 1);
+                        cv::Mat world_coordinate;
+                        front_side = compute_coordinate(frame, image_points, camera, world_coordinate, 20, 1,frameCounter, thisFace);
+                        
+                        if(front_side && newFace){
+                            std::vector<mx_float> face_vec;
+                            std::vector<float> face_embed_vec;
+                            imgFormConvert(face,face_vec);
+                            Infer(embd_hd,face_vec,face_embed_vec);
+                            bool new_id;
+                            new_id = proc_embd_vec(face_embed_vec, camera, frameCounter, thisFace);
+                            if(reids[i]==-1){
+                                reids[i] = new_id;
+                                LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
+                                          << "], find new reid: " << new_id;
+                            } else {
+                                LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
+                                             << "], tracker reid change from["<<reids[i] << "],to["<<new_id<<"]";
+                            }
+
+                            if(new_id){
+                                Mat frame2=frame.clone();
+                                rectangle( frame2, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
+                                // show face id
+                                Point middleHighPoint = Point(detected_face.x+detected_face.width/2, detected_face.y);
+                                putText(frame2, to_string(thisFace), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
+                                for(auto point: image_points){
+                                    drawMarker(frame2, point,  cv::Scalar(0, 255, 0), cv::MARKER_CROSS, 10, 1);
+                                }                                
+                                string output = output_folder + "/face_" + to_string(thisFace) + "_" + to_string(frameCounter) + ".jpg";
+                                imwrite(output,frame2);
+                            }
+                            // PrintOutputResult(face_embed_vec);
+                        }
+                        else
+                            LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
+                                      << "], pose is skew, don't make face embedding,\n";
+
+                        if(front_side){
+                            gettimeofday(&tv1,NULL);
+                            long int ts_ms = tv1.tv_sec * 1000 + tv1.tv_usec / 1000;
+                            // to do: push the coordinate reid timestamp info into the time series database
+                            // (world_coordinate, reid[i], ts_ms)
+                        }
                     }
+                    else 
+                        LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace 
+                                     << "], video frame is blur\n";
 
                     // draw detected face
                     if(mainThread){
@@ -204,17 +243,15 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                             drawMarker(show_frame, point,  cv::Scalar(0, 255, 0), cv::MARKER_CROSS, 10, 1);
                         }
                     }
-                    string output = output_folder + "/" + to_string(thisFace) + "_" + to_string(frameCounter) + ".jpg";             
-                    imwrite(output,show_frame);
-                    output = output_folder + "/original/"+to_string(thisFace) + "_" + to_string(frameCounter) + ".jpg";
+                    string output = output_folder + "/original/"+to_string(thisFace) + "_" + to_string(frameCounter) + ".jpg";
                     imwrite(output,frame);
                 }
             }
-            LOG(INFO) << "trackers size after decect: " << trackers.size();
-            LOG(INFO) << "detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms";
+            //LOG(INFO) << "trackers size after decect: " << trackers.size();
+            //LOG(INFO) << "detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms";
             if(total == 0) {
                 string output = output_folder + "/original/"+ "none" + "_" + to_string(frameCounter) + ".jpg";             
-                imwrite(output,frame);
+                // imwrite(output,frame);
             }
 
             // clean up trackers if the tracker doesn't follow a face
@@ -253,7 +290,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
             else
                 small_show_frame = show_frame;
             
-            LOG(INFO) << "camera ip: "<< camera.ip;
+            // LOG(INFO) << "camera ip: "<< camera.ip;
             imshow("window" + camera.ip , small_show_frame);
             if(QUIT_KEY == waitKey(1)) break;
         }

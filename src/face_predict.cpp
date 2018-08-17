@@ -41,6 +41,7 @@
 #include <iomanip>
 #include <opencv2/opencv.hpp>
 
+#include <glog/logging.h>
 #include "face_predict.h"
 
 int m_channel=0;
@@ -50,6 +51,8 @@ int output_feature = 0;
 PredictorHandle embd_hd=nullptr;
 
 std::mutex vec_mutex;
+VectoDB * dbp;
+long reid;
 
 BufferFile::BufferFile(const std::string& file_path):file_path_(file_path) {
 
@@ -283,20 +286,12 @@ void LoadMxModelConf() {
 
   try {
       auto g = cpptoml::parse_file(mx_model_conf);
-      auto work_dir   = g->get_qualified_as<std::string>("vectdb.path").value_or("demo_sift_vectodb");
-      VectoDB vdb(work_dir.c_str(), output_feature, 1, "IVF4096,PQ32", "nprobe=256,ht=256", 260000.0f);
-      long vectdb_size = vdb.GetTotal();
-      if(vectdb_size==0){
-        long nb = 1024;
-        long* xids = new long[nb];
-        float* xb = new float[nb];
-        for (long i = 0; i < (long)nb; i++) {
-            xids[i] = i;
-        }
-        vdb.AddWithIds(nb, xb, xids);
-        std::cout<< "vdb is null ,insert vecotors: " << nb << "\n";
-      } else
-        std::cout<< "vdb is has[" << vectdb_size << "] vectors when start \n";
+      auto work_dir   = g->get_qualified_as<std::string>("vectdb.path").value_or("vectdb");
+      auto dot_distance_threshold = g->get_qualified_as<double>("vectdb.dot_distance_threshold").value_or(0.6);
+      dbp = new VectoDB(work_dir.c_str(), output_feature, 0, "IVF4096,PQ32", "nprobe=256,ht=256", dot_distance_threshold);
+      std::cout << "vectdb dim: " << output_feature << "\n";
+      long vectdb_size = dbp->GetTotal();
+      reid = vectdb_size+1;
   }
   catch (const cpptoml::parse_exception& e) {
       std::cerr << "Failed to parse mxModel.toml: " << e.what() << std::endl;
@@ -308,8 +303,52 @@ void LoadMxModelConf() {
 // Find the similar vector in the list, if no similar vector found, insert into the list head
 // If list len is bigger than threshold, delete vecotors from the list tail
 // output id,vector,coordinate,timestamp?
-bool proc_embd_vec(std::vector<float> &data) {
+
+void vec_norm(std::vector<float> &in, std::vector<float> &out){
+  float sqare_sum=0;
+  for(size_t i=0;i<in.size();i++){
+    sqare_sum += in[i]*in[i];
+  }
+  float magnititue = sqrt(sqare_sum);
+  out.resize(in.size());
+  for(size_t i=0;i<out.size();i++){
+    out[i] = in[i] / magnititue;
+  }
+}
+
+bool proc_embd_vec(std::vector<float> &data, const CameraConfig & camera,int frameCount,int faceId) {
+  bool new_id = true;
+  std::vector<float> n;
+  vec_norm(data,n);
   vec_mutex.lock();
+  if(reid%1){
+    long cur_ntrain, cur_nsize;
+    dbp->GetIndexSize(cur_ntrain, cur_nsize);
+    LOG(INFO) << "cur_ntrain " << cur_ntrain << ", cur_nsize " << cur_nsize;
+    if((cur_nsize-cur_ntrain)>0){
+      faiss::Index* index;
+      long ntrain;
+      dbp->BuildIndex(cur_ntrain, cur_nsize, index, ntrain);
+      dbp->ActivateIndex(index, ntrain);
+      LOG(INFO) << "Build new Index!\n";
+    }
+  }
+  float distance[10];
+  long  xid[10];
+  dbp->Search(1,n.data(),distance,xid);
+  if(xid[0]==-1){
+    long reid_buf[10];
+    reid_buf[0] = reid;
+    dbp->AddWithIds(1,n.data(),reid_buf);
+    LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId
+              << "]add new face vec,distance[" << distance[0] <<"], reid[" << reid <<"]\n";
+    reid++;
+  } else {
+    //dbp->UpdateWithIds(1,n.data(),xid);
+    LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId
+              << "]find old face vect,distance[" << distance[0] <<"], reid[" << xid[0] <<"]\n";
+    new_id = false;
+  }
   vec_mutex.unlock();
-  return true;
+  return new_id;
 }

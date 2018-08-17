@@ -6,7 +6,7 @@
 
 // Path for c_predict_api
 #include "mxnet/c_predict_api.h"
-
+#include "camera.h"
 #include "vectodb.hpp"
 
 extern int m_channel;
@@ -75,5 +75,7 @@ void PrintOutputResult(const std::vector<float>& output);
 void imgFormConvert( const cv::Mat input, std::vector<mx_float> & img_vec);
 
 void LoadMxModelConf();
+
+bool proc_embd_vec(std::vector<float> &data, const CameraConfig & camera,int frameCount,int faceId);
 
 #endif // _FACE_PREDICT_H_
