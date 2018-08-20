@@ -7,7 +7,13 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE release CACHE STRING "Choose the type of build" FORCE)
 endif()
 
-add_definitions("-Wall -g -O0")
+if(DEV)
+        add_definitions("-Wall -g -O0")
+endif()
+
+if(BENCH)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBENCH_EDGE")
+endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL debug)
     message(STATUS "debug mode")

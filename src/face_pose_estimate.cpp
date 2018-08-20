@@ -4,6 +4,7 @@
 #include <string>
 #include <math.h>
 #include <stdlib.h> 
+#include <utils.h>
 
 using namespace std;
 using namespace cv;
@@ -84,6 +85,11 @@ Vec3f rotationMatrixToEulerAngles(Mat &R)
     return Vec3f(x, y, z); 
 }
 
+#ifdef BENCH_EDGE
+long  sum_t_pnp     = 0;
+long  pnp_count = 0;
+#endif
+
 bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, \
                          cv::Mat & world_coordinate, int age, int sex, int frameCount,int faceId) {
     cv::Mat camera_matrix;
@@ -133,9 +139,22 @@ bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
         return false;
     }
 
+#ifdef BENCH_EDGE
+    struct timeval  tv;
+    gettimeofday(&tv,NULL);
+    long t_ms1 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
+#endif
     // Solve for pose
     cv::solvePnP(model_points_clone, image_points, camera_matrix, dist_coeffs,    \
                     rotation_vector, translation_vector, false, pnp_algo);
+
+#ifdef BENCH_EDGE
+    gettimeofday(&tv,NULL);
+    long t_ms2 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
+    sum_t_pnp += t_ms2-t_ms1;
+    pnp_count++;
+    LOG(INFO) << "PnP performance: [" << (sum_t_pnp/1000.0 ) / pnp_count << "] mili second latency per time";
+#endif
     /*
     string points_str;
     for(auto point: image_points){

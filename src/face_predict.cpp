@@ -43,6 +43,7 @@
 
 #include <glog/logging.h>
 #include "face_predict.h"
+#include "utils.h"
 
 int m_channel=0;
 int m_width=0;
@@ -156,9 +157,22 @@ void GetImageFile(const std::string& image_file,
   }
 }
 
+#ifdef BENCH_EDGE
+long  sum_t_infer  = 0;
+long  infer_count  = 0;
+long  sum_t_search = 0;
+#endif
+
 void Infer ( PredictorHandle pred_hnd,         /* mxnet model */
            std::vector<mx_float> &image_data,  /* input data */
            std::vector<float> &data) {         /* output vector */
+
+#ifdef BENCH_EDGE
+  struct timeval  tv;
+  gettimeofday(&tv,NULL);
+  long t_ms1 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
+#endif
+
   // Set Input Image
   MXPredSetInput(pred_hnd, "data", image_data.data(), static_cast<mx_uint>(image_data.size()));
 
@@ -183,6 +197,17 @@ void Infer ( PredictorHandle pred_hnd,         /* mxnet model */
   data.resize(size);
 
   MXPredGetOutput(pred_hnd, output_index, &(data[0]), static_cast<mx_uint>(size));
+
+#ifdef BENCH_EDGE
+  gettimeofday(&tv,NULL);
+  long t_ms2 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
+  infer_count++;
+  if(infer_count>1){
+    sum_t_infer += t_ms2-t_ms1;
+    LOG(INFO) << "face infer performance: [" << (sum_t_infer/1000.0 ) / (infer_count-1) << "] mili second latency per time";
+  }
+#endif
+
 }
 
 void PrintOutputResult(const std::vector<float>& output) {
@@ -333,6 +358,13 @@ bool proc_embd_vec(std::vector<float> &data, const CameraConfig & camera,int fra
       LOG(INFO) << "Build new Index!\n";
     }
   }
+
+#ifdef BENCH_EDGE
+  struct timeval  tv;
+  gettimeofday(&tv,NULL);
+  long t_ms1 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
+#endif
+
   float distance[10];
   long  xid[10];
   dbp->Search(1,n.data(),distance,xid);
@@ -349,6 +381,14 @@ bool proc_embd_vec(std::vector<float> &data, const CameraConfig & camera,int fra
               << "]find old face vect,distance[" << distance[0] <<"], reid[" << xid[0] <<"]\n";
     new_id = false;
   }
+
+#ifdef BENCH_EDGE
+    gettimeofday(&tv,NULL);
+    long t_ms2 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
+    sum_t_search += t_ms2-t_ms1;
+    LOG(INFO) << "vectordb search performance: [" << (sum_t_search/1000.0 ) / infer_count << "] mili second latency per time";
+#endif
+
   vec_mutex.unlock();
   return new_id;
 }
