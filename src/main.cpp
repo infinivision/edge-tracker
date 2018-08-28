@@ -1,119 +1,21 @@
-#include <iostream>
-#include <opencv2/opencv.hpp>
-//#include <opencv2/tracking.hpp>
 #include "camera.h"
-#include "mtcnn.h"
-#include <string.h>
 #include <chrono>
 #include <cstdlib>
-#include "tracker.hpp" // use optimised tracker instead of OpenCV version of KCF tracker
-#include "utils.h"
 #include <face_attr.h>
-#include <face_align.h>
-#include <image_quality.h>
 #include <glog/logging.h>
+#include <image_quality.h>
+#include <iostream>
+#include <kcf/tracker.hpp>
+#include "mtcnn.h"
+#include <opencv2/opencv.hpp>
+#include <string.h>
 #include <thread>
+#include "utils.h"
 
 #define QUIT_KEY 'q'
 
 using namespace std;
-using namespace std::chrono_literals;
 using namespace cv;
-
-FaceAlign faceAlign = FaceAlign();
-
-/*
- * Decide whether the detected face is same as the tracking one
- * 
- * return true when:
- *   center point of one box is inside the other
- */
-bool overlap(Rect2d &box1, Rect2d &box2) {
-    int x1 = box1.x + box1.width/2;
-    int y1 = box1.y + box1.height/2;
-    int x2 = box2.x + box2.width/2;
-    int y2 = box2.y + box2.height/2;
-
-    if ( x1 > box2.x && x1 < box2.x + box2.width &&
-         y1 > box2.y && y1 < box2.y + box2.height &&
-         x2 > box1.x && x2 < box1.x + box1.width &&
-         y2 > box1.y && y2 < box1.y + box1.height ) {
-        return true;
-    }
-
-    return false;
-}
-
-/*
- * write face to the output folder
- */
-void saveFace(const Mat &frame, const Bbox &box, long faceId, string outputFolder) {
-
-    string current_time = get_current_time();
-
-    Rect2d roi(Point(box.x1, box.y1),Point(box.x2, box.y2));
-    Mat cropped(frame, roi);
-    string output = outputFolder + "/original/" + current_time + ".jpg";
-    if ( imwrite(output, cropped) ) {
-        LOG(INFO) << "\tsave face #" << faceId << " to " << output;
-        cout << "save face #" << faceId << " to " << output << endl;
-    } else {
-        LOG(ERROR) << "\tfail to save face #" << faceId << " to " << output;
-    }
-
-    //namedWindow("output", WINDOW_NORMAL);
-
-    std::vector<cv::Point2f> points;
-    for(int num=0;num<5;num++) {
-        Point2f point(box.ppoint[num], box.ppoint[num+5]);
-        points.push_back(point);
-    }
-
-    Mat image = faceAlign.Align(frame, points);
-
-    if (image.empty()) {
-        /* empty image means unable to align face */
-        return;
-    }
-
-    output = outputFolder + "/" + current_time + ".jpg";
-    if ( imwrite(output, image) ) {
-        LOG(INFO) << "\tsave face #" << faceId << " to " << output;
-        cout << "save face #" << faceId << " to " << output << endl;
-        LOG(INFO) << "\tmtcnn score: " << box.score;
-    } else {
-        LOG(ERROR) << "\tfail to save face #" << faceId << " to " << output;
-    }
-
-    output = outputFolder + "/aligned/" + current_time + ".jpg";
-    imwrite(output, image);
-
-    //imshow("output", image);
-}
-
-// prepare (clean output folder), output_folder argument will be changed!
-void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
-    output_folder += "/" + camera.identity();
-
-    string cmd = "mkdir -p " + output_folder + "/original";
-    int dir_err = system(cmd.c_str());
-    if (-1 == dir_err) {
-        LOG(ERROR) << "Error creating directory";
-        exit(1);
-    }
-
-    cmd = "mkdir -p " + output_folder + "/aligned";
-    dir_err = system(cmd.c_str());
-    if (-1 == dir_err) {
-        LOG(ERROR) << "Error creating directory";
-        exit(1);
-    }
-
-    // cmd = "rm -f " + output_folder + "/*";
-    // system(cmd.c_str());
-    // cmd = "rm -f " + output_folder + "/original/*";
-    // system(cmd.c_str());
-}
 
 void process_camera(const string &model_path, const CameraConfig &camera, string output_folder, const FaceAttr &fa) {
 
@@ -159,7 +61,7 @@ void process_camera(const string &model_path, const CameraConfig &camera, string
             cap.release();
 
             LOG(ERROR) << "sleep for 5 seconds ...";
-            std::this_thread::sleep_for(5s);
+            std::this_thread::sleep_for(std::chrono::seconds(5));
 
             cap = camera.GetCapture();
             if (!cap.isOpened()) {

@@ -2,101 +2,34 @@
 #include <opencv2/opencv.hpp>
 //#include <opencv2/tracking.hpp>
 #include "mtcnn.h"
-#include <string.h>
 #include <cstdlib>
-#include "tracker.hpp" // use optimised tracker instead of OpenCV version of KCF tracker
-#include "utils.h"
 #include "face_attr.h"
 #include "face_align.h"
+#include <glog/logging.h>
+#include <string.h>
+#include <kcf/tracker.hpp>
+#include "utils.h"
 
 #define QUIT_KEY 'q'
 
 using namespace std;
 using namespace cv;
 
-FaceAlign faceAlign = FaceAlign();
 
-/*
- * Decide whether the detected face is same as the tracking one
- * 
- * return true when:
- *   center point of one box is inside the other
- */
-bool isSameFace(Rect2d &box1, Rect2d &box2) {
-    int x1 = box1.x + box1.width/2;
-    int y1 = box1.y + box1.height/2;
-    int x2 = box2.x + box2.width/2;
-    int y2 = box2.y + box2.height/2;
-
-    if ( x1 > box2.x && x1 < box2.x + box2.width &&
-         y1 > box2.y && y1 < box2.y + box2.height &&
-         x2 > box1.x && x2 < box1.x + box1.width &&
-         y2 > box1.y && y2 < box1.y + box1.height ) {
-        return true;
-    }
-
-    return false;
-}
-
-/*
- * write face to the output folder
- */
-void saveFace(Mat &frame, Bbox &box, long faceId, string outputFolder) {
-
-    Rect2d roi(Point(box.x1, box.y1),Point(box.x2, box.y2));
-    Mat cropped(frame, roi);
-    string output = outputFolder + "/" + to_string(faceId) + ".jpg";
-    imwrite(output, cropped);
-
-    std::vector<cv::Point2f> points;
-    for(int num=0;num<5;num++) {
-        Point2f point(box.ppoint[num], box.ppoint[num+5]);
-        points.push_back(point);
-    }
-
-    Mat image = faceAlign.Align(frame, points);
-
-    if (image.empty()) {
-        /* empty image means unable to align face */
-        return;
-    }
-
-    output = outputFolder + "/" + to_string(faceId) + "-align.jpg";
-    if ( imwrite(output, image) ) {
-        cout << "\tsave face #" << faceId << " to " << output << endl;
-    } else {
-        cout << "\tfail to save face #" << faceId << endl;
-    }
-}
-
-void test_video(int argc, char* argv[]) {
+void test_video(const string &model_path, const CameraConfig &camera, string output_folder) {
     
     int detectionFrameInterval = 25; // nb of frames
-    string outputFolder; // folder to save face
 
-    // parsing arguments
-    if(argc != 3 && argc != 4 && argc != 5) {
-        cout << "usage: test_video <model_path> <video> <frames> <face_folder>" << endl;
-        exit(1); 
-    }
-
-    if (argc >= 4) {
-    	detectionFrameInterval = atoi(argv[3]);
-
-        if (argc == 5) {
-            outputFolder = argv[4];
-        }
-    }
-
-    string model_path = argv[1];
     MTCNN mm(model_path);
     FaceAttr fa;
     fa.Load();
     FaceAlign align;
 
-    VideoCapture cap(argv[2]);
+    prepare_output_folder(camera, output_folder);
+
+    VideoCapture cap = camera.GetCapture();
     if (!cap.isOpened()) {
-        cerr << "failed to open camera" << endl;
+        LOG(ERROR) << "failed to open camera: " << camera.identity();
         return;
     }
 
@@ -152,7 +85,7 @@ void test_video(int argc, char* argv[]) {
                     unsigned i;
                     for (i=0;i<boxes.size();i++) {
                         Rect2d trackedFace = boxes[i];
-                        if (isSameFace(detected_face, trackedFace)) {
+                        if (overlap(detected_face, trackedFace)) {
                             newFace = false;
                             break;
                         }
@@ -167,10 +100,7 @@ void test_video(int argc, char* argv[]) {
                         boxes.push_back(detected_face);
                         cout << "frame " << frameCounter << ": start tracking face #" << tracker->id << endl;
 
-                        if (!outputFolder.empty()) {
-                            // save face
-                            saveFace(frame, box, faceId, outputFolder);
-                        }
+                        saveFace(frame, box, faceId, output_folder);
                         
                         faceId++;
                     } else {
@@ -193,7 +123,7 @@ void test_video(int argc, char* argv[]) {
                     if ((*it).exist) {
                         Bbox box = *it;
                         Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
-                        if (isSameFace(detected_face, trackedFace)) {
+                        if (overlap(detected_face, trackedFace)) {
                             isFace = true;
                             break;
                         }
@@ -243,5 +173,33 @@ void test_video(int argc, char* argv[]) {
 }
 
 int main(int argc, char* argv[]) {
-    test_video(argc, argv);
+
+    google::InitGoogleLogging(argv[0]);
+
+    const String keys =
+        "{help h usage ? |                         | print this message   }"
+        "{model        |models/ncnn                | path to mtcnn model  }"
+        "{config       |/opt/dev_keeper/keeper.toml| camera config        }"
+        "{output       |/opt/dev_keeper/faces      | output folder        }"
+    ;
+
+    CommandLineParser parser(argc, argv, keys);
+    parser.about("camera face detector");
+    if (parser.has("help")) {
+        parser.printMessage();
+        return 0;
+    }
+
+    String config_path = parser.get<String>("config");
+    cout << "config path: " << config_path << endl;
+
+    String model_path = parser.get<String>("model");
+    String output_folder = parser.get<String>("output");
+    if (!parser.check()) {
+        parser.printErrors();
+        return 0;
+    }
+
+    vector<CameraConfig> cameras = LoadCameraConfig(config_path);
+    test_video(model_path, cameras[0], output_folder);
 }

@@ -1,11 +1,17 @@
-#include <iostream>
-#include "utils.h"
-#include <sys/types.h>
+#include "camera.h"
 #include <dirent.h>
+#include <face_align.h>
+#include <glog/logging.h>
+#include <iostream>
+#include "mtcnn.h"
 #include <sys/stat.h>
+#include <sys/types.h>
+#include "utils.h"
 #include <vector>
 
 using namespace std;
+
+FaceAlign faceAlign = FaceAlign();
 
 float getElapse(struct timeval *tv1,struct timeval *tv2)
 {
@@ -102,6 +108,94 @@ const vector<string> split(const string& s, const char& c) {
     }
 
     return v;
+}
+
+/*
+ * Decide whether the detected face is same as the tracking one
+ *
+ * return true when:
+ *   center point of one box is inside the other
+ */
+bool overlap(const cv::Rect2d &box1, const cv::Rect2d &box2) {
+    int x1 = box1.x + box1.width/2;
+    int y1 = box1.y + box1.height/2;
+    int x2 = box2.x + box2.width/2;
+    int y2 = box2.y + box2.height/2;
+
+    if ( x1 > box2.x && x1 < box2.x + box2.width &&
+         y1 > box2.y && y1 < box2.y + box2.height &&
+         x2 > box1.x && x2 < box1.x + box1.width &&
+         y2 > box1.y && y2 < box1.y + box1.height ) {
+        return true;
+    }
+
+    return false;
+}
+
+// prepare (clean output folder), output_folder argument will be changed!
+void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
+    output_folder += "/" + camera.identity();
+
+    string cmd = "mkdir -p " + output_folder + "/original";
+    int dir_err = system(cmd.c_str());
+    if (-1 == dir_err) {
+        LOG(ERROR) << "Error creating directory";
+        exit(1);
+    }
+
+    cmd = "mkdir -p " + output_folder + "/aligned";
+    dir_err = system(cmd.c_str());
+    if (-1 == dir_err) {
+        LOG(ERROR) << "Error creating directory";
+        exit(1);
+    }
+}
+
+/*
+ * write face to the output folder
+ */
+void saveFace(const cv::Mat &frame, const Bbox &box, long faceId, string outputFolder) {
+
+    string current_time = get_current_time();
+
+    cv::Rect2d roi(cv::Point(box.x1, box.y1),Point(box.x2, box.y2));
+    cv::Mat cropped(frame, roi);
+    string output = outputFolder + "/original/" + current_time + ".jpg";
+    if ( imwrite(output, cropped) ) {
+        LOG(INFO) << "\tsave face #" << faceId << " to " << output;
+        cout << "save face #" << faceId << " to " << output << endl;
+    } else {
+        LOG(ERROR) << "\tfail to save face #" << faceId << " to " << output;
+    }
+
+    //namedWindow("output", WINDOW_NORMAL);
+
+    std::vector<cv::Point2f> points;
+    for(int num=0;num<5;num++) {
+        Point2f point(box.ppoint[num], box.ppoint[num+5]);
+        points.push_back(point);
+    }
+
+    Mat image = faceAlign.Align(frame, points);
+
+    if (image.empty()) {
+        /* empty image means unable to align face */
+        return;
+    }
+
+    output = outputFolder + "/" + current_time + ".jpg";
+    if ( imwrite(output, image) ) {
+        LOG(INFO) << "\tsave face #" << faceId << " to " << output;
+        cout << "save face #" << faceId << " to " << output << endl;
+        LOG(INFO) << "\tmtcnn score: " << box.score;
+    } else {
+        LOG(ERROR) << "\tfail to save face #" << faceId << " to " << output;
+    }
+
+    output = outputFolder + "/aligned/" + current_time + ".jpg";
+    imwrite(output, image);
+
+    //imshow("output", image);
 }
 
 // int main() {
