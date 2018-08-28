@@ -60,6 +60,12 @@ void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
         LOG(ERROR) << "Error creating directory";
         exit(1);
     }
+    cmd = "mkdir -p " + output_folder + "/tracker";
+    dir_err = system(cmd.c_str());
+    if (-1 == dir_err) {
+        LOG(ERROR) << "Error creating directory";
+        exit(1);
+    }    
 }
 
 void process_camera(const string model_path, const CameraConfig &camera, string output_folder, bool mainThread) {
@@ -83,6 +89,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     long faceId = 0;
     long thisFace = 0;
     struct timeval  tv1,tv2;
+    struct timeval  ts;
     struct timezone tz1,tz2;
 
     vector<Bbox> detected_bounding_boxes;
@@ -108,7 +115,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
             continue;
         }
 
-        Mat show_frame = frame.clone();
+        // Mat show_frame = frame.clone();
 
         string log = "frame #" + to_string(frameCounter) + ", tracking faces: ";
         // update trackers
@@ -154,15 +161,16 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                         tracker->id = faceId;
                         trackers.push_back(tracker);
                         tracker_boxes.push_back(detected_face);
-                        std::list<cv::Mat> point_list;
                         reids.push_back(-1);
-                        LOG(INFO) << "start tracking face #" << tracker->id;
+                        LOG(INFO) << "start tracking face " << tracker->id << ",tracker i " << trackers.size()-1;
+
                         thisFace = faceId;
                         faceId++;
                     } else {
                         // update tracker's bounding box
                         STAPLE_TRACKER * tracker = trackers[i];
                         long id_ = tracker->id;
+                        LOG(INFO) << "update tracking face " << tracker->id <<",tracker i " << i;
                         delete tracker;
                         tracker = new STAPLE_TRACKER(staple_cfg);
                         tracker->id = id_;
@@ -175,7 +183,6 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                     // calculate score of face
                     Mat face(frame, detected_face);
                     bool front_side =false;
-                    bool position_appriaprote=false;
                     double score = fa.GetVarianceOfLaplacianSharpness(face);
                     LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace 
                               << "], LaplacianSharpness score: " << score;
@@ -193,18 +200,29 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                             std::vector<float> face_embed_vec;
                             imgFormConvert(face,face_vec);
                             Infer(embd_hd,face_vec,face_embed_vec);
-                            bool new_id;
+                            int new_id;
                             new_id = proc_embd_vec(face_embed_vec, camera, frameCounter, thisFace);
+                            // debug output
+                            string cmd = "mkdir -p " + output_folder + "/" + to_string(new_id);
+                            system(cmd.c_str());
+
                             if(reids[i]==-1){
                                 reids[i] = new_id;
                                 LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
-                                          << "], find new reid: " << new_id;
+                                          << "], reid: " << new_id;
                             } else {
-                                LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
+                                if(reids[i]!=new_id){
+                                    LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
                                              << "], tracker reid change from["<<reids[i] << "],to["<<new_id<<"]";
+                                    reids[i]=new_id;
+                                }
+                                else
+                                    LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
+                                              << "], reid: " << new_id;
                             }
 
-                            if(new_id){
+                            {   
+                                // debug output
                                 Mat frame2=frame.clone();
                                 rectangle( frame2, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
                                 // show face id
@@ -212,27 +230,29 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                                 putText(frame2, to_string(thisFace), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
                                 for(auto point: image_points){
                                     drawMarker(frame2, point,  cv::Scalar(0, 255, 0), cv::MARKER_CROSS, 10, 1);
-                                }                                
+                                }
                                 string output = output_folder + "/face_" + to_string(thisFace) + "_" + to_string(frameCounter) + ".jpg";
                                 imwrite(output,frame2);
+
+                                output = output_folder + "/" + to_string(new_id) + "/face_" + to_string(thisFace) + "_"+ to_string(frameCounter) + ".jpg";
+                                imwrite(output,face);
                             }
                             // PrintOutputResult(face_embed_vec);
                         }
-                        else
+                        if(front_side==false)
                             LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
-                                      << "], pose is skew, don't make face embedding,\n";
-
-                        if(front_side){
-                            gettimeofday(&tv1,NULL);
-                            long int ts_ms = tv1.tv_sec * 1000 + tv1.tv_usec / 1000;
+                                      << "], pose is skew, don't make face embedding";
+                        else {
+                            gettimeofday(&ts,NULL);
+                            long int ts_ms = ts.tv_sec * 1000 + ts.tv_usec / 1000;
                             // to do: push the coordinate reid timestamp info into the time series database
                             // (world_coordinate, reid[i], ts_ms)
                         }
                     }
                     else 
                         LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace 
-                                     << "], video frame is blur\n";
-
+                                     << "], video frame is blur";
+                    /*
                     // draw detected face
                     if(mainThread){
                         rectangle( show_frame, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
@@ -243,17 +263,14 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                             drawMarker(show_frame, point,  cv::Scalar(0, 255, 0), cv::MARKER_CROSS, 10, 1);
                         }
                     }
+                    */
+                    // debug output
                     string output = output_folder + "/original/"+to_string(thisFace) + "_" + to_string(frameCounter) + ".jpg";
                     imwrite(output,frame);
                 }
             }
             //LOG(INFO) << "trackers size after decect: " << trackers.size();
-            //LOG(INFO) << "detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms";
-            if(total == 0) {
-                string output = output_folder + "/original/"+ "none" + "_" + to_string(frameCounter) + ".jpg";             
-                // imwrite(output,frame);
-            }
-
+            LOG(INFO) << "detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms";
             // clean up trackers if the tracker doesn't follow a face
             for (unsigned i=0; i < trackers.size(); i++) {
                 STAPLE_TRACKER *tracker = trackers[i];
@@ -272,17 +289,31 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                 }
                 if (!isFace) 
                 {
-                    LOG(INFO) << "stop tracking face #" << tracker->id;
+                    LOG(INFO) << "stop tracking face " << tracker->id <<",tracker i " << i;
+                    // debug output
+                    string output = output_folder + "/tracker/face_" + to_string(trackers[i]->id) + "_" + to_string(frameCounter) + ".jpg";
+                    Rect2d t_face = tracker_boxes[i];
+                    Rect2d frame_rect = Rect2d(0, 0, frame.size().width, frame.size().height);
+                    Rect2d roi = t_face & frame_rect;
+                    if(roi.area() > 0){
+                        Mat tracker_face(frame,roi);
+                        imwrite(output,tracker_face);
+                    }
+
+                    output = output_folder + "/tracker/" + to_string(trackers[i]->id) + "_" + to_string(frameCounter) + ".jpg";
+                    imwrite(output,frame);
+
                     delete tracker;
                     trackers.erase(trackers.begin() + i);
                     tracker_boxes.erase(tracker_boxes.begin() + i);
+                    reids.erase(reids.begin() + i);
                     i--;
                 }
             }
         }
 
         frameCounter++;
-
+/*
         if(enable_detection && mainThread) {
             Mat small_show_frame;
             if(show_frame.cols>1500)
@@ -294,7 +325,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
             imshow("window" + camera.ip , small_show_frame);
             if(QUIT_KEY == waitKey(1)) break;
         }
-
+*/
         google::FlushLogFiles(google::GLOG_INFO);
 
     } while (true);
