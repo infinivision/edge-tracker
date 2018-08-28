@@ -21,6 +21,12 @@ public:
     // return ip, or index if no ip is given
     std::string identity() const;
 
+    /*
+     * Update Attribute
+     * content is of format "key=value"
+     */
+    void updateAttribute(const std::string content);
+
     // Get video capture from a camera index (0, 1) or an ip (192.168.1.15)
     cv::VideoCapture GetCapture() const;
 };

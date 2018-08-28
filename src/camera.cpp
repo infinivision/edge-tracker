@@ -1,10 +1,31 @@
 #include <camera.h>
+#include <vector>
+#include "utils.h"
+
+using namespace std;
 
 std::string CameraConfig::identity() const {
 	if (ip.empty()) {
         return std::to_string(index);
     } else {
         return ip;
+    }
+}
+
+/*
+ * Update Attribute
+ * content is of format "key=value"
+ */
+void CameraConfig::updateAttribute(const std::string content) {
+    vector<string> values = split(content, '=');
+    if (values.size() > 1)
+    {
+        if (values[0] == "username")
+        {
+            this->username = values[1];
+        } else if (values[0] == "password") {
+            this->password = values[1];
+        }
     }
 }
 
@@ -37,28 +58,21 @@ std::vector<CameraConfig> LoadCameraConfig(std::string config_path) {
 
         auto array = g->get_table_array("camera");
         for (const auto &table : *array) {
-        	CameraConfig camera;
-        	auto index_ptr = table->get_as<int>("index");
-            auto ip = table->get_as<std::string>("ip").value_or("");
-            auto username_ptr = table->get_as<std::string>("username");
-            auto password_ptr = table->get_as<std::string>("password");
-            auto resize_rows = table->get_as<int>("resize_rows").value_or(0);
-            auto resize_cols = table->get_as<int>("resize_cols").value_or(0);
-            auto detection_period = table->get_as<int>("detection_period").value_or(1);
+            auto type_table = table->get_table("Type");
+            auto type = type_table->get_as<string>("Title").value_or("");
 
-            camera.resize_rows = resize_rows;
-            camera.resize_cols = resize_cols;
-            camera.detection_period = detection_period;
+            if (type == "Camera") {
+                CameraConfig camera;
 
-            if (ip.empty()) {
-                camera.index = *index_ptr;
-            } else {
+                auto ip = table->get_as<string>("IP").value_or("");
                 camera.ip = ip;
-                camera.username = *username_ptr;
-                camera.password = *password_ptr;
+                auto meta = table->get_as<std::string>("Meta").value_or("");
+                vector<string> metas = split(meta, ',');
+                for (auto content: metas) {
+                    camera.updateAttribute(content);
+                }
+                cameras.push_back(camera);
             }
-
-            cameras.push_back(camera);
         }
     }
     catch (const cpptoml::parse_exception& e) {

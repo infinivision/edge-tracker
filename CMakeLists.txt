@@ -34,12 +34,25 @@ endif()
 find_package( OpenCV REQUIRED )
 
 if (NOT OpenCV_FOUND)
-    message(FATAL_ERROR "opencv Not Found!")
+    message(FATAL_ERROR "  opencv Not Found!")
 else()
-    message(STATUS "OpenCV_LIBS: ${OpenCV_LIBS}")
-    message(STATUS "OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}")
-    message(STATUS "OpenCV_LIBRARY_DIRS: ${OpenCV_LIBRARY_DIRS}")
+    message(STATUS "  OpenCV_LIBS: ${OpenCV_LIBS}")
+    message(STATUS "  OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}")
 endif (NOT OpenCV_FOUND)
+
+find_package(PkgConfig)
+
+pkg_check_modules(KCF_TRACKER REQUIRED kcf-tracker)
+if(KCF_TRACKER_FOUND)
+	message(STATUS "  kcf-tracker include: ${KCF_TRACKER_INCLUDE_DIRS}")
+	message(STATUS "  kcf-tracker link: ${KCF_TRACKER_LINK_LIBRARIES}")
+endif()
+
+pkg_check_modules(DLIB REQUIRED dlib)
+if(DLIB_FOUND)
+    message(STATUS "  dlib include: ${DLIB_INCLUDE_DIRS}")
+    message(STATUS "  dlib libraries: ${DLIB_LIBRARIES}")
+endif()
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include)
@@ -58,48 +71,52 @@ link_directories(
 )
 
 add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp src/image_quality.cpp)
-target_link_libraries(main ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f dlib glog)
+target_link_libraries(main ncnn trackerKCF ${OpenCV_LIBS} fftw3f dlib glog)
 set_target_properties(main
         PROPERTIES 
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
 )
 
-#add_executable(test-face-align src/test_face_align.cpp src/utils.cpp src/mtcnn.cpp src/face_align.cpp)
-#target_link_libraries(test-face-align ncnn ${OpenCV_LIBS} dlib::dlib glog)
-#set_target_properties(test-face-align
-#        PROPERTIES
-#        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
-#)
-
-#add_executable(test-face-quality src/test_face_quality.cpp src/utils.cpp src/face_attr.cpp src/image_quality.cpp)
-#target_link_libraries(test-face-quality ${OpenCV_LIBS} dlib::dlib)
-#set_target_properties(test-face-quality
-#        PROPERTIES
-#        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
-#)
-
-#add_executable(test_video src/test_video.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp)
-#target_link_libraries(test_video ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f dlib::dlib glog)
-#set_target_properties(test_video
-#        PROPERTIES
-#        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
-#)
-
-#add_executable(read-camera src/read_camera.cpp src/utils.cpp src/camera.cpp)
-#target_link_libraries(read-camera ${OpenCV_LIBS} glog)
-#set_target_properties(read-camera
-#        PROPERTIES
-#        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
-#)
-
-#add_executable(compare src/tracker_compare.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp)
-#target_link_libraries(compare ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f dlib::dlib)
-#set_target_properties(compare
-#        PROPERTIES
-#        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
-#)
-
 add_executable(export src/export.cpp)
 target_link_libraries(export fftw3f)
 set_target_properties(export PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
+
+if (CMAKE_BUILD_TESTS)
+    add_executable(test-face-align src/test_face_align.cpp src/utils.cpp src/mtcnn.cpp src/face_align.cpp)
+    target_link_libraries(test-face-align ncnn ${OpenCV_LIBS} dlib glog)
+    set_target_properties(test-face-align
+            PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+    )
+
+    add_executable(test-face-quality src/test_face_quality.cpp src/utils.cpp src/face_attr.cpp src/image_quality.cpp)
+    target_link_libraries(test-face-quality ${OpenCV_LIBS} dlib)
+    set_target_properties(test-face-quality
+            PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+    )
+
+    add_executable(test_video src/test_video.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp)
+    target_link_libraries(test_video ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f dlib glog)
+    set_target_properties(test_video
+            PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+    )
+
+    add_executable(read-camera src/read_camera.cpp src/utils.cpp src/camera.cpp)
+    target_link_libraries(read-camera ${OpenCV_LIBS} glog)
+    set_target_properties(read-camera
+            PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+    )
+
+    add_executable(compare src/tracker_compare.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp)
+    target_link_libraries(compare ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f dlib glog)
+    set_target_properties(compare
+            PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+    )
+else()
+	message(STATUS "not building tests")
+endif(CMAKE_BUILD_TESTS)
 
