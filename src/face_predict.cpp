@@ -83,7 +83,8 @@ int none_count=0;
 float sim_threshold = 0.4;
 float merge_threshold = 0.8;
 float append_threshold = 0.55;
-float max_vector_size = 6;
+int max_vector_size = 6;
+int amt_reid = 2000;
 
 void update_sim_score(std::vector<vec_element> & vec_list){
   for(size_t i=0;i<vec_list.size();i++){
@@ -409,6 +410,12 @@ void LoadMxModelConf() {
 
   try {
       auto g = cpptoml::parse_file(mx_model_conf);
+      sim_threshold = g->get_qualified_as<double>("vector.sim_threshold").value_or(0.4);
+      merge_threshold = g->get_qualified_as<double>("vector.merge_threshold").value_or(0.8); 
+      append_threshold = g->get_qualified_as<double>("vector.append_threshold").value_or(0.55); 
+      max_vector_size = g->get_qualified_as<int>("vector.max_vector_size").value_or(6);
+      amt_reid = g->get_qualified_as<int>("vector.amt_reid").value_or(2000);      
+      
       /*
       auto work_dir   = g->get_qualified_as<std::string>("vectdb.path").value_or("vectdb");
       auto dot_distance_threshold = g->get_qualified_as<double>("vectdb.dot_distance_threshold").value_or(0.6);
@@ -478,6 +485,12 @@ int proc_embd_vec(std::vector<float> &data, const CameraConfig & camera,int fram
   }
   */
   
+  if(identifies.size()>= amt_reid){
+    identifies.clear();
+    reid = 0;
+    LOG(INFO) << "reid amount up to "<< amt_reid <<", clear map";
+  }
+
   if(identifies.empty()) {
     vec_element element;
     element.vec = i_vec;
