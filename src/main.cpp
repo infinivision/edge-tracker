@@ -331,8 +331,8 @@ int main(int argc, char* argv[]) {
     const String keys =
         "{help h usage ? |                         | print this message   }"
         "{model        |models/ncnn                | path to mtcnn model  }"
-        "{config       |config.toml                | camera config        }"
-        "{output       |/Users/moon/Pictures/faces | output folder        }"
+        "{config       |/opt/dev_keeper/keeper.toml| camera config        }"
+        "{output       |/opt/dev_keeper/faces      | output folder        }"
     ;
 
     CommandLineParser parser(argc, argv, keys);
@@ -365,7 +365,7 @@ int main(int argc, char* argv[]) {
     }
 
     while(true) {
-        std::this_thread::sleep_for(chrono::seconds(1));
+        std::this_thread::sleep_for(chrono::minutes(5));
     }
 
 }
