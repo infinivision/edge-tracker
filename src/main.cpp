@@ -343,7 +343,7 @@ int main(int argc, char* argv[]) {
     }
 
     String config_path = parser.get<String>("config");
-    LOG(INFO) << "config path: " << config_path;
+    cout << "config path: " << config_path << endl;
 
     String model_path = parser.get<String>("model");
     String output_folder = parser.get<String>("output");

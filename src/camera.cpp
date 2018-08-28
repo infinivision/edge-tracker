@@ -56,22 +56,26 @@ std::vector<CameraConfig> LoadCameraConfig(std::string config_path) {
 	try {
         std::shared_ptr<cpptoml::table> g = cpptoml::parse_file(config_path);
 
-        auto array = g->get_table_array("camera");
-        for (const auto &table : *array) {
-            auto type_table = table->get_table("Type");
-            auto type = type_table->get_as<string>("Title").value_or("");
+        auto array = g->get_table_array("Hardwares");
+        if (array) {
+            for (const auto &table : *array) {
+                auto type_table = table->get_table("Type");
+                if (type_table) {
+                    auto type = type_table->get_as<string>("Title").value_or("");
 
-            if (type == "Camera") {
-                CameraConfig camera;
+                    if (type == "Camera") {
+                        CameraConfig camera;
 
-                auto ip = table->get_as<string>("IP").value_or("");
-                camera.ip = ip;
-                auto meta = table->get_as<std::string>("Meta").value_or("");
-                vector<string> metas = split(meta, ',');
-                for (auto content: metas) {
-                    camera.updateAttribute(content);
+                        auto ip = table->get_as<string>("IP").value_or("");
+                        camera.ip = ip;
+                        auto meta = table->get_as<std::string>("Meta").value_or("");
+                        vector<string> metas = split(meta, ',');
+                        for (auto content: metas) {
+                            camera.updateAttribute(content);
+                        }
+                        cameras.push_back(camera);
+                    }
                 }
-                cameras.push_back(camera);
             }
         }
     }
