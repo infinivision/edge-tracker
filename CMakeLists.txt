@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.1)
 
-project(mtcnn_ncnn)
+project(edge-tracker)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 
 if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "build type not defined")
@@ -19,7 +21,6 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(OpenMP)
 if(OpenMP_CXX_FOUND OR OPENMP_FOUND)
-    message(STATUS "OpenMP_CXX_FLAGS: ${OpenMP_CXX_FLAGS}")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
     if(APPLE)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -openmp")
@@ -37,10 +38,9 @@ if (NOT OpenCV_FOUND)
 else()
     message(STATUS "OpenCV_LIBS: ${OpenCV_LIBS}")
     message(STATUS "OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}")
+    message(STATUS "OpenCV_LIBRARY_DIRS: ${OpenCV_LIBRARY_DIRS}")
 endif (NOT OpenCV_FOUND)
 
-#message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
-#message(STATUS "CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/include/ncnn)
