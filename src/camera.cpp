@@ -66,12 +66,17 @@ std::vector<CameraConfig> LoadCameraConfig(std::string config_path) {
                     if (type == "Camera") {
                         CameraConfig camera;
 
-                        auto ip = table->get_as<string>("IP").value_or("");
-                        camera.ip = ip;
-                        auto meta = table->get_as<std::string>("Meta").value_or("");
-                        vector<string> metas = split(meta, ',');
-                        for (auto content: metas) {
-                            camera.updateAttribute(content);
+                        auto ip = table->get_as<string>("IP");
+                        if (ip) camera.ip = *ip;
+                        auto index = table->get_as<int>("index");
+                        if (index) camera.index = *index;
+
+                        auto meta = table->get_as<std::string>("Meta");
+                        if (meta) {
+                            vector<string> metas = split(*meta, ',');
+                            for (auto content: metas) {
+                                camera.updateAttribute(content);
+                            }
                         }
                         cameras.push_back(camera);
                     }
