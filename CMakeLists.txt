@@ -56,9 +56,16 @@ if(DLIB_FOUND)
     include_directories(${DLIB_INCLUDE_DIRS})
 endif()
 
+pkg_check_modules(NCNN REQUIRED ncnn)
+if(NCNN_FOUND)
+    message(STATUS "  ncnn include: ${NCNN_INCLUDE_DIRS}")
+    message(STATUS "  ncnn libraries: ${NCNN_LIBRARIES}")
+    include_directories(${NCNN_INCLUDE_DIRS})
+endif()
+
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${PROJECT_SOURCE_DIR}/include/ncnn)
+#include_directories(${PROJECT_SOURCE_DIR}/include/ncnn)
 #include_directories(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/staple/staple)
 #include_directories(../dlib)
@@ -67,7 +74,7 @@ include_directories(${PROJECT_SOURCE_DIR}/3rdparty/staple/staple)
 
 link_directories(
   /usr/local/lib
-  ${PROJECT_SOURCE_DIR}/lib/ncnn
+#  ${PROJECT_SOURCE_DIR}/lib/ncnn
 )
 
 add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp src/image_quality.cpp)
