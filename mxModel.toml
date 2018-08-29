@@ -1,6 +1,9 @@
 [embedding]
     json  = "/Users/load/code/python/model/model-y1-test2/model-symbol.json"
     param = "/Users/load/code/python/model/model-y1-test2/model-0000.params"
+[age]
+    json  = "/Users/load/code/python/model/gamodel-r50/model-symbol.json"
+    param = "/Users/load/code/python/model/gamodel-r50/model-0000.params"
 [shape]
     width   = 112
     height  = 112

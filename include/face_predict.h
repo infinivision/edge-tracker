@@ -14,6 +14,7 @@ extern int m_width;
 extern int m_height;
 extern int output_feature;
 extern PredictorHandle embd_hd;
+extern PredictorHandle age_hd;
 
 // Read file to buffer
 class BufferFile {

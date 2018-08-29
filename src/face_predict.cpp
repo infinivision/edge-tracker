@@ -54,6 +54,7 @@ int m_width=0;
 int m_height=0;
 int output_feature = 0;
 PredictorHandle embd_hd=nullptr;
+PredictorHandle age_hd =nullptr;
 
 void vec_norm(std::vector<float> &in, std::vector<float> &out){
   float sqare_sum=0;
@@ -257,20 +258,15 @@ void GetImageFile(const std::string& image_file,
 }
 
 #ifdef BENCH_EDGE
-long  sum_t_infer  = 0;
-long  infer_count  = 0;
 long  sum_t_search = 0;
+long  search_count = 0;
 #endif
 
 void Infer ( PredictorHandle pred_hnd,         /* mxnet model */
            std::vector<mx_float> &image_data,  /* input data */
            std::vector<float> &data) {         /* output vector */
 
-#ifdef BENCH_EDGE
-  struct timeval  tv;
-  gettimeofday(&tv,NULL);
-  long t_ms1 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
-#endif
+
 
   // Set Input Image
   MXPredSetInput(pred_hnd, "data", image_data.data(), static_cast<mx_uint>(image_data.size()));
@@ -296,16 +292,6 @@ void Infer ( PredictorHandle pred_hnd,         /* mxnet model */
   data.resize(size);
 
   MXPredGetOutput(pred_hnd, output_index, &(data[0]), static_cast<mx_uint>(size));
-
-#ifdef BENCH_EDGE
-  gettimeofday(&tv,NULL);
-  long t_ms2 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
-  infer_count++;
-  if(infer_count>1){
-    sum_t_infer += t_ms2-t_ms1;
-    LOG(INFO) << "face infer performance: [" << (sum_t_infer/1000.0 ) / (infer_count-1) << "] mili second latency per time";
-  }
-#endif
 
 }
 
@@ -393,15 +379,27 @@ void LoadMxModelConf() {
   }
 
   InputShape input_shape(m_width, m_height, m_channel);
-  std::cout << "load mx model shape: " << m_width << ","
-                                       << m_height << ","
-                                       << m_channel << "\n";
+  std::cout << "load mx embedding model shape: " << m_width << ","
+                                                 << m_height << ","
+                                                 << m_channel << "\n";
   try {
       auto g = cpptoml::parse_file(mx_model_conf);
       std::string json_file  = g->get_qualified_as<std::string>("embedding.json").value_or("");
       std::string param_file = g->get_qualified_as<std::string>("embedding.param").value_or("");
       LoadMXNetModel(&embd_hd, json_file, param_file, input_shape);
-      std::cout << "embedding modle has been loaded!\n";
+      std::cout << "embedding model has been loaded!\n";
+  }
+  catch (const cpptoml::parse_exception& e) {
+      std::cerr << "Failed to parse mxModel.toml: " << e.what() << std::endl;
+      exit(1);
+  }
+
+  try {
+      auto g = cpptoml::parse_file(mx_model_conf);
+      std::string json_file  = g->get_qualified_as<std::string>("age.json").value_or("");
+      std::string param_file = g->get_qualified_as<std::string>("age.param").value_or("");
+      LoadMXNetModel(&age_hd, json_file, param_file, input_shape);
+      std::cout << "age model has been loaded!\n";
   }
   catch (const cpptoml::parse_exception& e) {
       std::cerr << "Failed to parse mxModel.toml: " << e.what() << std::endl;
@@ -544,7 +542,8 @@ int proc_embd_vec(std::vector<float> &data, const CameraConfig & camera,int fram
     gettimeofday(&tv,NULL);
     long t_ms2 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
     sum_t_search += t_ms2-t_ms1;
-    LOG(INFO) << "vector search performance: [" << (sum_t_search/1000.0 ) / infer_count << "] mili second latency per time";
+    search_count++;
+    LOG(INFO) << "vector search performance: [" << (sum_t_search/1000.0 ) / search_count << "] mili second latency per time";
 #endif
 
   vec_mutex.unlock();

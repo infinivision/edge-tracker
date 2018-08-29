@@ -19,6 +19,14 @@
 
 using namespace std;
 using namespace cv;
+
+#ifdef BENCH_EDGE
+long  sum_t_infer_embed  = 0;
+long  infer_count_embed  = 0;
+long  sum_t_infer_age  = 0;
+long  infer_count_age  = 0;
+#endif
+
 extern int min_score;
 bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, \
                          cv::Mat & world_coordinate, int age, int sex, int frameCount,int faceId);
@@ -115,7 +123,9 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
             continue;
         }
 
-        // Mat show_frame = frame.clone();
+        #ifdef VISUAL
+        Mat show_frame = frame.clone();
+        #endif
 
         string log = "frame #" + to_string(frameCounter) + ", tracking faces: ";
         // update trackers
@@ -192,19 +202,76 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                             cv::Point2d point(box.ppoint[i],box.ppoint[i+5]);
                             image_points.push_back(point);
                         }
+                        std::vector<mx_float> face_vec;            
+                        std::vector<float> age_vec;
+                        imgFormConvert(face,face_vec);
+
+                        #ifdef BENCH_EDGE
+                        struct timeval  tv_age;
+                        gettimeofday(&tv_age,NULL);
+                        long t_ms1_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;
+                        #endif
+                        int g = 0;
+                        Infer(age_hd,face_vec, age_vec);
+                        if(age_vec[0]>age_vec[1]){
+                            LOG(INFO) << "target gender: female";
+                            g = 0;
+                        }
+                            
+                        else{
+                            LOG(INFO) << "target gender: male";
+                            g = 1;
+                        }
+
+                        int age=0;
+                        for(size_t i = 2; i<age_vec.size()-1; i+=2){
+                            if(age_vec[i]<age_vec[i+1])
+                                age++;
+                        }
+                        LOG(INFO) << "target age: " << age;
+
+                        #ifdef BENCH_EDGE
+                        gettimeofday(&tv_age,NULL);
+                        long t_ms2_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;
+                        infer_count_age++;
+                        if(infer_count_age>1){
+                            sum_t_infer_age += t_ms2_age-t_ms1_age;
+                            LOG(INFO) << "face infer age performance: [" << (sum_t_infer_age/1000.0 ) / (infer_count_age-1) << "] mili second latency per time";
+                        }                            
+                        #endif
+
                         cv::Mat world_coordinate;
-                        front_side = compute_coordinate(frame, image_points, camera, world_coordinate, 20, 1,frameCounter, thisFace);
+                        front_side = compute_coordinate(frame, image_points, camera, world_coordinate, age, g,frameCounter, thisFace);
                         
                         if(front_side && newFace){
-                            std::vector<mx_float> face_vec;
                             std::vector<float> face_embed_vec;
-                            imgFormConvert(face,face_vec);
+
+                            #ifdef BENCH_EDGE
+                            struct timeval  tv;
+                            gettimeofday(&tv,NULL);
+                            long t_ms1 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
+                            #endif
+
                             Infer(embd_hd,face_vec,face_embed_vec);
+
+                            #ifdef BENCH_EDGE
+                            gettimeofday(&tv,NULL);
+                            long t_ms2 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
+                            infer_count_embed++;
+                            if(infer_count_embed>1){
+                                sum_t_infer_embed += t_ms2-t_ms1;
+                                LOG(INFO) << "face infer embeding performance: [" << (sum_t_infer_embed/1000.0 ) / (infer_count_embed-1) << "] mili second latency per time";
+                            }
+                            #endif
+
                             int new_id;
                             new_id = proc_embd_vec(face_embed_vec, camera, frameCounter, thisFace);
+
+                            #ifdef SAVE_IMG
                             // debug output
                             string cmd = "mkdir -p " + output_folder + "/" + to_string(new_id);
                             system(cmd.c_str());
+                            #endif
 
                             if(reids[i]==-1){
                                 reids[i] = new_id;
@@ -222,6 +289,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                             }
 
                             {   
+                                #ifdef SAVE_IMG
                                 // debug output
                                 Mat frame2=frame.clone();
                                 rectangle( frame2, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
@@ -236,6 +304,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
                                 output = output_folder + "/" + to_string(new_id) + "/face_" + to_string(thisFace) + "_"+ to_string(frameCounter) + ".jpg";
                                 imwrite(output,face);
+                                #endif
                             }
                             // PrintOutputResult(face_embed_vec);
                         }
@@ -252,7 +321,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                     else 
                         LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace 
                                      << "], video frame is blur";
-                    /*
+                    #ifdef VISUAL
                     // draw detected face
                     if(mainThread){
                         rectangle( show_frame, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
@@ -263,10 +332,12 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                             drawMarker(show_frame, point,  cv::Scalar(0, 255, 0), cv::MARKER_CROSS, 10, 1);
                         }
                     }
-                    */
+                    #endif
+                    #ifdef SAVE_IMG
                     // debug output
                     string output = output_folder + "/original/"+to_string(thisFace) + "_" + to_string(frameCounter) + ".jpg";
                     imwrite(output,frame);
+                    #endif
                 }
             }
             //LOG(INFO) << "trackers size after decect: " << trackers.size();
@@ -290,6 +361,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                 if (!isFace) 
                 {
                     LOG(INFO) << "stop tracking face " << tracker->id <<",tracker i " << i;
+                    #ifdef SAVE_IMG
                     // debug output
                     string output = output_folder + "/tracker/face_" + to_string(trackers[i]->id) + "_" + to_string(frameCounter) + ".jpg";
                     Rect2d t_face = tracker_boxes[i];
@@ -302,6 +374,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
                     output = output_folder + "/tracker/" + to_string(trackers[i]->id) + "_" + to_string(frameCounter) + ".jpg";
                     imwrite(output,frame);
+                    #endif
 
                     delete tracker;
                     trackers.erase(trackers.begin() + i);
@@ -313,7 +386,8 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
         }
 
         frameCounter++;
-/*
+        #ifdef VISUAL
+
         if(enable_detection && mainThread) {
             Mat small_show_frame;
             if(show_frame.cols>1500)
@@ -325,7 +399,8 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
             imshow("window" + camera.ip , small_show_frame);
             if(QUIT_KEY == waitKey(1)) break;
         }
-*/
+
+        #endif
         google::FlushLogFiles(google::GLOG_INFO);
 
     } while (true);

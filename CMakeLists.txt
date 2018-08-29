@@ -15,6 +15,14 @@ if(BENCH)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBENCH_EDGE")
 endif()
 
+if(VISUAL)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DVISUAL")
+endif()
+
+if(SAVE_IMG)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSAVE_IMG")
+endif()
+
 if(CMAKE_BUILD_TYPE STREQUAL debug)
     message(STATUS "debug mode")
     ADD_DEFINITIONS(-D__DEBUG__)
