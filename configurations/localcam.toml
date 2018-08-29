@@ -1,0 +1,4 @@
+[[Hardwares]]
+  index = 0
+  [Hardwares.Type]
+    Title = "Camera"

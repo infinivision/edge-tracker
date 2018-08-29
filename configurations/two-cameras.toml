@@ -1,0 +1,15 @@
+[[Hardwares]]
+  ID = "1"
+  IP = "192.168.150.243"
+  Meta = "username=admin,password=mcd12345678,position=0"
+  [Hardwares.Type]
+    Title = "Camera"
+    Value = "1"
+
+[[Hardwares]]
+  ID = "2"
+  IP = "192.168.150.244"
+  Meta = "username=admin,password=mcd12345678,position=1"
+  [Hardwares.Type]
+    Title = "Camera"
+    Value = "1"

@@ -1,13 +1,12 @@
-#include <iostream>
-#include <opencv2/opencv.hpp>
-//#include <opencv2/tracking.hpp>
-#include "mtcnn.h"
 #include <cstdlib>
 #include "face_attr.h"
 #include "face_align.h"
 #include <glog/logging.h>
-#include <string.h>
+#include <iostream>
 #include <kcf/tracker.hpp>
+#include "mtcnn.h"
+#include <opencv2/opencv.hpp>
+#include <string.h>
 #include "utils.h"
 
 #define QUIT_KEY 'q'
@@ -17,6 +16,8 @@ using namespace cv;
 
 
 void test_video(const string &model_path, const CameraConfig &camera, string output_folder) {
+
+    cout << "processing camera: " << camera.identity() << endl;
     
     int detectionFrameInterval = 25; // nb of frames
 
@@ -175,6 +176,8 @@ void test_video(const string &model_path, const CameraConfig &camera, string out
 int main(int argc, char* argv[]) {
 
     google::InitGoogleLogging(argv[0]);
+
+    cout << "warning: test_video can only process one camera" << endl;
 
     const String keys =
         "{help h usage ? |                         | print this message   }"

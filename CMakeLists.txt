@@ -45,7 +45,7 @@ find_package(PkgConfig)
 pkg_check_modules(TRACKER_KCF REQUIRED tracker-kcf)
 if(TRACKER_KCF_FOUND)
 	message(STATUS "  tracker-kcf include: ${TRACKER_KCF_INCLUDE_DIRS}")
-	message(STATUS "  tracker-kcf link: ${TRACKER_KCF_LINK_LIBRARIES}")
+	message(STATUS "  tracker-kcf libraries: ${TRACKER_KCF_LIBRARIES}")
     include_directories(${TRACKER_KCF_INCLUDE_DIRS})
 endif()
 
