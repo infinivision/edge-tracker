@@ -12,9 +12,8 @@ using namespace cv;
 std::vector<cv::Point3d> model_points;
 bool  use_default_intrinsic = false;
 int   pnp_algo = cv::SOLVEPNP_EPNP;
-float male_weight;
-float female_weight;
 float child_weight;
+int   child_age_min = 6;
 
 void read3D_conf(){
     model_points.clear();
@@ -25,9 +24,8 @@ void read3D_conf(){
     try {
         auto g = cpptoml::parse_file(pnpConfPath);
         auto eyeCornerLength = g->get_qualified_as<int>("faceModel.eyeCornerLength").value_or(105);
-        male_weight = g->get_qualified_as<double>("faceModel.male").value_or(1.05);
-        female_weight = g->get_qualified_as<double>("faceModel.female").value_or(0.95);
         child_weight = g->get_qualified_as<double>("faceModel.child").value_or(0.66);
+        child_age_min = g->get_qualified_as<int>("faceModel.child_age_min").value_or(6);
         auto array = g->get_table_array("face3dpoint");
         for (const auto &table : *array) {
         	auto x = table->get_as<double>("x");
@@ -91,7 +89,7 @@ long  pnp_count = 0;
 #endif
 
 bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, \
-                         cv::Mat & world_coordinate, int age, int sex, int frameCount,int faceId) {
+                         cv::Mat & world_coordinate, int age, int frameCount,int faceId) {
     cv::Mat camera_matrix;
     cv::Mat dist_coeffs;
     double focal_length = im.cols; // Approximate focal length.
@@ -115,29 +113,16 @@ bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
     cv::Mat translation_vector;
     std::vector<cv::Point3d> model_points_clone;
     Point3d point;
-    if(age > 18){
-        if(sex == 1)
-            for(size_t i =0;i< model_points.size();i++){
-                point = model_points[i];
-                point *= male_weight;
-                model_points_clone.push_back(point);
-            }
-        else
-            for(size_t i =0;i< model_points.size();i++){
-                point = model_points[i];
-                point *= female_weight;
-                model_points_clone.push_back(point);
-            }
-    } else if(age >= 6){
-            for(size_t i =0;i< model_points.size();i++){
-                point = model_points[i];
-                point *= (child_weight * ((age- 6) / 12.0f + 1));
-                model_points_clone.push_back(point);
-            }
-    } else {
-        LOG(INFO) << "can't compute for child age less than six!";
+    if(age >= child_age_min && age < 18) {
+        for(size_t i =0;i< model_points.size();i++){
+            point = model_points[i];
+            point *= child_weight + (1-child_weight) / (18-child_age_min) * (age-child_age_min);
+            model_points_clone.push_back(point);
+        }
+    } else if(age>=18)
+        model_points_clone = model_points;
+    else
         return false;
-    }
 
 #ifdef BENCH_EDGE
     struct timeval  tv;

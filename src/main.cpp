@@ -28,8 +28,9 @@ long  infer_count_age  = 0;
 #endif
 
 extern int min_score;
+extern int child_age_min;
 bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, \
-                         cv::Mat & world_coordinate, int age, int sex, int frameCount,int faceId);
+                         cv::Mat & world_coordinate, int age, int frameCount,int faceId);
 void read3D_conf();
 
 FaceAlign faceAlign = FaceAlign();
@@ -105,6 +106,9 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     vector<STAPLE_TRACKER *>  trackers;
     vector<Rect2d> tracker_boxes;
     vector<long int> reids;
+    vector<int> age_sum;
+    vector<int> age_count;
+
     Mat frame;
 
     FileStorage fs;
@@ -172,6 +176,8 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                         trackers.push_back(tracker);
                         tracker_boxes.push_back(detected_face);
                         reids.push_back(-1);
+                        age_sum.push_back(0);
+                        age_count.push_back(0);
                         LOG(INFO) << "start tracking face " << tracker->id << ",tracker i " << trackers.size()-1;
 
                         thisFace = faceId;
@@ -198,97 +204,96 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                               << "], LaplacianSharpness score: " << score;
                     if(score>min_score){
                         image_points.clear();
-                        for(int i =0;i<5;i++){
-                            cv::Point2d point(box.ppoint[i],box.ppoint[i+5]);
+                        for(int j =0;j<5;j++){
+                            cv::Point2d point(box.ppoint[j],box.ppoint[j+5]);
                             image_points.push_back(point);
                         }
-                        std::vector<mx_float> face_vec;            
-                        std::vector<float> age_vec;
+                        std::vector<mx_float> face_vec;
                         imgFormConvert(face,face_vec);
 
-                        #ifdef BENCH_EDGE
-                        struct timeval  tv_age;
-                        gettimeofday(&tv_age,NULL);
-                        long t_ms1_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;
-                        #endif
-                        int g = 0;
-                        Infer(age_hd,face_vec, age_vec);
-                        if(age_vec[0]>age_vec[1]){
-                            LOG(INFO) << "target gender: female";
-                            g = 0;
-                        }
-                            
-                        else{
-                            LOG(INFO) << "target gender: male";
-                            g = 1;
-                        }
-
                         int age=0;
-                        for(size_t i = 2; i<age_vec.size()-1; i+=2){
-                            if(age_vec[i]<age_vec[i+1])
-                                age++;
-                        }
-                        LOG(INFO) << "target age: " << age;
 
-                        #ifdef BENCH_EDGE
-                        gettimeofday(&tv_age,NULL);
-                        long t_ms2_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;
-                        infer_count_age++;
-                        if(infer_count_age>1){
-                            sum_t_infer_age += t_ms2_age-t_ms1_age;
-                            LOG(INFO) << "face infer age performance: [" << (sum_t_infer_age/1000.0 ) / (infer_count_age-1) << "] mili second latency per time";
-                        }                            
-                        #endif
+                        if(age_count[i]<n_age_sample){
+                                       
+                            std::vector<float> age_vec;
+                            #ifdef BENCH_EDGE
+                            struct timeval  tv_age;
+                            gettimeofday(&tv_age,NULL);
+                            long t_ms1_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;
+                            #endif
+
+                            Infer(age_hd,face_vec, age_vec);
+
+                            for(size_t j = 2; j<age_vec.size()-1; j+=2){
+                                if(age_vec[j]<age_vec[j+1])
+                                    age++;
+                            }
+                            LOG(INFO) << "target age: " << age;
+
+                            #ifdef BENCH_EDGE
+                            gettimeofday(&tv_age,NULL);
+                            long t_ms2_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;
+                            infer_count_age++;
+                            if(infer_count_age>1){
+                                sum_t_infer_age += t_ms2_age-t_ms1_age;
+                                LOG(INFO) << "face infer age performance: [" << (sum_t_infer_age/1000.0 ) / (infer_count_age-1) << "] mili second latency per time";
+                            }                            
+                            #endif
+
+                            age_count[i]++;
+                            age_sum[i] += age;
+                        }
 
                         cv::Mat world_coordinate;
-                        front_side = compute_coordinate(frame, image_points, camera, world_coordinate, age, g,frameCounter, thisFace);
-                        
-                        if(front_side && newFace){
-                            std::vector<float> face_embed_vec;
+                        if (age_sum[i]/age_count[i] >= child_age_min) {
+                            
+                            front_side = compute_coordinate(frame, image_points, camera, world_coordinate, age_sum[i]/age_count[i], frameCounter, thisFace);
 
-                            #ifdef BENCH_EDGE
-                            struct timeval  tv;
-                            gettimeofday(&tv,NULL);
-                            long t_ms1 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
-                            #endif
+                            if(front_side && newFace){
+                                std::vector<float> face_embed_vec;
 
-                            Infer(embd_hd,face_vec,face_embed_vec);
+                                #ifdef BENCH_EDGE
+                                struct timeval  tv;
+                                gettimeofday(&tv,NULL);
+                                long t_ms1 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
+                                #endif
 
-                            #ifdef BENCH_EDGE
-                            gettimeofday(&tv,NULL);
-                            long t_ms2 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
-                            infer_count_embed++;
-                            if(infer_count_embed>1){
-                                sum_t_infer_embed += t_ms2-t_ms1;
-                                LOG(INFO) << "face infer embeding performance: [" << (sum_t_infer_embed/1000.0 ) / (infer_count_embed-1) << "] mili second latency per time";
-                            }
-                            #endif
+                                Infer(embd_hd,face_vec,face_embed_vec);
 
-                            int new_id;
-                            new_id = proc_embd_vec(face_embed_vec, camera, frameCounter, thisFace);
-
-                            #ifdef SAVE_IMG
-                            // debug output
-                            string cmd = "mkdir -p " + output_folder + "/" + to_string(new_id);
-                            system(cmd.c_str());
-                            #endif
-
-                            if(reids[i]==-1){
-                                reids[i] = new_id;
-                                LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
-                                          << "], reid: " << new_id;
-                            } else {
-                                if(reids[i]!=new_id){
-                                    LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
-                                             << "], tracker reid change from["<<reids[i] << "],to["<<new_id<<"]";
-                                    reids[i]=new_id;
+                                #ifdef BENCH_EDGE
+                                gettimeofday(&tv,NULL);
+                                long t_ms2 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
+                                infer_count_embed++;
+                                if(infer_count_embed>1){
+                                    sum_t_infer_embed += t_ms2-t_ms1;
+                                    LOG(INFO) << "face infer embeding performance: [" << (sum_t_infer_embed/1000.0 ) / (infer_count_embed-1) << "] mili second latency per time";
                                 }
-                                else
-                                    LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
-                                              << "], reid: " << new_id;
-                            }
+                                #endif
 
-                            {   
+                                int new_id;
+                                new_id = proc_embd_vec(face_embed_vec, camera, frameCounter, thisFace);
+
+                                #ifdef SAVE_IMG
+                                // debug output
+                                string cmd = "mkdir -p " + output_folder + "/" + to_string(new_id);
+                                system(cmd.c_str());
+                                #endif
+
+                                if(reids[i]==-1){
+                                    reids[i] = new_id;
+                                    LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
+                                            << "], reid: " << new_id;
+                                } else {
+                                    if(reids[i]!=new_id){
+                                        LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
+                                                << "], tracker reid change from["<<reids[i] << "],to["<<new_id<<"]";
+                                        reids[i]=new_id;
+                                    }
+                                    else
+                                        LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
+                                                << "], reid: " << new_id;
+                                }
+
                                 #ifdef SAVE_IMG
                                 // debug output
                                 Mat frame2=frame.clone();
@@ -305,22 +310,27 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                                 output = output_folder + "/" + to_string(new_id) + "/face_" + to_string(thisFace) + "_"+ to_string(frameCounter) + ".jpg";
                                 imwrite(output,face);
                                 #endif
+
                             }
-                            // PrintOutputResult(face_embed_vec);
+                            if(front_side){
+                                gettimeofday(&ts,NULL);
+                                long int ts_ms = ts.tv_sec * 1000 + ts.tv_usec / 1000;
+                                // to do: push the coordinate reid timestamp info into the time series database
+                                // (world_coordinate, reid[i], ts_ms)                                
+                            }
+                            else {
+                                LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
+                                        << "], pose is skew, don't make face embedding";
+                            }
+                        } else {
+                                LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
+                                        << "], can't compute coordinate for child age less than " << child_age_min;
                         }
-                        if(front_side==false)
-                            LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
-                                      << "], pose is skew, don't make face embedding";
-                        else {
-                            gettimeofday(&ts,NULL);
-                            long int ts_ms = ts.tv_sec * 1000 + ts.tv_usec / 1000;
-                            // to do: push the coordinate reid timestamp info into the time series database
-                            // (world_coordinate, reid[i], ts_ms)
-                        }
-                    }
-                    else 
+                    } else {
                         LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace 
                                      << "], video frame is blur";
+                    }
+
                     #ifdef VISUAL
                     // draw detected face
                     if(mainThread){
@@ -380,6 +390,8 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                     trackers.erase(trackers.begin() + i);
                     tracker_boxes.erase(tracker_boxes.begin() + i);
                     reids.erase(reids.begin() + i);
+                    age_sum.erase(age_sum.begin() + i);
+                    age_count.erase(age_count.begin() + i);
                     i--;
                 }
             }

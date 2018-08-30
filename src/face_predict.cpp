@@ -55,6 +55,7 @@ int m_height=0;
 int output_feature = 0;
 PredictorHandle embd_hd=nullptr;
 PredictorHandle age_hd =nullptr;
+int n_age_sample = 3;
 
 void vec_norm(std::vector<float> &in, std::vector<float> &out){
   float sqare_sum=0;
@@ -398,6 +399,8 @@ void LoadMxModelConf() {
       auto g = cpptoml::parse_file(mx_model_conf);
       std::string json_file  = g->get_qualified_as<std::string>("age.json").value_or("");
       std::string param_file = g->get_qualified_as<std::string>("age.param").value_or("");
+      n_age_sample = g->get_qualified_as<int>("age.n_age_sample").value_or(3);
+      
       LoadMXNetModel(&age_hd, json_file, param_file, input_shape);
       std::cout << "age model has been loaded!\n";
   }

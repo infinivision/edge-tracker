@@ -23,6 +23,5 @@
   pnp_algo = "EPNP"
 [faceModel]
   eyeCornerLength = 105
-  male     =  1.05
-  female   =  0.95
-  child    =  0.66
+  child         =  0.66
+  chile_age_min =  6
