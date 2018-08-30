@@ -97,7 +97,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     int frameCounter = 0;
     long faceId = 0;
     long thisFace = 0;
-    struct timeval  tv1,tv2;
+    struct timeval  tv1,tv2,tv3;
     struct timeval  ts;
     struct timezone tz1,tz2;
 
@@ -108,7 +108,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     vector<long int> reids;
     vector<int> age_sum;
     vector<int> age_count;
-
+    vector<cv::Point2d> image_points;
     Mat frame;
 
     FileStorage fs;
@@ -116,8 +116,6 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     staple_cfg staple_cfg;
     staple_cfg.read(fs.root());
 
-    // namedWindow("window", WINDOW_NORMAL);
-    std::vector<cv::Point2d> image_points;
     do {
         detected_bounding_boxes.clear();
         bool enable_detection = false;
@@ -148,7 +146,11 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
             gettimeofday(&tv1,&tz1);
             mm.detect(ncnn_img, detected_bounding_boxes);
+            #ifdef BENCH_EDGE
             gettimeofday(&tv2,&tz2);
+            LOG(INFO) << "mtcnn detected one frame, time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms";
+            #endif
+
             int total = 0;
 
             // update trackers' bounding boxes and create tracker for a new face
@@ -208,37 +210,39 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                             cv::Point2d point(box.ppoint[j],box.ppoint[j+5]);
                             image_points.push_back(point);
                         }
-                        std::vector<mx_float> face_vec;
+                        vector<mx_float> face_vec;
                         imgFormConvert(face,face_vec);
 
                         int age=0;
 
                         if(age_count[i]<n_age_sample){
-                                       
-                            std::vector<float> age_vec;
-                            #ifdef BENCH_EDGE
-                            struct timeval  tv_age;
-                            gettimeofday(&tv_age,NULL);
-                            long t_ms1_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;
-                            #endif
+                            if(age_enable){
+                                std::vector<float> age_vec;
+                                #ifdef BENCH_EDGE
+                                struct timeval  tv_age;
+                                gettimeofday(&tv_age,NULL);
+                                long t_ms1_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;
+                                #endif
 
-                            Infer(age_hd,face_vec, age_vec);
+                                Infer(age_hd,face_vec, age_vec);
 
-                            for(size_t j = 2; j<age_vec.size()-1; j+=2){
-                                if(age_vec[j]<age_vec[j+1])
-                                    age++;
-                            }
-                            LOG(INFO) << "target age: " << age;
+                                for(size_t j = 2; j<age_vec.size()-1; j+=2){
+                                    if(age_vec[j]<age_vec[j+1])
+                                        age++;
+                                }
+                                LOG(INFO) << "target age: " << age;
 
-                            #ifdef BENCH_EDGE
-                            gettimeofday(&tv_age,NULL);
-                            long t_ms2_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;
-                            infer_count_age++;
-                            if(infer_count_age>1){
-                                sum_t_infer_age += t_ms2_age-t_ms1_age;
-                                LOG(INFO) << "face infer age performance: [" << (sum_t_infer_age/1000.0 ) / (infer_count_age-1) << "] mili second latency per time";
-                            }                            
-                            #endif
+                                #ifdef BENCH_EDGE
+                                gettimeofday(&tv_age,NULL);
+                                long t_ms2_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;
+                                infer_count_age++;
+                                if(infer_count_age>1){
+                                    sum_t_infer_age += t_ms2_age-t_ms1_age;
+                                    LOG(INFO) << "face infer age performance: [" << (sum_t_infer_age/1000.0 ) / (infer_count_age-1) << "] mili second latency per time";
+                                }                            
+                                #endif                                
+                            } else 
+                                age = 20;
 
                             age_count[i]++;
                             age_sum[i] += age;
@@ -250,7 +254,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                             front_side = compute_coordinate(frame, image_points, camera, world_coordinate, age_sum[i]/age_count[i], frameCounter, thisFace);
 
                             if(front_side && newFace){
-                                std::vector<float> face_embed_vec;
+                                vector<float> face_embed_vec;
 
                                 #ifdef BENCH_EDGE
                                 struct timeval  tv;
@@ -316,7 +320,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                                 gettimeofday(&ts,NULL);
                                 long int ts_ms = ts.tv_sec * 1000 + ts.tv_usec / 1000;
                                 // to do: push the coordinate reid timestamp info into the time series database
-                                // (world_coordinate, reid[i], ts_ms)                                
+                                // (world_coordinate, reid[i], ts_ms)
                             }
                             else {
                                 LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
@@ -350,8 +354,8 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                     #endif
                 }
             }
-            //LOG(INFO) << "trackers size after decect: " << trackers.size();
-            LOG(INFO) << "detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms";
+            gettimeofday(&tv3,NULL);
+            LOG(INFO) << "detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv3) << " ms";
             // clean up trackers if the tracker doesn't follow a face
             for (unsigned i=0; i < trackers.size(); i++) {
                 STAPLE_TRACKER *tracker = trackers[i];

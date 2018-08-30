@@ -4,7 +4,8 @@
 [age]
     json  = "/Users/load/code/python/model/gamodel-r50/model-symbol.json"
     param = "/Users/load/code/python/model/gamodel-r50/model-0000.params"
-    n_age_sample = 3
+    n_age_sample = 2
+    enable = true
 [shape]
     width   = 112
     height  = 112

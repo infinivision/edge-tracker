@@ -16,6 +16,7 @@ extern int output_feature;
 extern PredictorHandle embd_hd;
 extern PredictorHandle age_hd;
 extern int n_age_sample;
+extern bool age_enable;
 // Read file to buffer
 class BufferFile {
  public :
