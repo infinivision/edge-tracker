@@ -42,11 +42,6 @@ if(OpenMP_CXX_FOUND OR OPENMP_FOUND)
 	endif()
 endif()
 
-if(APPLE)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Xpreprocessor -fopenmp")
-        set(CMAKE_EXE_LINKER_FLAGS "-Xpreprocessor -fopenmp -L/usr/local/opt/libomp/lib -lomp ")
-endif()
-
 find_package( OpenCV REQUIRED )
 
 if (NOT OpenCV_FOUND)
@@ -64,7 +59,6 @@ include_directories(${PROJECT_SOURCE_DIR}/include/ncnn)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/mxnet/include)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/staple/staple)
-include_directories(${PROJECT_SOURCE_DIR}/3rdparty/vectdb)
 add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
 add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/staple/staple)
 add_subdirectory(../dlib dlib_build)
@@ -73,13 +67,11 @@ link_directories(
   ${OpenCV_Install}/lib
   ${PROJECT_SOURCE_DIR}/lib/ncnn
   ${PROJECT_SOURCE_DIR}/3rdparty/mxnet/lib
-  ${PROJECT_SOURCE_DIR}/3rdparty/vectdb
-  /usr/local/opt/openblas/lib
   /usr/local/opt/boost/lib
 )
 
 add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp src/face_pose_estimate.cpp src/face_predict.cpp)
-target_link_libraries(main ncnn trackerKCF trackerStaple mxnet ${OpenCV_LIBS} fftw3f dlib::dlib glog vectodb faiss openblas boost_thread-mt boost_filesystem boost_system gflags)
+target_link_libraries(main ncnn trackerKCF trackerStaple mxnet ${OpenCV_LIBS} fftw3f dlib::dlib glog)
 set_target_properties(main
         PROPERTIES 
 #        ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/lib"
@@ -130,7 +122,7 @@ set_target_properties(pnp
 )
 
 add_executable(face-predict src/face_predict_example.cpp src/face_predict.cpp)
-target_link_libraries(face-predict mxnet ${OpenCV_LIBS} vectodb faiss openblas boost_thread-mt boost_filesystem boost_system gflags glog)
+target_link_libraries(face-predict mxnet ${OpenCV_LIBS} glog)
 set_target_properties(face-predict 
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
