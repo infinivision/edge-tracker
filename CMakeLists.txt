@@ -67,7 +67,6 @@ link_directories(
   ${OpenCV_Install}/lib
   ${PROJECT_SOURCE_DIR}/lib/ncnn
   ${PROJECT_SOURCE_DIR}/3rdparty/mxnet/lib
-  /usr/local/opt/boost/lib
 )
 
 add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp src/face_pose_estimate.cpp src/face_predict.cpp)
