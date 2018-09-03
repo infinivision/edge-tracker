@@ -121,7 +121,18 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
         bool enable_detection = false;
         cap >> frame;
         if (!frame.data) {
-            cerr << "Capture video failed" << endl;
+            LOG(ERROR) << "Capture video failed: " << camera.identity() << ", opened: " << cap.isOpened();
+            cap.release();
+
+            LOG(ERROR) << "sleep for 5 seconds ...";
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+
+            cap = camera.GetCapture();
+            if (!cap.isOpened()) {
+                LOG(ERROR) << "failed to open camera: " << camera.identity();
+                return;
+            }
+            LOG(INFO) << "reopen camera: " << camera.identity();
             continue;
         }
 
@@ -144,11 +155,13 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
             enable_detection = true;
             ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
 
+            #ifdef BENCH_EDGE
             gettimeofday(&tv1,&tz1);
+            #endif
             mm.detect(ncnn_img, detected_bounding_boxes);
             #ifdef BENCH_EDGE
             gettimeofday(&tv2,&tz2);
-            LOG(INFO) << "mtcnn detected one frame, time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms";
+//            LOG(INFO) << "mtcnn detected one frame, time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms";
             #endif
 
             int total = 0;
