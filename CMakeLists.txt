@@ -117,6 +117,6 @@ if (EDGE_BUILD_TESTS)
             RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
     )
 else()
-	message(STATUS "not building tests")
+	message(STATUS "Not building tests")
 endif(EDGE_BUILD_TESTS)
 
