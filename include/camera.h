@@ -13,7 +13,6 @@ public:
     std::string ip;
     std::string username;
     std::string password;
-    int resize_rows, resize_cols;
     int detection_period;
 
     CameraConfig(){};

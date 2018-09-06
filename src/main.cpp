@@ -85,24 +85,8 @@ void process_camera(const string &model_path, const CameraConfig &camera, string
         {
             LOG(INFO) << log;
             enable_detection = true;
-            Mat small_frame;
-            bool resized = false;
-            float resize_factor_x, resize_factor_y = 1;
 
-            if ( camera.resize_rows > 0 && frame.rows > camera.resize_rows) {
-                // resize
-                gettimeofday(&tv1,&tz1);
-                resize(frame, small_frame, Size(camera.resize_cols, camera.resize_rows), 0, 0, INTER_NEAREST);
-                gettimeofday(&tv2,&tz2);
-                LOG(INFO) << "\tresize to (" << camera.resize_cols << " * " << camera.resize_rows << "), time eclipsed: " << getElapse(&tv1, &tv2) << " ms";
-                resized = true;
-                resize_factor_x = (float)frame.cols / camera.resize_cols;
-                resize_factor_y = (float)frame.rows / camera.resize_rows;
-            } else {
-                small_frame = frame;
-            }
-
-            ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(small_frame.data, ncnn::Mat::PIXEL_BGR2RGB, small_frame.cols, small_frame.rows);
+            ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
 
             gettimeofday(&tv1,&tz1);
             mm.detect(ncnn_img, detected_bounding_boxes);
@@ -116,10 +100,6 @@ void process_camera(const string &model_path, const CameraConfig &camera, string
 
                     // get face bounding box
                     Bbox box = *it;
-                    if (resized) {
-                        box.scale(resize_factor_x, resize_factor_y);
-                        *it = box;
-                    }
 
                     //std::vector<double> qualities = fa.GetQuality(cimg, box.x1, box.y1, box.x2, box.y2);
                     Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
