@@ -76,6 +76,13 @@ set_target_properties(main
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
 )
 
+add_executable(detInfer src/detect_infer.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/camera.cpp src/face_pose_estimate.cpp src/face_predict.cpp)
+target_link_libraries(detInfer ncnn trackerKCF trackerStaple mxnet ${OpenCV_LIBS} fftw3f  glog)
+set_target_properties(detInfer
+        PROPERTIES 
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+)
+
 add_executable(export src/export.cpp)
 target_link_libraries(export fftw3f)
 set_target_properties(export 

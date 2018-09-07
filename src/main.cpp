@@ -100,7 +100,6 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     struct timezone tz1,tz2;
 
     vector<Bbox> detected_bounding_boxes;
-    Rect2d roi;
     vector<STAPLE_TRACKER *>  trackers;
     vector<Rect2d> tracker_boxes;
     vector<long int> reids;
@@ -177,9 +176,9 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                     Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
 
                     bool newFace = true;
-                    unsigned i;
-                    for (i=0;i<tracker_boxes.size();i++) {
-                        if (overlap(detected_face, tracker_boxes[i])) {
+                    unsigned index;
+                    for (index=0;index<tracker_boxes.size();index++) {
+                        if (overlap(detected_face, tracker_boxes[index])) {
                             newFace = false;
                             break;
                         }
@@ -201,16 +200,17 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                         faceId++;
                     } else {
                         // update tracker's bounding box
-                        STAPLE_TRACKER * tracker = trackers[i];
+                        STAPLE_TRACKER * tracker = trackers[index];
                         long id_ = tracker->id;
-                        LOG(INFO) << "update tracking face " << tracker->id <<",tracker " << i;
+                        LOG(INFO) << "update tracking face " << tracker->id <<",tracker " << index;
                         delete tracker;
                         tracker = new STAPLE_TRACKER(staple_cfg);
                         tracker->id = id_;
                         thisFace = id_;
                         tracker->tracker_staple_initialize(frame,detected_face);
                         tracker->tracker_staple_train(frame,true);
-                        trackers[i] = tracker;
+                        trackers[index] = tracker;
+                        tracker_boxes[index] = detected_face;
                     }
 
                     // calculate score of face
@@ -230,7 +230,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
                         int age=0;
 
-                        if(age_count[i]<n_age_sample){
+                        if(age_count[index]<n_age_sample){
                             if(age_enable){
                                 std::vector<float> age_vec;
                                 #ifdef BENCH_EDGE
@@ -259,14 +259,14 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                             } else 
                                 age = 20;
 
-                            age_count[i]++;
-                            age_sum[i] += age;
+                            age_count[index]++;
+                            age_sum[index] += age;
                         }
 
                         cv::Mat world_coordinate;
-                        if (age_sum[i]/age_count[i] >= child_age_min) {
+                        if (age_sum[index]/age_count[index] >= child_age_min) {
                             
-                            front_side = compute_coordinate(frame, image_points, camera, world_coordinate, age_sum[i]/age_count[i], frameCounter, thisFace);
+                            front_side = compute_coordinate(frame, image_points, camera, world_coordinate, age_sum[index]/age_count[index], frameCounter, thisFace);
 
                             if(front_side && newFace){
                                 vector<float> face_embed_vec;
@@ -298,15 +298,15 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                                 system(cmd.c_str());
                                 #endif
 
-                                if(reids[i]==-1){
-                                    reids[i] = new_id;
+                                if(reids[index]==-1){
+                                    reids[index] = new_id;
                                     LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
                                             << "], reid: " << new_id;
                                 } else {
-                                    if(reids[i]!=new_id){
+                                    if(reids[index]!=new_id){
                                         LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
-                                                << "], tracker reid change from["<<reids[i] << "],to["<<new_id<<"]";
-                                        reids[i]=new_id;
+                                                << "], tracker reid change from["<<reids[index] << "],to["<<new_id<<"]";
+                                        reids[index]=new_id;
                                     }
                                     else
                                         LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
@@ -335,7 +335,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                                 gettimeofday(&ts,NULL);
                                 long int ts_ms = ts.tv_sec * 1000 + ts.tv_usec / 1000;
                                 // to do: push the coordinate reid timestamp info into the time series database
-                                // (world_coordinate, reid[i], ts_ms)
+                                // (world_coordinate, reid, ts_ms)
                             }
                             else {
                                 LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
