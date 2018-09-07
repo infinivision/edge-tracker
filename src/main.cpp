@@ -441,9 +441,9 @@ int main(int argc, char* argv[]) {
     LoadMxModelConf();
     const String keys =
         "{help h usage ? |                         | print this message   }"
-        "{model        |models/ncnn                | path to mtcnn model  }"
+        "{model        |../models/ncnn             | path to mtcnn model  }"
         "{config       |config.toml                | camera config        }"
-        "{output       |/Users/moon/Pictures/faces | output folder        }"
+        "{output       |output                     | output folder        }"
     ;
 
     CommandLineParser parser(argc, argv, keys);
