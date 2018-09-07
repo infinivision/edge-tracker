@@ -119,12 +119,16 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
         bool enable_detection = false;
         cap >> frame;
         if (!frame.data) {
+            if(video_file!="none"){
+                std::cout << "video file read over!\n" ;
+                exit(0);
+            }
             LOG(ERROR) << "Capture video failed: " << camera.identity() << ", opened: " << cap.isOpened();
             cap.release();
 
             LOG(ERROR) << "sleep for 5 seconds ...";
             std::this_thread::sleep_for(std::chrono::seconds(5));
-
+            
             cap = camera.GetCapture();
             if (!cap.isOpened()) {
                 LOG(ERROR) << "failed to open camera: " << camera.identity();
@@ -191,7 +195,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                         reids.push_back(-1);
                         age_sum.push_back(0);
                         age_count.push_back(0);
-                        LOG(INFO) << "start tracking face " << tracker->id << ",tracker i " << trackers.size()-1;
+                        LOG(INFO) << "start tracking face " << tracker->id << ",tracker " << trackers.size()-1;
 
                         thisFace = faceId;
                         faceId++;
@@ -199,7 +203,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                         // update tracker's bounding box
                         STAPLE_TRACKER * tracker = trackers[i];
                         long id_ = tracker->id;
-                        LOG(INFO) << "update tracking face " << tracker->id <<",tracker i " << i;
+                        LOG(INFO) << "update tracking face " << tracker->id <<",tracker " << i;
                         delete tracker;
                         tracker = new STAPLE_TRACKER(staple_cfg);
                         tracker->id = id_;
@@ -379,7 +383,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                         Bbox box = *it;
 
                         Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
-                        if (overlap(detected_face, tracker_boxes[i])) {
+                        if (overlap(detected_face, tracker_box)) {
                             isFace = true;                                                          
                             break;
                         }
@@ -387,7 +391,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                 }
                 if (!isFace) 
                 {
-                    LOG(INFO) << "stop tracking face " << tracker->id <<",tracker i " << i;
+                    LOG(INFO) << "stop tracking face " << tracker->id <<",tracker " << i;
                     #ifdef SAVE_IMG
                     // debug output
                     string output = output_folder + "/tracker/face_" + to_string(trackers[i]->id) + "_" + to_string(frameCounter) + ".jpg";
