@@ -81,8 +81,6 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     prepare_output_folder(camera, output_folder);
     
     MTCNN mm(model_path);
-    FaceAttr fa;
-    fa.Load();
 
     VideoCapture cap = camera.GetCapture();
     if (!cap.isOpened()) {
@@ -210,7 +208,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                     // calculate score of face
                     Mat face(frame, detected_face);
                     bool front_side =false;
-                    double score = fa.GetVarianceOfLaplacianSharpness(face);
+                    double score = GetVarianceOfLaplacianSharpness(face);
                     LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace 
                               << "], LaplacianSharpness score: " << score;
                     if(score>min_score){
