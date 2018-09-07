@@ -367,8 +367,10 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                     #endif
                 }
             }
+            #ifdef BENCH_EDGE
             gettimeofday(&tv3,NULL);
             LOG(INFO) << "detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv3) << " ms";
+            #endif
             // clean up trackers if the tracker doesn't follow a face
             for (unsigned i=0; i < trackers.size(); i++) {
                 STAPLE_TRACKER *tracker = trackers[i];
@@ -458,7 +460,7 @@ int main(int argc, char* argv[]) {
     }
 
     String config_path = parser.get<String>("config");
-    LOG(INFO) << "config path: " << config_path;
+    cout << "config path: " << config_path << endl;
 
     String model_path = parser.get<String>("model");
     String output_folder = parser.get<String>("output");

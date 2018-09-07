@@ -11,7 +11,7 @@ if(DEV)
         add_definitions("-Wall -g -O0")
 endif()
 
-if(BENCH)
+if(BENCH_EDGE)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DBENCH_EDGE")
 endif()
 
