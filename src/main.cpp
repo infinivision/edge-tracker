@@ -74,7 +74,7 @@ void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
     }    
 }
 
-void process_camera(const string model_path, const CameraConfig &camera, string output_folder, bool mainThread) {
+void process_camera(const string model_path, const CameraConfig &camera, string output_folder, const String video_file, bool mainThread) {
 
     cout << "processing camera: " << camera.identity() << endl;
 
@@ -83,6 +83,10 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     MTCNN mm(model_path);
 
     VideoCapture cap = camera.GetCapture();
+
+    if(video_file!="none")
+        cap = VideoCapture(video_file);
+    
     if (!cap.isOpened()) {
         cerr << "failed to open camera" << endl;
         return;
@@ -444,6 +448,7 @@ int main(int argc, char* argv[]) {
         "{model        |../models/ncnn             | path to mtcnn model  }"
         "{config       |config.toml                | camera config        }"
         "{output       |output                     | output folder        }"
+        "{video-file   |none                       | use video file instead of camera stream }"
     ;
 
     CommandLineParser parser(argc, argv, keys);
@@ -458,6 +463,7 @@ int main(int argc, char* argv[]) {
 
     String model_path = parser.get<String>("model");
     String output_folder = parser.get<String>("output");
+    String video_file = parser.get<String>("video-file");
     if (!parser.check()) {
         parser.printErrors();
         return 0;
@@ -472,12 +478,12 @@ int main(int argc, char* argv[]) {
 
     for (CameraConfig camera: cameras) {
         // start processing video
-        thread t {process_camera, model_path, camera, output_folder,false};
+        thread t {process_camera, model_path, camera, output_folder, video_file, false};
         t.detach();
  
     }
 
-    process_camera(model_path,demo,output_folder,true);
+    process_camera(model_path,demo,output_folder,video_file,true);
 /*
     while(true) {
         std::this_thread::sleep_for(chrono::seconds(1));
