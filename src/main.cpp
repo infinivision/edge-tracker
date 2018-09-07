@@ -10,7 +10,6 @@
 #include "staple_tracker.hpp" // staple trakcer
 #include "utils.h"
 #include "face_attr.h"
-#include "face_align.h"
 #include "face_predict.h"
 #include <glog/logging.h>
 #include <thread>
@@ -32,8 +31,6 @@ extern int child_age_min;
 bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, \
                          cv::Mat & world_coordinate, int age, int frameCount,int faceId);
 void read3D_conf();
-
-FaceAlign faceAlign = FaceAlign();
 
 /*
  * Decide whether the detected face is same as the tracking one
@@ -86,7 +83,6 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     MTCNN mm(model_path);
     FaceAttr fa;
     fa.Load();
-    FaceAlign align;
 
     VideoCapture cap = camera.GetCapture();
     if (!cap.isOpened()) {
