@@ -285,14 +285,16 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
                             bool front_side = compute_coordinate(frame, image_points, camera, world_coordinate, 
                                                                 infer_age, frameCounter, thisFace);
-                            if(front_side && newFace) {
-                                int new_id = proc_embeding(face_vec, tracker_vec[index], camera, frameCounter, thisFace);
-                                #ifdef SAVE_IMG
-                                string cmd = "mkdir -p " + output_folder + "/" + to_string(new_id);
-                                system(cmd.c_str());
-                                string output = output_folder + "/" + to_string(new_id) + "/face_" + to_string(thisFace) + "_"+ to_string(frameCounter) + ".jpg";
-                                imwrite(output,face);
-                                #endif
+                            if(front_side) {
+                                if(newFace || !newFace && (tracker_vec[index].reid == -1) ) {
+                                    int new_id = proc_embeding(face_vec, tracker_vec[index], camera, frameCounter, thisFace);
+                                    #ifdef SAVE_IMG
+                                    string cmd = "mkdir -p " + output_folder + "/" + to_string(new_id);
+                                    system(cmd.c_str());
+                                    string output = output_folder + "/" + to_string(new_id) + "/face_" + to_string(thisFace) + "_"+ to_string(frameCounter) + ".jpg";
+                                    imwrite(output,face);
+                                    #endif
+                                }
                             }
                             if(front_side){
                                 gettimeofday(&ts,NULL);
