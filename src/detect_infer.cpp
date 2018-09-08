@@ -90,7 +90,6 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     }
 
     int frameCounter = 0;
-    long faceId = 0;
     long thisFace = 0;
 
     vector<Bbox> detected_bounding_boxes;
@@ -127,11 +126,10 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
             mm.detect(ncnn_img, detected_bounding_boxes);
 
-            int total = 0;
             // update trackers' bounding boxes and create tracker for a new face
             for(vector<Bbox>::iterator it=detected_bounding_boxes.begin(); it!=detected_bounding_boxes.end();it++) {
                 if((*it).exist) {
-                    total++;
+                    thisFace++;
                     // get face bounding box
                     Bbox box = *it;
                     Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));

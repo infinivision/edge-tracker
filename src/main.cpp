@@ -1,13 +1,12 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
-//#include <opencv2/tracking.hpp>
 #include "camera.h"
+#include "staple_tracker.hpp" // staple trakcer
+#include "face_tracker.h"
 #include "mtcnn.h"
 #include <string.h>
 #include <chrono>
 #include <cstdlib>
-//#include "tracker.hpp" // use optimised tracker instead of OpenCV version of KCF tracker
-#include "staple_tracker.hpp" // staple trakcer
 #include "utils.h"
 #include "face_attr.h"
 #include "face_predict.h"
@@ -74,6 +73,7 @@ void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
     }    
 }
 
+
 void process_camera(const string model_path, const CameraConfig &camera, string output_folder, const String video_file, bool mainThread) {
 
     cout << "processing camera: " << camera.identity() << endl;
@@ -100,28 +100,21 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     struct timezone tz1,tz2;
 
     vector<Bbox> detected_bounding_boxes;
-    vector<STAPLE_TRACKER *>  trackers;
-    vector<Rect2d> tracker_boxes;
-    vector<long int> reids;
-    vector<int> age_sum;
-    vector<int> age_count;
+    vector<face_tracker> tracker_vec;
     vector<cv::Point2d> image_points;
     Mat frame;
-
-    FileStorage fs;
-    fs.open("staple.yaml", FileStorage::READ);
-    staple_cfg staple_cfg;
-    staple_cfg.read(fs.root());
 
     do {
         detected_bounding_boxes.clear();
         bool enable_detection = false;
         cap >> frame;
         if (!frame.data) {
+
             if(video_file!="none"){
                 std::cout << "video file read over!\n" ;
                 exit(0);
             }
+
             LOG(ERROR) << "Capture video failed: " << camera.identity() << ", opened: " << cap.isOpened();
             cap.release();
 
@@ -141,15 +134,10 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
         Mat show_frame = frame.clone();
         #endif
 
-        string log = "frame #" + to_string(frameCounter) + ", tracking faces: ";
-        // update trackers
-        for (int i = 0; i < trackers.size(); i++) {
-            STAPLE_TRACKER *tracker = trackers[i];
-            tracker_boxes[i] = tracker->tracker_staple_update(frame);
-            tracker->tracker_staple_train(frame,false);
-            log += "#" + to_string(trackers[i]->id) + " ";
+        // update tracker_vec
+        for (size_t i = 0; i< tracker_vec.size(); i++){
+            tracker_vec[i].update(frame);
         }
-        //LOG(INFO) << log;
         
         if (frameCounter % camera.detection_period == 0)
         {
@@ -162,12 +150,12 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
             mm.detect(ncnn_img, detected_bounding_boxes);
             #ifdef BENCH_EDGE
             gettimeofday(&tv2,&tz2);
-//            LOG(INFO) << "mtcnn detected one frame, time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms";
+            LOG(INFO) << "mtcnn ncnn detected one frame, time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms";
             #endif
 
             int total = 0;
 
-            // update trackers' bounding boxes and create tracker for a new face
+            // update tracker_vec's bounding boxes and push new tracker int tracker_vec for a new face
             for(vector<Bbox>::iterator it=detected_bounding_boxes.begin(); it!=detected_bounding_boxes.end();it++) {
                 if((*it).exist) {
                     total++;
@@ -177,40 +165,23 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
                     bool newFace = true;
                     unsigned index;
-                    for (index=0;index<tracker_boxes.size();index++) {
-                        if (overlap(detected_face, tracker_boxes[index])) {
+                    for (index=0;index<tracker_vec.size();index++) {
+                        if (overlap(detected_face, tracker_vec[index].box)) {
                             newFace = false;
                             break;
                         }
                     }
                     if (newFace) {
                         // create a new tracker if a new face is detected
-                        STAPLE_TRACKER * tracker = new STAPLE_TRACKER(staple_cfg);
-                        tracker->tracker_staple_initialize(frame,detected_face);
-                        tracker->tracker_staple_train(frame,true);
-                        tracker->id = faceId;
-                        trackers.push_back(tracker);
-                        tracker_boxes.push_back(detected_face);
-                        reids.push_back(-1);
-                        age_sum.push_back(0);
-                        age_count.push_back(0);
-                        LOG(INFO) << "start tracking face " << tracker->id << ",tracker " << trackers.size()-1;
+                        tracker_vec.push_back(face_tracker(faceId,frame,detected_face));
+                        LOG(INFO) << "start tracking face " << tracker_vec[index].faceId << ",tracker index " << index;
 
                         thisFace = faceId;
                         faceId++;
                     } else {
                         // update tracker's bounding box
-                        STAPLE_TRACKER * tracker = trackers[index];
-                        long id_ = tracker->id;
-                        LOG(INFO) << "update tracking face " << tracker->id <<",tracker " << index;
-                        delete tracker;
-                        tracker = new STAPLE_TRACKER(staple_cfg);
-                        tracker->id = id_;
-                        thisFace = id_;
-                        tracker->tracker_staple_initialize(frame,detected_face);
-                        tracker->tracker_staple_train(frame,true);
-                        trackers[index] = tracker;
-                        tracker_boxes[index] = detected_face;
+                        tracker_vec[index].update_by_dectect(frame,detected_face);
+                        LOG(INFO) << "update tracking face " << tracker_vec[index].faceId <<", tracker index " << index;
                     }
 
                     // calculate score of face
@@ -230,7 +201,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
                         int age=0;
 
-                        if(age_count[index]<n_age_sample){
+                        if(tracker_vec[index].infer_age_count <n_age_sample) {
                             if(age_enable){
                                 std::vector<float> age_vec;
                                 #ifdef BENCH_EDGE
@@ -254,19 +225,20 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                                 if(infer_count_age>1){
                                     sum_t_infer_age += t_ms2_age-t_ms1_age;
                                     LOG(INFO) << "face infer age performance: [" << (sum_t_infer_age/1000.0 ) / (infer_count_age-1) << "] mili second latency per time";
-                                }                            
+                                }
                                 #endif                                
                             } else 
                                 age = 20;
 
-                            age_count[index]++;
-                            age_sum[index] += age;
+                            tracker_vec[index].infer_age_count++;
+                            tracker_vec[index].age_sum += age;
                         }
-
+                        int infer_age = tracker_vec[index].age_sum / tracker_vec[index].infer_age_count;
                         cv::Mat world_coordinate;
-                        if (age_sum[index]/age_count[index] >= child_age_min) {
+                        if (infer_age >= child_age_min) {
                             
-                            front_side = compute_coordinate(frame, image_points, camera, world_coordinate, age_sum[index]/age_count[index], frameCounter, thisFace);
+                            front_side = compute_coordinate(frame, image_points, camera, world_coordinate, 
+                                                                infer_age, frameCounter, thisFace);
 
                             if(front_side && newFace){
                                 vector<float> face_embed_vec;
@@ -298,15 +270,15 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                                 system(cmd.c_str());
                                 #endif
 
-                                if(reids[index]==-1){
-                                    reids[index] = new_id;
+                                if(tracker_vec[index].reid == -1) {
+                                    tracker_vec[index].reid = new_id;
                                     LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
                                             << "], reid: " << new_id;
                                 } else {
-                                    if(reids[index]!=new_id){
+                                    if(tracker_vec[index].reid != new_id){
                                         LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
-                                                << "], tracker reid change from["<<reids[index] << "],to["<<new_id<<"]";
-                                        reids[index]=new_id;
+                                                << "], tracker reid change from["<< tracker_vec[index].reid  << "],to["<<new_id<<"]";
+                                        tracker_vec[index].reid = new_id;
                                     }
                                     else
                                         LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
@@ -374,16 +346,13 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
             LOG(INFO) << "detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv3) << " ms";
             #endif
             // clean up trackers if the tracker doesn't follow a face
-            for (unsigned i=0; i < trackers.size(); i++) {
-                STAPLE_TRACKER *tracker = trackers[i];
-                Rect2d tracker_box = tracker_boxes[i];
+            for (size_t i = 0; i < tracker_vec.size(); i++) {
                 bool isFace = false;
                 for (vector<Bbox>::iterator it=detected_bounding_boxes.begin(); it!=detected_bounding_boxes.end();it++) {
                     if ((*it).exist) {
                         Bbox box = *it;
-
                         Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
-                        if (overlap(detected_face, tracker_box)) {
+                        if (overlap(detected_face, tracker_vec[i].box)) {
                             isFace = true;                                                          
                             break;
                         }
@@ -391,10 +360,10 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                 }
                 if (!isFace) 
                 {
-                    LOG(INFO) << "stop tracking face " << tracker->id <<",tracker " << i;
+                    LOG(INFO) << "stop tracking face " << tracker_vec[i].faceId << ", tracker index " << i;
                     #ifdef SAVE_IMG
                     // debug output
-                    string output = output_folder + "/tracker/face_" + to_string(trackers[i]->id) + "_" + to_string(frameCounter) + ".jpg";
+                    string output = output_folder + "/tracker/face_" + to_string(tracker_vec[i].faceId) + "_" + to_string(frameCounter) + ".jpg";
                     Rect2d t_face = tracker_boxes[i];
                     Rect2d frame_rect = Rect2d(0, 0, frame.size().width, frame.size().height);
                     Rect2d roi = t_face & frame_rect;
@@ -403,16 +372,11 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                         imwrite(output,tracker_face);
                     }
 
-                    output = output_folder + "/tracker/" + to_string(trackers[i]->id) + "_" + to_string(frameCounter) + ".jpg";
+                    output = output_folder + "/tracker/" + to_string(tracker_vec[i].faceId) + "_" + to_string(frameCounter) + ".jpg";
                     imwrite(output,frame);
                     #endif
 
-                    delete tracker;
-                    trackers.erase(trackers.begin() + i);
-                    tracker_boxes.erase(tracker_boxes.begin() + i);
-                    reids.erase(reids.begin() + i);
-                    age_sum.erase(age_sum.begin() + i);
-                    age_count.erase(age_count.begin() + i);
+                    tracker_vec.erase(tracker_vec.begin() + i);
                     i--;
                 }
             }
