@@ -93,7 +93,7 @@ void update_sim_score(std::vector<vec_element> & vec_list){
   for(size_t i=0;i<vec_list.size();i++){
     int    max_ids  = 0;
     float  max_sims = -1.0;
-    for(size_t j=0;i<vec_list.size();i++){
+    for(size_t j=0;j<vec_list.size();j++){
       if(i==j) continue;
       float sim = std::inner_product(vec_list[i].vec.begin(), vec_list[i].vec.end(), vec_list[j].vec.begin(), 0.0);
       if(sim>max_sims){
