@@ -447,46 +447,13 @@ int proc_embd_vec(std::vector<float> &data, const CameraConfig & camera,int fram
   std::vector<float> i_vec;
   vec_norm(data,i_vec);
   vec_mutex.lock();
-  /*
-  if(reid%1){
-    long cur_ntrain, cur_nsize;
-    dbp->GetIndexSize(cur_ntrain, cur_nsize);
-    LOG(INFO) << "cur_ntrain " << cur_ntrain << ", cur_nsize " << cur_nsize;
-    if((cur_nsize-cur_ntrain)>0){
-      faiss::Index* index;
-      long ntrain;
-      dbp->BuildIndex(cur_ntrain, cur_nsize, index, ntrain);
-      dbp->ActivateIndex(index, ntrain);
-      LOG(INFO) << "Build new Index!\n";
-    }
-  }
-  */
-
 
 #ifdef BENCH_EDGE
   struct timeval  tv;
   gettimeofday(&tv,NULL);
   long t_ms1 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
 #endif
-  /*
-  float distance[10];
-  long  xid[10];
-  dbp->Search(1,n.data(),distance,xid);
-  if(xid[0]==-1){
-    long reid_buf[10];
-    reid_buf[0] = reid;
-    dbp->AddWithIds(1,n.data(),reid_buf);
-    LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId
-              << "]add new face vec,distance[" << distance[0] <<"], reid[" << reid <<"]\n";
-    reid++;
-  } else {
-    //dbp->UpdateWithIds(1,n.data(),xid);
-    LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId
-              << "]find old face vect,distance[" << distance[0] <<"], reid[" << xid[0] <<"]\n";
-    new_id = false;
-  }
-  */
-  
+
   if(identifies.size()>= amt_reid){
     identifies.clear();
     reid = 0;
@@ -534,7 +501,7 @@ int proc_embd_vec(std::vector<float> &data, const CameraConfig & camera,int fram
     LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId
               << "]add new face vec,distance[" << max_sim_score <<"], reid[" << reid <<"]";
     new_id = reid;
-    reid++;              
+    reid++;
   } else {
     new_id = max_reid;
     insert_vec(identifies[max_reid], i_vec, max_idx, max_sim_score);

@@ -1,9 +1,10 @@
 #include "face_tracker.h" // staple trakcer
 
 face_tracker::face_tracker(int faceId_, Mat frame, Rect2d roi , algo_type t_) {
+    box = roi;
     faceId = faceId_;
     reid = -1;
-    age_sum = -1;
+    age_sum = 0;
     infer_age_count = 0;
     t = t_;
     staple = nullptr;
@@ -23,9 +24,10 @@ face_tracker::~face_tracker(){
 }
 
 face_tracker::face_tracker(face_tracker && tracker){
+    box             = tracker.box;
     faceId          = tracker.faceId;
     reid            = tracker.reid;
-    age_sum             = tracker.age_sum;
+    age_sum         = tracker.age_sum;
     infer_age_count = tracker.infer_age_count;
     t               = tracker.t;
     staple          = tracker.staple;
@@ -34,6 +36,7 @@ face_tracker::face_tracker(face_tracker && tracker){
 }
 
 face_tracker & face_tracker::operator=(face_tracker && tracker){
+    box             = tracker.box;    
     faceId          = tracker.faceId;
     reid            = tracker.reid;
     age_sum             = tracker.age_sum;
