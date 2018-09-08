@@ -175,7 +175,6 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
     do {
         detected_bounding_boxes.clear();
-        bool enable_detection = false;
         cap >> frame;
         if (!frame.data) {
 
@@ -206,11 +205,20 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
         // update tracker_vec
         for (size_t i = 0; i< tracker_vec.size(); i++){
             tracker_vec[i].update(frame);
+
+            // to do
+            // need to detect duplicated tracking face
+
+            #ifdef VISUAL
+            Rect2d t_box = tracker_vec[i].box;
+            rectangle( show_frame, t_box, Scalar( 255, 0, 0 ), 2, 1 );
+            Point middleHighPoint = Point(t_box.x+t_box.width/2, t_box.y);
+            putText(show_frame, to_string(tracker_vec[i].faceId), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
+            #endif
         }
         
         if (frameCounter % camera.detection_period == 0)
         {
-            enable_detection = true;
             ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
 
             #ifdef BENCH_EDGE
@@ -252,6 +260,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                         faceId++;
                     } else {
                         // update tracker's bounding box
+                        thisFace = tracker_vec[index].faceId;
                         tracker_vec[index].update_by_dectect(frame,detected_face);
                         LOG(INFO) << "update tracking face " << tracker_vec[index].faceId <<", tracker index " << index;
                     }
@@ -300,23 +309,32 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                         LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace 
                                      << "], video frame is blur";
 
+                    std::vector<cv::Point2d> detect_points;
+                    for(int j =0;j<5;j++){
+                        cv::Point2d point(box.ppoint[j],box.ppoint[j+5]);
+                        detect_points.push_back(point);
+                    }
+
                     #ifdef SAVE_IMG
                     // debug output
                     // draw detected face                    
                     rectangle( detect_frame, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
                     Point middleHighPoint = Point(detected_face.x+detected_face.width/2, detected_face.y);
                     putText(detect_frame, to_string(thisFace), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
-                    for(auto point: image_points){
+                    
+                    for(auto point: detect_points){
                         drawMarker(detect_frame, point,  cv::Scalar(0, 255, 0), cv::MARKER_CROSS, 10, 1);
                     }
                     #endif
                     #ifdef VISUAL
                     // draw detected face
                     if(mainThread){
+
                         rectangle( show_frame, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
                         Point middleHighPoint = Point(detected_face.x+detected_face.width/2, detected_face.y);
                         putText(show_frame, to_string(thisFace), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
-                        for(auto point: image_points){
+
+                        for(auto point: detect_points){
                             drawMarker(show_frame, point,  cv::Scalar(0, 255, 0), cv::MARKER_CROSS, 10, 1);
                         }
                     }
@@ -369,7 +387,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
         frameCounter++;
         #ifdef VISUAL
-        if(enable_detection && mainThread) {
+        if( mainThread) {
             Mat small_show_frame;
             if(show_frame.cols>1500)
                 resize(show_frame,small_show_frame,frame.size()/2);
