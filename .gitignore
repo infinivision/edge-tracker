@@ -6,3 +6,5 @@ lib/
 wisdom
 shape_predictor_68_face_landmarks.dat
 *.jpg
+3rdparty/
+*.bak
