@@ -69,12 +69,19 @@ void face_tracker::update_by_dectect(Mat & frame, Rect2d roi) {
 
 }
 
-staple_cfg face_tracker::staple_init(){
+void face_tracker::staple_init(std::string wisdom_file, std::string cfg_file){
+
+    if(!STAPLE_TRACKER::importWisdom(wisdom_file)){
+        std::cout << "import wisdom file for staple failed, exit! \n";
+        exit(0);
+    }
+
     FileStorage fs;
-    fs.open("staple.yaml", FileStorage::READ);
+    fs.open(cfg_file, FileStorage::READ);
     staple_cfg cfg;
     cfg.read(fs.root());
-    return cfg;
+    s_cfg = cfg;
+
 }
 
-staple_cfg face_tracker::s_cfg = face_tracker::staple_init();
+staple_cfg face_tracker::s_cfg = staple_cfg();

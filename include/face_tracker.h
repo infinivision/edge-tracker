@@ -24,7 +24,7 @@ public:
 
     void update_by_dectect(Mat & frame, Rect2d roi);
 
-    static staple_cfg staple_init();
+    static void staple_init(std::string wisdom_file, std::string cfg_file);
 
     Rect2d box;
     int faceId;

@@ -6,6 +6,8 @@
 #include <glog/logging.h>
 #include <vector>
 
+extern int min_score;
+
 class CameraConfig {
 
 public:

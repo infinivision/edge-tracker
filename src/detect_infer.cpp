@@ -8,6 +8,7 @@
 #include "utils.h"
 #include "face_attr.h"
 #include "face_predict.h"
+#include "face_pose_estimate.h"
 #include <glog/logging.h>
 #include <thread>
 
@@ -22,12 +23,6 @@ long  infer_count_embed  = 0;
 long  sum_t_infer_age  = 0;
 long  infer_count_age  = 0;
 #endif
-
-extern int min_score;
-extern int child_age_min;
-bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, \
-                         cv::Mat & world_coordinate, int age, int frameCount,int faceId);
-void read3D_conf();
 
 /*
  * Decide whether the detected face is same as the tracking one
@@ -204,8 +199,8 @@ int main(int argc, char* argv[]) {
     google::InitGoogleLogging("detect_and_infer");
     FLAGS_log_dir = "./";
 //    FLAGS_logtostderr = true;
-    read3D_conf();
-    LoadMxModelConf();
+    read3D_conf("3dpnp.toml");
+    LoadMxModelConf("mxModel.toml");
     const String keys =
         "{help h usage ? |                         | print this message   }"
         "{model        |../models/ncnn             | path to mtcnn model  }"

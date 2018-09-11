@@ -360,14 +360,7 @@ void LoadMXNetModel ( PredictorHandle* pred_hnd, /* Output */
   assert(pred_hnd);
 }
 
-void LoadMxModelConf() {
-  char * conf_path = getenv("mxModelPath");
-   std::string mx_model_conf;
-  if(conf_path==nullptr)
-    mx_model_conf = std::string("mxModel.toml");   /* model conf file path */
-  else
-    mx_model_conf = std::string(conf_path);
-
+void LoadMxModelConf(std::string mx_model_conf) {
   try {
       auto g = cpptoml::parse_file(mx_model_conf);
       m_width   = g->get_qualified_as<int>("shape.width").value_or(112);

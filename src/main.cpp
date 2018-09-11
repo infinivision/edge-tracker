@@ -10,6 +10,7 @@
 #include "utils.h"
 #include "face_attr.h"
 #include "face_predict.h"
+#include "face_pose_estimate.h"
 #include <glog/logging.h>
 #include <thread>
 
@@ -24,12 +25,6 @@ long  infer_count_embed  = 0;
 long  sum_t_infer_age  = 0;
 long  infer_count_age  = 0;
 #endif
-
-extern int min_score;
-extern int child_age_min;
-bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, \
-                         cv::Mat & world_coordinate, int age, int frameCount,int faceId);
-void read3D_conf();
 
 /*
  * Decide whether the detected face is same as the tracking one
@@ -143,7 +138,7 @@ int proc_embeding(vector<mx_float> face_vec, face_tracker & target,
     return new_id;
 }
 
-void process_camera(const string model_path, const CameraConfig &camera, string output_folder, const String video_file, bool mainThread) {
+void process_camera(const string model_path, const CameraConfig &camera, string output_folder, const String video_file) {
 
     cout << "processing camera: " << camera.identity() << endl;
 
@@ -151,10 +146,12 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     
     MTCNN mm(model_path);
 
-    VideoCapture cap = camera.GetCapture();
+    VideoCapture cap;
 
     if(video_file!="none")
         cap = VideoCapture(video_file);
+    else
+        cap = camera.GetCapture();
     
     if (!cap.isOpened()) {
         cerr << "failed to open camera" << endl;
@@ -213,7 +210,8 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
             Rect2d t_box = tracker_vec[i].box;
             rectangle( show_frame, t_box, Scalar( 255, 0, 0 ), 2, 1 );
             Point middleHighPoint = Point(t_box.x+t_box.width/2, t_box.y);
-            putText(show_frame, to_string(tracker_vec[i].faceId), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
+            putText(show_frame, to_string(tracker_vec[i].faceId), middleHighPoint, FONT_HERSHEY_SIMPLEX, 
+                                                                    1, Scalar(255, 255, 255), 2);
             #endif
         }
         
@@ -318,20 +316,21 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                     }
 
                     #ifdef SAVE_IMG
-                    // debug output
-                    // draw detected face                    
-                    rectangle( detect_frame, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
-                    Point middleHighPoint = Point(detected_face.x+detected_face.width/2, detected_face.y);
-                    putText(detect_frame, to_string(thisFace), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
-                    
-                    for(auto point: detect_points){
-                        drawMarker(detect_frame, point,  cv::Scalar(0, 255, 0), cv::MARKER_CROSS, 10, 1);
+                    {
+                        // debug output
+                        // draw detected face                    
+                        rectangle( detect_frame, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
+                        Point middleHighPoint = Point(detected_face.x+detected_face.width/2, detected_face.y);
+                        putText(detect_frame, to_string(thisFace), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
+                        
+                        for(auto point: detect_points){
+                            drawMarker(detect_frame, point,  cv::Scalar(0, 255, 0), cv::MARKER_CROSS, 10, 1);
+                        }                        
                     }
                     #endif
                     #ifdef VISUAL
                     // draw detected face
-                    if(mainThread){
-
+                    {
                         rectangle( show_frame, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
                         Point middleHighPoint = Point(detected_face.x+detected_face.width/2, detected_face.y);
                         putText(show_frame, to_string(thisFace), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
@@ -389,18 +388,15 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
         frameCounter++;
         #ifdef VISUAL
-        if( mainThread) {
-            Mat small_show_frame;
-            if(show_frame.cols>1500)
-                resize(show_frame,small_show_frame,frame.size()/2);
-            else
-                small_show_frame = show_frame;
-            
-            // LOG(INFO) << "camera ip: "<< camera.ip;
-            imshow("window" + camera.ip , small_show_frame);
-            if(QUIT_KEY == waitKey(1)) break;
-        }
-
+        Mat small_show_frame;
+        if(show_frame.cols>1500)
+            resize(show_frame,small_show_frame,frame.size()/2);
+        else
+            small_show_frame = show_frame;
+        
+        // LOG(INFO) << "camera ip: "<< camera.ip;
+        imshow("window" + camera.ip , small_show_frame);
+        if(QUIT_KEY == waitKey(1)) break;
         #endif
         google::FlushLogFiles(google::GLOG_INFO);
 
@@ -410,17 +406,19 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
 int main(int argc, char* argv[]) {
 
-    google::InitGoogleLogging("multi-camera-trakcing");
+    google::InitGoogleLogging("multi-camera-tracking");
     FLAGS_log_dir = "./";
 //    FLAGS_logtostderr = true;
-    read3D_conf();
-    LoadMxModelConf();
     const String keys =
-        "{help h usage ? |                         | print this message   }"
-        "{model        |../models/ncnn             | path to mtcnn model  }"
-        "{config       |config.toml                | camera config        }"
-        "{output       |output                     | output folder        }"
-        "{video-file   |none                       | use video file instead of camera stream }"
+        "{help h usage ?     |                         | print this message   }"
+        "{mtcnn-model        |../models/ncnn           | path to mtcnn model  }"
+        "{camera-config      |config.toml              | camera config        }"
+        "{wisdom             |wisdom                   | wisdom fiel for fftw, depend on hardware architecture }"
+        "{staple-config      |staple.toml              | tracker staple config }"
+        "{pnp-config         |3dpnp.toml               | pnp config }"
+        "{mx-model-config    |mxModel.toml             | mxnet model config }"
+        "{output             |output                   | output folder    }"
+        "{video-file         |none                     | use video file instead of camera stream }"
     ;
 
     CommandLineParser parser(argc, argv, keys);
@@ -430,10 +428,17 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    String config_path = parser.get<String>("config");
-    cout << "config path: " << config_path << endl;
+    String config_path = parser.get<String>("camera-config");
+    cout << "camera config path: " << config_path << endl;
 
-    String model_path = parser.get<String>("model");
+    String wisdom_file = parser.get<String>("wisdom");
+    String staple_file = parser.get<String>("staple-config");
+
+    face_tracker::staple_init(wisdom_file,staple_file);
+
+    String model_path = parser.get<String>("mtcnn-model");
+    String pnp_conf_file = parser.get<String>("pnp-config");
+    String mx_model_conf_file = parser.get<String>("mx-model-config");
     String output_folder = parser.get<String>("output");
     String video_file = parser.get<String>("video-file");
     if (!parser.check()) {
@@ -444,21 +449,13 @@ int main(int argc, char* argv[]) {
     vector<CameraConfig> cameras = LoadCameraConfig(config_path);
 
     // LOG(INFO) << "detection period: " << camera.detection_period;
+    if(cameras.size()>1) std::cout << "one edge tracker only proccess the first camera conf!\n";
 
-    CameraConfig demo = cameras[cameras.size()-1];
-    cameras.pop_back();
+    CameraConfig camera = cameras[0];
 
-    for (CameraConfig camera: cameras) {
-        // start processing video
-        thread t {process_camera, model_path, camera, output_folder, video_file, false};
-        t.detach();
- 
-    }
+    read3D_conf(pnp_conf_file);
+    LoadMxModelConf(mx_model_conf_file);
 
-    process_camera(model_path,demo,output_folder,video_file,true);
-/*
-    while(true) {
-        std::this_thread::sleep_for(chrono::seconds(1));
-    }
-*/
+    process_camera(model_path,camera,output_folder,video_file);
+
 }

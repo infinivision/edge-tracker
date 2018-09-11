@@ -76,7 +76,7 @@ void PrintOutputResult(const std::vector<float>& output);
 
 void imgFormConvert( const cv::Mat input, std::vector<mx_float> & img_vec);
 
-void LoadMxModelConf();
+void LoadMxModelConf(std::string mx_model_conf);
 
 int proc_embd_vec(std::vector<float> &data, const CameraConfig & camera,int frameCount,int faceId);
 

@@ -1,10 +1,4 @@
-#include <opencv2/opencv.hpp>
-#include "cpptoml.h"
-#include "camera.h"
-#include <string>
-#include <math.h>
-#include <stdlib.h> 
-#include <utils.h>
+#include "face_pose_estimate.h"
 
 using namespace std;
 using namespace cv;
@@ -15,14 +9,10 @@ int   pnp_algo = cv::SOLVEPNP_EPNP;
 float child_weight;
 int   child_age_min = 6;
 
-void read3D_conf(){
+void read3D_conf(string pnpConfFile){
     model_points.clear();
-    char * pnpConfPath = getenv("pnpPath");
-    if(pnpConfPath == nullptr){
-        pnpConfPath = "3dpnp.toml";
-    }
     try {
-        auto g = cpptoml::parse_file(pnpConfPath);
+        auto g = cpptoml::parse_file(pnpConfFile);
         auto eyeCornerLength = g->get_qualified_as<int>("faceModel.eyeCornerLength").value_or(105);
         child_weight = g->get_qualified_as<double>("faceModel.child").value_or(0.66);
         child_age_min = g->get_qualified_as<int>("faceModel.child_age_min").value_or(6);
