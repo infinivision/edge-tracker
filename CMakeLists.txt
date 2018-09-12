@@ -38,8 +38,6 @@ if(NOT APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif()
 
-find_package(PkgConfig)
-
 message(STATUS "ncnn include path: ${NCNN_PATH}/include")
 message(STATUS "ncnn link path: ${NCNN_PATH}/lib")
 include_directories(${NCNN_PATH}/include)
@@ -61,6 +59,12 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/mxnet/include)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/staple/staple)
+
+if (APPLE)
+    include_directories(/opt/local/include)
+    link_directories(/opt/local/lib)
+endif()
+
 add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
 add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/staple/staple)
 
@@ -71,8 +75,10 @@ link_directories(
 
 add_executable(main src/main.cpp src/face_tracker.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp 
                     src/camera.cpp src/face_pose_estimate.cpp src/face_predict.cpp 
-                    src/vector_search.cpp src/face_embed.cpp src/face_age.cpp)
-target_link_libraries(main ncnn trackerKCF trackerStaple mxnet ${OpenCV_LIBS} fftw3f  glog)
+                    src/vector_search.cpp src/face_embed.cpp src/face_age.cpp )
+target_link_libraries(main ncnn trackerKCF trackerStaple mxnet ${OpenCV_LIBS} 
+                           fftw3f  glog  curl idn2 psl ssl crypto z )
+
 set_target_properties(main
         PROPERTIES 
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"

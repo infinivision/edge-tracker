@@ -3,6 +3,9 @@
 #include "vector_search.h"
 #include "utils.h"
 
+#include <curl/curl.h>
+#include <stdio.h>
+
 #include "cpptoml.h"
 
 PredictorHandle embd_hd = nullptr;
@@ -40,6 +43,28 @@ void LoadEmbedConf(std::string mx_model_conf) {
     } else if (embed_infer_mode=="service") {
         embed_svc_url = g->get_qualified_as<std::string>("embedding.url").value_or("");
         std::cout << "embedding service url: " << embed_svc_url <<"\n";
+        CURL *curl;
+        CURLcode res;
+        curl = curl_easy_init();
+        if(curl) {
+            /* First set the URL that is about to receive our POST. This URL can
+            just as well be a https:// URL if that is what should receive the
+            data. */ 
+            curl_easy_setopt(curl, CURLOPT_URL, "http://postit.example.com/moo.cgi");
+            /* Now specify the POST data */ 
+            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "name=daniel&project=curl");
+        
+            /* Perform the request, res will get the return code */ 
+            res = curl_easy_perform(curl);
+            /* Check for errors */ 
+            if(res != CURLE_OK)
+            fprintf(stderr, "curl_easy_perform() failed: %s\n",
+                    curl_easy_strerror(res));
+        
+            /* always cleanup */ 
+            curl_easy_cleanup(curl);
+        }
+        curl_global_cleanup();        
     }
   }
   catch (const cpptoml::parse_exception& e) {
@@ -49,10 +74,10 @@ void LoadEmbedConf(std::string mx_model_conf) {
 
 }
 
-int proc_embeding(vector<mx_float> face_vec, face_tracker & target, 
+int proc_embeding(std::vector<mx_float> face_vec, face_tracker & target, 
                  const CameraConfig & camera, int frameCounter, int thisFace) {
 
-    vector<float> face_embed_vec;
+    std::vector<float> face_embed_vec;
 
     #ifdef BENCH_EDGE
     struct timeval  tv;
