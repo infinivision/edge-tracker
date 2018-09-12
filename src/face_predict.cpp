@@ -36,11 +36,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <map>
-#include <numeric>
-#include <algorithm>
-#include <functional>
-#include <mutex>
 #include <memory>
 #include <iomanip>
 #include <opencv2/opencv.hpp>
@@ -52,110 +47,6 @@
 int m_channel=0;
 int m_width=0;
 int m_height=0;
-int output_feature = 0;
-PredictorHandle embd_hd=nullptr;
-PredictorHandle age_hd =nullptr;
-int  n_age_sample = 2;
-bool age_enable = true;
-
-void vec_norm(std::vector<float> &in, std::vector<float> &out){
-  float sqare_sum=0;
-  for(size_t i=0;i<in.size();i++){
-    sqare_sum += in[i]*in[i];
-  }
-  float magnititue = sqrt(sqare_sum);
-  out.resize(in.size());
-  for(size_t i=0;i<out.size();i++){
-    out[i] = in[i] / magnititue;
-  }
-}
-
-typedef struct {
-  std::vector<float> vec;
-  int idx;
-  float score;
-} vec_element;
-
-std::mutex vec_mutex;
-// VectoDB * dbp;
-std::map<long, std::vector<vec_element>> identifies;
-int merge_count=0;
-int append_count=0;
-int full_count=0;
-int none_count=0;
-float sim_threshold = 0.4;
-float merge_threshold = 0.8;
-float append_threshold = 0.55;
-int max_vector_size = 6;
-int amt_reid = 2000;
-
-void update_sim_score(std::vector<vec_element> & vec_list){
-  for(size_t i=0;i<vec_list.size();i++){
-    int    max_ids  = 0;
-    float  max_sims = -1.0;
-    for(size_t j=0;j<vec_list.size();j++){
-      if(i==j) continue;
-      float sim = std::inner_product(vec_list[i].vec.begin(), vec_list[i].vec.end(), vec_list[j].vec.begin(), 0.0);
-      if(sim>max_sims){
-        max_sims = sim;
-        max_ids = j;
-      }
-    }
-    vec_list[i].idx   = max_ids;
-    vec_list[i].score = max_sims;
-  }
-}
-
-void insert_vec(std::vector<vec_element> & vec_list, std::vector<float> & i_vec, int i_id, float i_score){
-  if(i_score>merge_threshold){
-    std::transform(i_vec.begin(), i_vec.end(), 
-                                  vec_list[i_id].vec.begin(), i_vec.begin(),std::plus<float>());
-    std::vector<float> new_vec_norm;
-    vec_norm(i_vec,new_vec_norm);
-    vec_list[i_id].vec = new_vec_norm;
-    update_sim_score(vec_list);
-    merge_count++;
-  } else if(i_score<append_threshold) {
-    if(vec_list.size()<max_vector_size){
-      vec_element element;
-      element.vec = i_vec;
-      vec_list.push_back(element);
-      update_sim_score(vec_list);
-      append_count++;
-    } else {
-      full_count++;
-      float max_score = 0.0;
-      int   max_id = 0;
-      for(size_t i=0;i<vec_list.size();i++){
-        if(max_score<vec_list[i].score){
-          max_score = vec_list[i].score;
-          max_id    = i;
-        }
-      }
-      if(max_score>i_score){
-        int vec2_id = vec_list[max_id].idx;
-        std::transform(vec_list[vec2_id].vec.begin(), vec_list[vec2_id].vec.end(),
-                                      vec_list[max_id].vec.begin(), vec_list[vec2_id].vec.begin(),std::plus<float>());
-        std::vector<float> new_vec_norm;
-        vec_norm(vec_list[vec2_id].vec,new_vec_norm);
-        vec_list[max_id].vec  = new_vec_norm;
-        vec_list[vec2_id].vec = i_vec;
-        update_sim_score(vec_list);
-      } else {
-        std::transform(i_vec.begin(), i_vec.end(),
-                       vec_list[i_id].vec.begin(), i_vec.begin(),std::plus<float>());
-        std::vector<float> new_vec_norm;
-        vec_norm(i_vec,new_vec_norm);
-        vec_list[i_id].vec  = new_vec_norm;
-        update_sim_score(vec_list);
-      }
-    }
-  } else {
-    none_count++;
-  }
-}
-
-long reid = 0;
 
 BufferFile::BufferFile(const std::string& file_path):file_path_(file_path) {
 
@@ -259,11 +150,6 @@ void GetImageFile(const std::string& image_file,
   }
 }
 
-#ifdef BENCH_EDGE
-long  sum_t_search = 0;
-long  search_count = 0;
-#endif
-
 void Infer ( PredictorHandle pred_hnd,         /* mxnet model */
            std::vector<mx_float> &image_data,  /* input data */
            std::vector<float> &data) {         /* output vector */
@@ -366,7 +252,6 @@ void LoadMxModelConf(std::string mx_model_conf) {
       m_width   = g->get_qualified_as<int>("shape.width").value_or(112);
       m_height  = g->get_qualified_as<int>("shape.height").value_or(112);
       m_channel = g->get_qualified_as<int>("shape.channel").value_or(3);
-      output_feature = g->get_qualified_as<int>("shape.output_feature").value_or(128);
   }
   catch (const cpptoml::parse_exception& e) {
       std::cerr << "Failed to parse mxModel.toml: " << e.what() << std::endl;
@@ -374,142 +259,9 @@ void LoadMxModelConf(std::string mx_model_conf) {
   }
 
   InputShape input_shape(m_width, m_height, m_channel);
-  std::cout << "load mx embedding model shape: " << m_width << ","
+  std::cout << "load mx model shape: " << m_width << ","
                                                  << m_height << ","
                                                  << m_channel << "\n";
-  try {
-      auto g = cpptoml::parse_file(mx_model_conf);
-      std::string json_file  = g->get_qualified_as<std::string>("embedding.json").value_or("");
-      std::string param_file = g->get_qualified_as<std::string>("embedding.param").value_or("");
-      LoadMXNetModel(&embd_hd, json_file, param_file, input_shape);
-      std::cout << "embedding model has been loaded!\n";
-  }
-  catch (const cpptoml::parse_exception& e) {
-      std::cerr << "Failed to parse mxModel.toml: " << e.what() << std::endl;
-      exit(1);
-  }
-
-  try {
-      auto g = cpptoml::parse_file(mx_model_conf);
-      std::string json_file  = g->get_qualified_as<std::string>("age.json").value_or("");
-      std::string param_file = g->get_qualified_as<std::string>("age.param").value_or("");
-      n_age_sample = g->get_qualified_as<int>("age.n_age_sample").value_or(2);
-      age_enable = g->get_qualified_as<bool>("age.enable").value_or(true);
-      LoadMXNetModel(&age_hd, json_file, param_file, input_shape);
-      std::cout << "age model has been loaded!\n";
-  }
-  catch (const cpptoml::parse_exception& e) {
-      std::cerr << "Failed to parse mxModel.toml: " << e.what() << std::endl;
-      exit(1);
-  }
-
-  try {
-      auto g = cpptoml::parse_file(mx_model_conf);
-      sim_threshold = g->get_qualified_as<double>("vector.sim_threshold").value_or(0.4);
-      merge_threshold = g->get_qualified_as<double>("vector.merge_threshold").value_or(0.8); 
-      append_threshold = g->get_qualified_as<double>("vector.append_threshold").value_or(0.55); 
-      max_vector_size = g->get_qualified_as<int>("vector.max_vector_size").value_or(6);
-      amt_reid = g->get_qualified_as<int>("vector.amt_reid").value_or(2000);      
-      
-      /*
-      auto work_dir   = g->get_qualified_as<std::string>("vectdb.path").value_or("vectdb");
-      auto dot_distance_threshold = g->get_qualified_as<double>("vectdb.dot_distance_threshold").value_or(0.6);
-
-      
-      dbp = new VectoDB(work_dir.c_str(), output_feature, 0, "IVF4096,PQ32", "nprobe=256,ht=256", dot_distance_threshold);
-      std::cout << "vectdb dim: " << output_feature << "\n";
-      long vectdb_size = dbp->GetTotal();
-      reid = vectdb_size+1;
-      */
-
-  }
-  catch (const cpptoml::parse_exception& e) {
-      std::cerr << "Failed to parse mxModel.toml: " << e.what() << std::endl;
-      exit(1);
-  }
 
 }
 
-// Find the similar vector in the list, if no similar vector found, insert into the list head
-// If list len is bigger than threshold, delete vecotors from the list tail
-// output id,vector,coordinate,timestamp?
-
-
-int proc_embd_vec(std::vector<float> &data, const CameraConfig & camera,int frameCount,int faceId) {
-  int new_id = -1;
-  std::vector<float> i_vec;
-  vec_norm(data,i_vec);
-  vec_mutex.lock();
-
-#ifdef BENCH_EDGE
-  struct timeval  tv;
-  gettimeofday(&tv,NULL);
-  long t_ms1 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
-#endif
-
-  if(identifies.size()>= amt_reid){
-    identifies.clear();
-    reid = 0;
-    LOG(INFO) << "reid amount up to "<< amt_reid <<", clear map";
-  }
-
-  if(identifies.empty()) {
-    vec_element element;
-    element.vec = i_vec;
-    element.idx = 0;
-    element.score = 1;
-    std::vector<vec_element> vec_list;
-    vec_list.push_back(element);
-    identifies[0] = vec_list;
-    reid++;
-    vec_mutex.unlock();
-    LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId
-              << "]add first face vec ";
-    return 0;
-  }
-
-  std::map<long, std::vector<vec_element>>::iterator it;
-  int   max_reid = -1;
-  int   max_idx  = -1;
-  float max_sim_score  = -1.0;
-  for(it=identifies.begin(); it!= identifies.end(); it++){
-    for(size_t j=0;j<it->second.size();j++){
-      float sim = std::inner_product(i_vec.begin(), i_vec.end(), it->second[j].vec.begin(), 0.0);
-      if(sim > max_sim_score){
-        max_sim_score = sim;
-        max_idx = j;
-        max_reid = it->first;
-      }
-    }
-  }
-
-  if(max_sim_score<sim_threshold){
-    vec_element element;
-    element.vec = i_vec;
-    element.idx = 0;
-    element.score = 1;
-    std::vector<vec_element> vec_list;
-    vec_list.push_back(element);
-    identifies[reid] = vec_list;
-    LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId
-              << "]add new face vec,distance[" << max_sim_score <<"], reid[" << reid <<"]";
-    new_id = reid;
-    reid++;
-  } else {
-    new_id = max_reid;
-    insert_vec(identifies[max_reid], i_vec, max_idx, max_sim_score);
-    LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId
-              << "]find old face vect,distance[" << max_sim_score <<"], reid[" << max_reid <<"] vec_list idx["<< max_idx <<"]";
-  }
-
-#ifdef BENCH_EDGE
-    gettimeofday(&tv,NULL);
-    long t_ms2 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
-    sum_t_search += t_ms2-t_ms1;
-    search_count++;
-    LOG(INFO) << "vector search performance: [" << (sum_t_search/1000.0 ) / search_count << "] mili second latency per time";
-#endif
-
-  vec_mutex.unlock();
-  return new_id;
-}

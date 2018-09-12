@@ -1,3 +1,6 @@
+#ifndef __FACE_TRACKER__
+#define __FACE_TRACKER__
+
 //#include <opencv2/tracking.hpp>
 //#include "tracker.hpp" // use optimised tracker instead of OpenCV version of KCF tracker
 #include "staple_tracker.hpp" // staple trakcer
@@ -42,3 +45,5 @@ private:
     face_tracker & operator=(const face_tracker &);
     
 };
+
+#endif

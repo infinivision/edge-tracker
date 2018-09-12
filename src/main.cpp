@@ -11,6 +11,9 @@
 #include "face_attr.h"
 #include "face_predict.h"
 #include "face_pose_estimate.h"
+#include "face_embed.h"
+#include "face_age.h"
+#include "vector_search.h"
 #include <glog/logging.h>
 #include <thread>
 
@@ -18,13 +21,6 @@
 
 using namespace std;
 using namespace cv;
-
-#ifdef BENCH_EDGE
-long  sum_t_infer_embed  = 0;
-long  infer_count_embed  = 0;
-long  sum_t_infer_age  = 0;
-long  infer_count_age  = 0;
-#endif
 
 /*
  * Decide whether the detected face is same as the tracking one
@@ -76,69 +72,7 @@ void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
     }    
 }
 
-int proc_age(vector<mx_float> face_vec, face_tracker & target) {
-    if(target.infer_age_count < n_age_sample) {
-        int age=0;
-        if(age_enable){
-            std::vector<float> age_vec;
-            #ifdef BENCH_EDGE
-            struct timeval  tv_age;
-            gettimeofday(&tv_age,NULL);
-            long t_ms1_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;
-            #endif
-            Infer(age_hd,face_vec, age_vec);
-            for(size_t j = 2; j<age_vec.size()-1; j+=2){
-                if(age_vec[j]<age_vec[j+1])
-                    age++;
-            }
-            LOG(INFO) << "target infer age: " << age;
-            #ifdef BENCH_EDGE
-            gettimeofday(&tv_age,NULL);
-            long t_ms2_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;
-            infer_count_age++;
-            if(infer_count_age>1){
-                sum_t_infer_age += t_ms2_age-t_ms1_age;
-                LOG(INFO) << "face infer age performance: [" << (sum_t_infer_age/1000.0 ) / (infer_count_age-1) << "] mili second latency per time";
-            }
-            #endif
-        } else 
-            age = 20;
-        target.infer_age_count++;
-        target.age_sum += age;
-    }
-    return target.age_sum / target.infer_age_count;
-}
-
-
-int proc_embeding(vector<mx_float> face_vec, face_tracker & target, 
-                 const CameraConfig & camera, int frameCounter, int thisFace) {
-
-    vector<float> face_embed_vec;
-
-    #ifdef BENCH_EDGE
-    struct timeval  tv;
-    gettimeofday(&tv,NULL);
-    long t_ms1 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
-    #endif
-
-    Infer(embd_hd,face_vec,face_embed_vec);
-
-    #ifdef BENCH_EDGE
-    gettimeofday(&tv,NULL);
-    long t_ms2 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
-    infer_count_embed++;
-    if(infer_count_embed>1){
-        sum_t_infer_embed += t_ms2-t_ms1;
-        LOG(INFO) << "face infer embeding performance: [" << (sum_t_infer_embed/1000.0 ) / (infer_count_embed-1) << "] mili second latency per time";
-    }
-    #endif
-
-    int new_id = proc_embd_vec(face_embed_vec, camera, frameCounter, thisFace);
-    target.reid = new_id;
-    return new_id;
-}
-
-void process_camera(const string model_path, const CameraConfig &camera, string output_folder, const String video_file) {
+void process_camera(const string model_path, const CameraConfig &camera, string output_folder, const String video_file, bool main_thread) {
 
     cout << "processing camera: " << camera.identity() << endl;
 
@@ -196,7 +130,8 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
         }
 
         #ifdef VISUAL
-        Mat show_frame = frame.clone();
+        Mat show_frame;
+        if(main_thread) show_frame = frame.clone();
         #endif
 
         // update tracker_vec
@@ -207,11 +142,14 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
             // need to detect duplicated tracking face
 
             #ifdef VISUAL
-            Rect2d t_box = tracker_vec[i].box;
-            rectangle( show_frame, t_box, Scalar( 255, 0, 0 ), 2, 1 );
-            Point middleHighPoint = Point(t_box.x+t_box.width/2, t_box.y);
-            putText(show_frame, to_string(tracker_vec[i].faceId), middleHighPoint, FONT_HERSHEY_SIMPLEX, 
-                                                                    1, Scalar(255, 255, 255), 2);
+            if(main_thread){
+                Rect2d t_box = tracker_vec[i].box;
+                rectangle( show_frame, t_box, Scalar( 255, 0, 0 ), 2, 1 );
+                Point middleHighPoint = Point(t_box.x+t_box.width/2, t_box.y);
+                putText(show_frame, to_string(tracker_vec[i].faceId), middleHighPoint, FONT_HERSHEY_SIMPLEX, 
+                                                                        1, Scalar(255, 255, 255), 2);
+            }
+
             #endif
         }
         
@@ -330,7 +268,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                     #endif
                     #ifdef VISUAL
                     // draw detected face
-                    {
+                    if(main_thread){
                         rectangle( show_frame, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
                         Point middleHighPoint = Point(detected_face.x+detected_face.width/2, detected_face.y);
                         putText(show_frame, to_string(thisFace), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
@@ -388,15 +326,17 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
         frameCounter++;
         #ifdef VISUAL
-        Mat small_show_frame;
-        if(show_frame.cols>1500)
-            resize(show_frame,small_show_frame,frame.size()/2);
-        else
-            small_show_frame = show_frame;
-        
-        // LOG(INFO) << "camera ip: "<< camera.ip;
-        imshow("window" + camera.ip , small_show_frame);
-        if(QUIT_KEY == waitKey(1)) break;
+        if(main_thread){
+            Mat small_show_frame;
+            if(show_frame.cols>1500)
+                resize(show_frame,small_show_frame,frame.size()/2);
+            else
+                small_show_frame = show_frame;
+            
+            // LOG(INFO) << "camera ip: "<< camera.ip;
+            imshow("window" + camera.ip , small_show_frame);
+            if(QUIT_KEY == waitKey(1)) break;
+        }
         #endif
         google::FlushLogFiles(google::GLOG_INFO);
 
@@ -449,13 +389,22 @@ int main(int argc, char* argv[]) {
     vector<CameraConfig> cameras = LoadCameraConfig(config_path);
 
     // LOG(INFO) << "detection period: " << camera.detection_period;
-    if(cameras.size()>1) std::cout << "one edge tracker only proccess the first camera conf!\n";
 
-    CameraConfig camera = cameras[0];
+    CameraConfig main_camera = cameras[cameras.size()-1];
+    cameras.pop_back();
 
     read3D_conf(pnp_conf_file);
     LoadMxModelConf(mx_model_conf_file);
+    LoadEmbedConf(mx_model_conf_file);
+    LoadAgeConf(mx_model_conf_file);
+    LoadVecSearchConf(mx_model_conf_file);
 
-    process_camera(model_path,camera,output_folder,video_file);
+    for (CameraConfig camera: cameras) {
+        thread t {process_camera, model_path, camera, output_folder, video_file, false};
+        t.detach();
+
+    }
+
+    process_camera(model_path, main_camera, output_folder, video_file, true);
 
 }

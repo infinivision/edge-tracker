@@ -7,16 +7,7 @@
 // Path for c_predict_api
 #include "mxnet/c_predict_api.h"
 #include "camera.h"
-//#include "vectodb.hpp"
 
-extern int m_channel;
-extern int m_width;
-extern int m_height;
-extern int output_feature;
-extern PredictorHandle embd_hd;
-extern PredictorHandle age_hd;
-extern int n_age_sample;
-extern bool age_enable;
 // Read file to buffer
 class BufferFile {
  public :
@@ -77,7 +68,5 @@ void PrintOutputResult(const std::vector<float>& output);
 void imgFormConvert( const cv::Mat input, std::vector<mx_float> & img_vec);
 
 void LoadMxModelConf(std::string mx_model_conf);
-
-int proc_embd_vec(std::vector<float> &data, const CameraConfig & camera,int frameCount,int faceId);
 
 #endif // _FACE_PREDICT_H_

@@ -69,16 +69,11 @@ link_directories(
   ${PROJECT_SOURCE_DIR}/3rdparty/mxnet/lib
 )
 
-add_executable(main src/main.cpp src/face_tracker.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/camera.cpp src/face_pose_estimate.cpp src/face_predict.cpp)
+add_executable(main src/main.cpp src/face_tracker.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp 
+                    src/camera.cpp src/face_pose_estimate.cpp src/face_predict.cpp 
+                    src/vector_search.cpp src/face_embed.cpp src/face_age.cpp)
 target_link_libraries(main ncnn trackerKCF trackerStaple mxnet ${OpenCV_LIBS} fftw3f  glog)
 set_target_properties(main
-        PROPERTIES 
-        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
-)
-
-add_executable(detInfer src/detect_infer.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/camera.cpp src/face_pose_estimate.cpp src/face_predict.cpp)
-target_link_libraries(detInfer ncnn trackerKCF trackerStaple mxnet ${OpenCV_LIBS} fftw3f  glog)
-set_target_properties(detInfer
         PROPERTIES 
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
 )
