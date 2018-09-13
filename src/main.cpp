@@ -95,9 +95,10 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
     int frameCounter = 0;
     long faceId = 0;
     long thisFace = 0;
+
+    #ifdef BENCH_EDGE
     struct timeval  tv1,tv2,tv3;
-    struct timeval  ts;
-    struct timezone tz1,tz2;
+    #endif
 
     vector<Bbox> detected_bounding_boxes;
     vector<face_tracker> tracker_vec;
@@ -135,13 +136,22 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
         #endif
 
         // update tracker_vec
-        for (size_t i = 0; i< tracker_vec.size(); i++){
+        for (size_t i = 0; i< tracker_vec.size(); i++) {
             tracker_vec[i].update(frame);
+        }
+        // clean up trackers whose tracking box is overlap
+        for (size_t i = 0; i< tracker_vec.size(); i++) {
+            for(size_t j = i+1; j< tracker_vec.size(); j++) {
+                if(overlap(tracker_vec[i].box, tracker_vec[j].box)){
+                    tracker_vec.erase(tracker_vec.begin() + j);
+                    j--;
+                }
+            }
+        }
 
-            // to do
-            // need to detect duplicated tracking face
-
-            #ifdef VISUAL
+        #ifdef VISUAL
+        for (size_t i = 0; i< tracker_vec.size(); i++) {
+            
             if(main_thread){
                 Rect2d t_box = tracker_vec[i].box;
                 rectangle( show_frame, t_box, Scalar( 255, 0, 0 ), 2, 1 );
@@ -149,19 +159,18 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                 putText(show_frame, to_string(tracker_vec[i].faceId), middleHighPoint, FONT_HERSHEY_SIMPLEX, 
                                                                         1, Scalar(255, 255, 255), 2);
             }
-            #endif
         }
-        
+        #endif
         if (frameCounter % camera.detection_period == 0)
         {
             ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
 
             #ifdef BENCH_EDGE
-            gettimeofday(&tv1,&tz1);
+            gettimeofday(&tv1,NULL);
             #endif
             mm.detect(ncnn_img, detected_bounding_boxes);
             #ifdef BENCH_EDGE
-            gettimeofday(&tv2,&tz2);
+            gettimeofday(&tv2,NULL);
             LOG(INFO) << "mtcnn ncnn detected one frame, time eclipsed: " <<  getElapse(&tv1, &tv2) << " ms";
             #endif
 
@@ -234,8 +243,10 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                                 }
                             }
                             if(front_side){
+                                struct timeval  ts;
                                 gettimeofday(&ts,NULL);
                                 long int ts_ms = ts.tv_sec * 1000 + ts.tv_usec / 1000;
+                                LOG(INFO) << "time stamp " << ts_ms;
                                 // to do: push the coordinate reid timestamp info into the time series database
                                 // (world_coordinate, reid, ts_ms)
                             } else 
