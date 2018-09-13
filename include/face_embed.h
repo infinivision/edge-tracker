@@ -7,7 +7,7 @@
 #include <vector>
 
 void LoadEmbedConf(std::string mx_model_conf);
-int proc_embeding(std::vector<mx_float> face_vec, face_tracker & target, 
+int proc_embeding(cv::Mat & face, std::vector<mx_float> & face_vec, face_tracker & target, 
                  const CameraConfig & camera, int frameCounter, int thisFace);
 
 #endif

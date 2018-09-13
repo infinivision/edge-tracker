@@ -37,6 +37,7 @@ int main(int argc, char * argv[]){
 
     CURL *curl;
     CURLcode res;
+    curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
     if(curl) {
         /* First set the URL that is about to receive our POST. This URL can
@@ -48,7 +49,7 @@ int main(int argc, char * argv[]){
         curl_mime * form = curl_mime_init(curl);
         curl_mimepart *field = curl_mime_addpart(form);
         curl_mime_name(field, "data");
-        curl_mime_filename(field, filePath);
+        curl_mime_filename(field, "192.168.jpg");
         curl_mime_data(field, buffer.data(), buffer.size());
         
         curl_easy_setopt(curl, CURLOPT_URL, service_url );
@@ -66,6 +67,8 @@ int main(int argc, char * argv[]){
         long http_response_code;    
         curl_easy_getinfo( curl, CURLINFO_RESPONSE_CODE, &http_response_code);
         std::cout << "http result code: " << http_response_code << std::endl;
+        if(http_response_code!=200)
+            exit(0);
 
         // std::cout << "result body: " << readBuffer ;
         auto json_res = json::parse(readBuffer);

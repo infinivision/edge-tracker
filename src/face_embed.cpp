@@ -3,18 +3,20 @@
 #include "vector_search.h"
 #include "utils.h"
 
-#include <curl/curl.h>
-#include <stdio.h>
-
+#include <glog/logging.h>
 #include "cpptoml.h"
 
-PredictorHandle embd_hd = nullptr;
-std::string embed_infer_mode = "local";
-std::string embed_svc_url = "";
+static PredictorHandle infer_hd = nullptr;
+
+static std::string infer_mode = "local";
+static std::string svc_url = "";
+static CURL *curl = NULL;
+static curl_mime * form;
+static curl_mimepart *field;
 
 #ifdef BENCH_EDGE
-long  sum_t_infer_embed  = 0;
-long  infer_count_embed  = 0;
+static long  sum_t_infer  = 0;
+static long  infer_count  = 0;
 #endif
 
 void LoadEmbedConf(std::string mx_model_conf) {
@@ -34,37 +36,16 @@ void LoadEmbedConf(std::string mx_model_conf) {
 
   try {
     auto g = cpptoml::parse_file(mx_model_conf);
-    embed_infer_mode  = g->get_qualified_as<std::string>("embedding.infer_mode").value_or("local");
-    if(embed_infer_mode=="local"){
+    infer_mode  = g->get_qualified_as<std::string>("embedding.infer_mode").value_or("local");
+    if(infer_mode=="local"){
         std::string json_file  = g->get_qualified_as<std::string>("embedding.json").value_or("");
         std::string param_file = g->get_qualified_as<std::string>("embedding.param").value_or("");
-        LoadMXNetModel(&embd_hd, json_file, param_file, input_shape);
+        LoadMXNetModel(&infer_hd, json_file, param_file, input_shape);
         std::cout << "embedding model has been loaded!\n";
-    } else if (embed_infer_mode=="service") {
-        embed_svc_url = g->get_qualified_as<std::string>("embedding.url").value_or("");
-        std::cout << "embedding service url: " << embed_svc_url <<"\n";
-        CURL *curl;
-        CURLcode res;
-        curl = curl_easy_init();
-        if(curl) {
-            /* First set the URL that is about to receive our POST. This URL can
-            just as well be a https:// URL if that is what should receive the
-            data. */ 
-            curl_easy_setopt(curl, CURLOPT_URL, "http://postit.example.com/moo.cgi");
-            /* Now specify the POST data */ 
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "name=daniel&project=curl");
-        
-            /* Perform the request, res will get the return code */ 
-            res = curl_easy_perform(curl);
-            /* Check for errors */ 
-            if(res != CURLE_OK)
-            fprintf(stderr, "curl_easy_perform() failed: %s\n",
-                    curl_easy_strerror(res));
-        
-            /* always cleanup */ 
-            curl_easy_cleanup(curl);
-        }
-        curl_global_cleanup();        
+    } else if (infer_mode=="service") {
+        svc_url = g->get_qualified_as<std::string>("embedding.url").value_or("");
+        std::cout << "embedding service url: " << svc_url <<"\n";
+        curl_global_init(CURL_GLOBAL_ALL);
     }
   }
   catch (const cpptoml::parse_exception& e) {
@@ -74,32 +55,102 @@ void LoadEmbedConf(std::string mx_model_conf) {
 
 }
 
-int proc_embeding(std::vector<mx_float> face_vec, face_tracker & target, 
+bool infer_svc_embed(cv::Mat & face, std::vector<float> & embed_vec, std::string & remote_file) ;
+
+int proc_embeding(cv::Mat & face, std::vector<mx_float> & face_vec, face_tracker & target, 
                  const CameraConfig & camera, int frameCounter, int thisFace) {
 
     std::vector<float> face_embed_vec;
-
+    std::string remote_file = camera.ip + "_" + to_string(frameCounter) + "_" + to_string(thisFace) + ".jpg";
     #ifdef BENCH_EDGE
     struct timeval  tv;
     gettimeofday(&tv,NULL);
     long t_ms1 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
     #endif
 
-    Infer(embd_hd,face_vec,face_embed_vec);
+    bool infer_success = true;
 
+    if(infer_mode == "local")
+        Infer(infer_hd,face_vec,face_embed_vec);
+    else if (infer_mode == "service") {
+        infer_success = infer_svc_embed(face, face_embed_vec, remote_file);
+    }
     #ifdef BENCH_EDGE
-    gettimeofday(&tv,NULL);
-    long t_ms2 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
-    infer_count_embed++;
-    if(infer_count_embed>1){
-        sum_t_infer_embed += t_ms2-t_ms1;
-        LOG(INFO) << "face infer embeding performance: [" << (sum_t_infer_embed/1000.0 ) / (infer_count_embed-1) << "] mili second latency per time";
+    if(infer_success){
+        gettimeofday(&tv,NULL);
+        long t_ms2 = tv.tv_sec * 1000 * 1000 + tv.tv_usec;
+        infer_count++;
+        if(infer_count>1){
+            sum_t_infer += t_ms2-t_ms1;
+            LOG(INFO) << "face infer embeding performance: [" << (sum_t_infer/1000.0 ) / (infer_count-1) << "] mili second latency per time";
+        }
     }
     #endif
-
-    int new_id = proc_embd_vec(face_embed_vec, camera, frameCounter, thisFace);
-    target.reid = new_id;
-    return new_id;
+    if(infer_success) {
+        target.reid = proc_embd_vec(face_embed_vec, camera, frameCounter, thisFace);
+        return target.reid;
+    } else 
+        return -1;
 }
 
 
+bool infer_svc_embed(cv::Mat & face, std::vector<float> & embed_vec, std::string & remote_file) {
+
+    std::vector<uchar> buff;//buffer for coding
+    std::vector<int> param(2);
+    param[0] = cv::IMWRITE_JPEG_QUALITY;
+    param[1] = 100;//default(95) 0-100
+    cv::imencode(".jpg", face, buff);
+
+    curl = curl_easy_init();
+    CURLcode res;
+    if(curl) {
+        std::string readBuffer;
+        curl_mime * form = curl_mime_init(curl);
+        curl_mimepart *field = curl_mime_addpart(form);
+        curl_mime_name(field, "data");
+        curl_mime_filename(field, remote_file.c_str());
+        curl_mime_data(field, (char *) &buff[0], buff.size());
+
+        curl_easy_setopt(curl, CURLOPT_URL, svc_url.c_str());
+        curl_easy_setopt(curl, CURLOPT_MIMEPOST, form);
+
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+        /* Perform the request, res will get the return code */ 
+        res = curl_easy_perform(curl);
+        /* Check for errors */ 
+        if(res != CURLE_OK){
+            LOG(INFO) << "access embeding service failed, curl error code: " << res;
+            curl_easy_cleanup(curl);
+            curl_mime_free(form);            
+            return false;
+        }
+
+        long http_response_code;
+        curl_easy_getinfo( curl, CURLINFO_RESPONSE_CODE, &http_response_code);
+        if(http_response_code!=200){
+            LOG(INFO) << "access embeding service failed, http result code: " << http_response_code;
+            curl_easy_cleanup(curl);
+            curl_mime_free(form);            
+            return false;
+        }
+        auto json_res = json::parse(readBuffer);
+        auto feature_json_array = json_res["prediction"];
+        
+        embed_vec.resize(feature_json_array.size());
+        for(size_t i = 0; i<embed_vec.size();i++ ){
+            embed_vec[i] = feature_json_array[i];
+        }
+
+        curl_easy_cleanup(curl);
+        curl_mime_free(form);
+        return true;
+
+    } else {
+        LOG(INFO) << "access embeding service failed, curl init failed";
+        curl_easy_cleanup(curl);
+        curl_mime_free(form);        
+        return false;        
+    }
+}

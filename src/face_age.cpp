@@ -4,13 +4,13 @@
 
 #include "cpptoml.h"
 
-PredictorHandle age_hd = nullptr;
+static PredictorHandle infer_hd = nullptr;
 int  n_age_sample = 2;
 bool age_enable = true;
 
 #ifdef BENCH_EDGE
-long  sum_t_infer_age  = 0;
-long  infer_count_age  = 0;
+static long  sum_t_infer  = 0;
+static long  infer_count  = 0;
 #endif
 
 void LoadAgeConf(std::string mx_model_conf) {
@@ -34,7 +34,7 @@ void LoadAgeConf(std::string mx_model_conf) {
       std::string param_file = g->get_qualified_as<std::string>("age.param").value_or("");
       n_age_sample = g->get_qualified_as<int>("age.n_age_sample").value_or(2);
       age_enable = g->get_qualified_as<bool>("age.enable").value_or(true);
-      LoadMXNetModel(&age_hd, json_file, param_file, input_shape);
+      LoadMXNetModel(&infer_hd, json_file, param_file, input_shape);
       std::cout << "age model has been loaded!\n";
   }
   catch (const cpptoml::parse_exception& e) {
@@ -54,7 +54,7 @@ int proc_age(vector<mx_float> face_vec, face_tracker & target) {
             gettimeofday(&tv_age,NULL);
             long t_ms1_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;
             #endif
-            Infer(age_hd,face_vec, age_vec);
+            Infer(infer_hd,face_vec, age_vec);
             for(size_t j = 2; j<age_vec.size()-1; j+=2){
                 if(age_vec[j]<age_vec[j+1])
                     age++;
@@ -63,10 +63,10 @@ int proc_age(vector<mx_float> face_vec, face_tracker & target) {
             #ifdef BENCH_EDGE
             gettimeofday(&tv_age,NULL);
             long t_ms2_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;
-            infer_count_age++;
-            if(infer_count_age>1){
-                sum_t_infer_age += t_ms2_age-t_ms1_age;
-                LOG(INFO) << "face infer age performance: [" << (sum_t_infer_age/1000.0 ) / (infer_count_age-1) << "] mili second latency per time";
+            infer_count++;
+            if(infer_count>1){
+                sum_t_infer += t_ms2_age-t_ms1_age;
+                LOG(INFO) << "face infer age performance: [" << (sum_t_infer/1000.0 ) / (infer_count-1) << "] mili second latency per time";
             }
             #endif
         } else 
