@@ -6,6 +6,10 @@
 #include <iostream>
 #include <vector>
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 size_t WriteCallback(char *contents, size_t size, size_t nmemb, void *userp)
 {
     ((std::string*)userp)->append((char*)contents, size * nmemb);
@@ -44,8 +48,8 @@ int main(int argc, char * argv[]){
         curl_mime * form = curl_mime_init(curl);
         curl_mimepart *field = curl_mime_addpart(form);
         curl_mime_name(field, "data");
-        // curl_mime_data(field, buffer.data(), buffer.size());
-        curl_mime_filedata(field, filePath);
+        curl_mime_filename(field, filePath);
+        curl_mime_data(field, buffer.data(), buffer.size());
         
         curl_easy_setopt(curl, CURLOPT_URL, service_url );
         curl_easy_setopt(curl, CURLOPT_MIMEPOST, form);
@@ -63,7 +67,22 @@ int main(int argc, char * argv[]){
         curl_easy_getinfo( curl, CURLINFO_RESPONSE_CODE, &http_response_code);
         std::cout << "http result code: " << http_response_code << std::endl;
 
-        std::cout << "result body: " << readBuffer ;
+        // std::cout << "result body: " << readBuffer ;
+        auto json_res = json::parse(readBuffer);
+        if(service_type==1) {
+            
+            auto feature_json_array = json_res["prediction"];
+            
+            std::vector<float> feature_vec(feature_json_array.size());
+            for(size_t i = 0; i<feature_vec.size();i++ ){
+                feature_vec[i] = feature_json_array[i];
+                std::cout << feature_vec[i] <<  std::endl;
+            }
+        } else if(service_type==2) {
+            int age    = json_res["prediction"]["age"];
+            int gender = json_res["prediction"]["gender"];
+            std::cout << "infer result: age: "<< age << " gender: " << gender << std::endl;
+        }
 
         /* always cleanup */ 
         curl_easy_cleanup(curl);
