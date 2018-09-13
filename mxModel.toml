@@ -2,14 +2,14 @@
     json  = "/Users/load/code/python/model/model-y1-test2/model-symbol.json"
     param = "/Users/load/code/python/model/model-y1-test2/model-0000.params"
     infer_mode = "service"
-    url = ""
+    url = "http://172.19.0.15:81/r100/predict"
 [age]
     json  = "/Users/load/code/python/model/gamodel-r50/model-symbol.json"
     param = "/Users/load/code/python/model/gamodel-r50/model-0000.params"
     infer_mode = "service"
-    url = ""
+    url = "http://172.19.0.15:81/ga/predict" 
     n_age_sample = 2
-    enable = true
+    enable = true   
 [shape]
     width   = 112
     height  = 112

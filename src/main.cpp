@@ -149,7 +149,6 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                 putText(show_frame, to_string(tracker_vec[i].faceId), middleHighPoint, FONT_HERSHEY_SIMPLEX, 
                                                                         1, Scalar(255, 255, 255), 2);
             }
-
             #endif
         }
         
@@ -209,7 +208,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                     if(score>min_score) {
                         vector<mx_float> face_vec;
                         imgFormConvert(face,face_vec);
-                        int infer_age = proc_age(face_vec, tracker_vec[index]);
+                        int infer_age = proc_age(face, face_vec, tracker_vec[index]);
                         cv::Mat world_coordinate;
                         if (infer_age >= child_age_min) {
                             // prepare image points for pnp
@@ -242,7 +241,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                             } else 
                                 LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
                                         << "], pose is skew, don't make face embedding";
-                        } else 
+                        } else if(infer_age != -1)
                                 LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
                                         << "], can't compute coordinate for child age less than " << child_age_min;
                     } else 

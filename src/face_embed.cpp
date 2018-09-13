@@ -89,11 +89,13 @@ int proc_embeding(cv::Mat & face, std::vector<mx_float> & face_vec, face_tracker
     if(infer_success) {
         target.reid = proc_embd_vec(face_embed_vec, camera, frameCounter, thisFace);
         return target.reid;
-    } else 
+    } else{
+        LOG(WARNING) << "face infer embeding svc failed!";
         return -1;
+    }
 }
 
-
+// to do use cv::mat format do infer
 bool infer_svc_embed(cv::Mat & face, std::vector<float> & embed_vec, std::string & remote_file) {
 
     std::vector<uchar> buff;//buffer for coding
@@ -114,14 +116,15 @@ bool infer_svc_embed(cv::Mat & face, std::vector<float> & embed_vec, std::string
 
         curl_easy_setopt(curl, CURLOPT_URL, svc_url.c_str());
         curl_easy_setopt(curl, CURLOPT_MIMEPOST, form);
-
+        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 1L);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+        // to do: set a small threshold for out of time
         /* Perform the request, res will get the return code */ 
         res = curl_easy_perform(curl);
         /* Check for errors */ 
         if(res != CURLE_OK){
-            LOG(INFO) << "access embeding service failed, curl error code: " << res;
+            LOG(WARNING) << "access embeding service failed, curl error code: " << res;
             curl_easy_cleanup(curl);
             curl_mime_free(form);            
             return false;
@@ -130,7 +133,7 @@ bool infer_svc_embed(cv::Mat & face, std::vector<float> & embed_vec, std::string
         long http_response_code;
         curl_easy_getinfo( curl, CURLINFO_RESPONSE_CODE, &http_response_code);
         if(http_response_code!=200){
-            LOG(INFO) << "access embeding service failed, http result code: " << http_response_code;
+            LOG(WARNING) << "access embeding service failed, http result code: " << http_response_code;
             curl_easy_cleanup(curl);
             curl_mime_free(form);            
             return false;
@@ -148,7 +151,7 @@ bool infer_svc_embed(cv::Mat & face, std::vector<float> & embed_vec, std::string
         return true;
 
     } else {
-        LOG(INFO) << "access embeding service failed, curl init failed";
+        LOG(WARNING) << "access embeding service failed, curl init failed";
         curl_easy_cleanup(curl);
         curl_mime_free(form);        
         return false;        

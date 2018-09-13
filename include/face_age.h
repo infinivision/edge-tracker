@@ -7,6 +7,6 @@
 #include <vector>
 
 void LoadAgeConf(std::string mx_model_conf);
-int  proc_age(vector<mx_float> face_vec, face_tracker & target);
+int  proc_age(cv::Mat & face, vector<mx_float> & face_vec, face_tracker & target);
 
 #endif
