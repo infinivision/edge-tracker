@@ -84,6 +84,13 @@ set_target_properties(main
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
 )
 
+add_executable(test_infer_service src/test_infer_service.cpp)
+target_link_libraries(test_infer_service curl idn2 psl ssl crypto z)
+set_target_properties(test_infer_service 
+        PROPERTIES 
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+)
+
 add_executable(export src/export.cpp)
 target_link_libraries(export fftw3f)
 set_target_properties(export 
