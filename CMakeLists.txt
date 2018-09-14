@@ -43,6 +43,11 @@ message(STATUS "ncnn link path: ${NCNN_PATH}/lib")
 include_directories(${NCNN_PATH}/include)
 link_directories(${NCNN_PATH}/lib)
 
+message(STATUS "clickhouse include path: ${CLICKHOUSE_PATH}")
+message(STATUS "clickhouse link path: ${CLICKHOUSE_PATH}/build/clickhouse")
+include_directories(${CLICKHOUSE_PATH})
+link_directories(${CLICKHOUSE_PATH}/build/clickhouse)
+
 find_package( OpenCV REQUIRED )
 
 if (NOT OpenCV_FOUND)
@@ -87,6 +92,13 @@ set_target_properties(main
 add_executable(test_infer_service src/test_infer_service.cpp)
 target_link_libraries(test_infer_service curl idn2 psl ssl crypto z)
 set_target_properties(test_infer_service 
+        PROPERTIES 
+        RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+)
+
+add_executable(test_click_house src/test_click_house.cpp)
+target_link_libraries(test_click_house clickhouse-cpp-lib cityhash-lib lz4-lib)
+set_target_properties(test_click_house 
         PROPERTIES 
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
 )

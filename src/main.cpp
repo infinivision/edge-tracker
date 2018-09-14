@@ -92,7 +92,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
         return;
     }
 
-    int frameCounter = 0;
+    long frameCounter = 0;
     long faceId = 0;
     long thisFace = 0;
 
