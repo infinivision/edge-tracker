@@ -80,9 +80,10 @@ link_directories(
 
 add_executable(main src/main.cpp src/face_tracker.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp 
                     src/camera.cpp src/face_pose_estimate.cpp src/face_predict.cpp 
-                    src/vector_search.cpp src/face_embed.cpp src/face_age.cpp )
+                    src/vector_search.cpp src/face_embed.cpp src/face_age.cpp src/face_sample.cpp)
 target_link_libraries(main ncnn trackerKCF trackerStaple mxnet ${OpenCV_LIBS} 
-                           fftw3f  glog  curl idn2 psl ssl crypto z )
+                           fftw3f  glog  curl idn2 psl ssl crypto z 
+                           clickhouse-cpp-lib cityhash-lib lz4-lib)
 
 set_target_properties(main
         PROPERTIES 

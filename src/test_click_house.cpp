@@ -28,14 +28,11 @@ int main(){
         client.Insert("tracker.sample123", block);
 
         std::cout << "insert one row into table tracker.sample\n";
+    } 
+    catch (clickhouse::ServerException & exception) {
+        std::cout << "click house access exception " << exception.what() << std::endl;
     }
-        
-        catch (clickhouse::ServerException & exception) {
-            std::cout << "click house access exception " << exception.what() << std::endl;
-        }
-
-        catch(std::system_error & exception){
-            std::cout << "click house access exception, system error: " << exception.what() << std::endl;
-        }
-
+    catch(std::system_error & exception){
+        std::cout << "click house access exception, system error: " << exception.what() << std::endl;
+    }
 }

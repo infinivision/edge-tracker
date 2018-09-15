@@ -14,6 +14,7 @@
 #include "face_embed.h"
 #include "face_age.h"
 #include "vector_search.h"
+#include "face_sample.h"
 #include <glog/logging.h>
 #include <thread>
 
@@ -72,7 +73,8 @@ void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
     }    
 }
 
-void process_camera(const string model_path, const CameraConfig &camera, string output_folder, const String video_file, bool main_thread) {
+void process_camera(const string model_path, const CameraConfig &camera, string output_folder, \
+                    const String video_file, const std::string click_house_server, bool main_thread) {
 
     cout << "processing camera: " << camera.identity() << endl;
 
@@ -91,6 +93,8 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
         cerr << "failed to open camera" << endl;
         return;
     }
+
+    dbHandle db(click_house_server, camera.identity());
 
     long frameCounter = 0;
     long faceId = 0;
@@ -229,9 +233,10 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
                             bool front_side = compute_coordinate(frame, image_points, camera, world_coordinate, 
                                                                 infer_age, frameCounter, thisFace);
+                            int new_id=-1;
                             if(front_side) {
-                                if(newFace || !newFace && (tracker_vec[index].reid == -1) ) {
-                                    int new_id = proc_embeding(face ,face_vec, tracker_vec[index], camera, frameCounter, thisFace);
+                                if(newFace || (!newFace && (tracker_vec[index].reid == -1)) ) {
+                                    new_id = proc_embeding(face ,face_vec, tracker_vec[index], camera, frameCounter, thisFace);
                                     #ifdef SAVE_IMG
                                     if(new_id!=-1){
                                         string cmd = "mkdir -p " + output_folder + "/" + to_string(new_id);
@@ -241,17 +246,10 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
                                     }
                                     #endif
                                 }
-                            }
-                            if(front_side){
-                                struct timeval  ts;
-                                gettimeofday(&ts,NULL);
-                                long int ts_ms = ts.tv_sec * 1000 + ts.tv_usec / 1000;
-                                LOG(INFO) << "time stamp " << ts_ms;
-                                // to do: push the coordinate reid timestamp info into the time series database
-                                // (world_coordinate, reid, ts_ms)
                             } else 
                                 LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
                                         << "], pose is skew, don't make face embedding";
+                            db.insert(frameCounter, thisFace, index, front_side, score, infer_age, new_id, world_coordinate);
                         } else if(infer_age != -1)
                                 LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
                                         << "], can't compute coordinate for child age less than " << child_age_min;
@@ -369,6 +367,7 @@ int main(int argc, char* argv[]) {
         "{staple-config      |staple.toml              | tracker staple config }"
         "{pnp-config         |3dpnp.toml               | pnp config }"
         "{mx-model-config    |mxModel.toml             | mxnet model config }"
+        "{clickhouse-server  |127.0.0.1                | click house db server ip }"        
         "{output             |output                   | output folder    }"
         "{video-file         |none                     | use video file instead of camera stream }"
     ;
@@ -391,8 +390,10 @@ int main(int argc, char* argv[]) {
     String model_path = parser.get<String>("mtcnn-model");
     String pnp_conf_file = parser.get<String>("pnp-config");
     String mx_model_conf_file = parser.get<String>("mx-model-config");
+    String click_house_server = parser.get<String>("clickhouse-server");
     String output_folder = parser.get<String>("output");
     String video_file = parser.get<String>("video-file");
+
     if (!parser.check()) {
         parser.printErrors();
         return 0;
@@ -412,11 +413,11 @@ int main(int argc, char* argv[]) {
     LoadVecSearchConf(mx_model_conf_file);
 
     for (CameraConfig camera: cameras) {
-        thread t {process_camera, model_path, camera, output_folder, video_file, false};
+        thread t {process_camera, model_path, camera, output_folder, video_file, click_house_server, false};
         t.detach();
 
     }
 
-    process_camera(model_path, main_camera, output_folder, video_file, true);
+    process_camera(model_path, main_camera, output_folder, video_file, click_house_server, true);
 
 }
