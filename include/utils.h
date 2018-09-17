@@ -6,13 +6,10 @@
 #include <opencv2/opencv.hpp>
 #include <sys/time.h>
 #include <string>
+#include "time_utils.h"
 #include <vector>
 
 using namespace std;
-
-std::string get_current_time();
-
-float getElapse(struct timeval *tv1,struct timeval *tv2);
 
 int trave_dir(std::string& path, std::vector<std::string>& file_list);
 

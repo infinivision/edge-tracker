@@ -17,7 +17,6 @@ else()
 ENDIF()
 
 set(CMAKE_CXX_STANDARD 11)
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 find_package(OpenMP)
 if(OpenMP_CXX_FOUND OR OPENMP_FOUND)
@@ -77,7 +76,7 @@ link_directories(
 #  ${PROJECT_SOURCE_DIR}/lib/ncnn
 )
 
-add_executable(main src/main.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp src/image_quality.cpp)
+add_executable(main src/main.cpp src/utils/utils.cpp src/utils/time_utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp src/image_quality.cpp)
 target_link_libraries(main ncnn trackerKCF ${OpenCV_LIBS} fftw3f ${DLIB_LIBRARIES} glog)
 set_target_properties(main
         PROPERTIES 
@@ -89,30 +88,37 @@ target_link_libraries(export fftw3f)
 set_target_properties(export PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 
 if (EDGE_BUILD_TESTS)
-    add_executable(test-face-align tests/test_face_align.cpp src/utils.cpp src/mtcnn.cpp src/face_align.cpp src/camera.cpp)
+    add_executable(test-face-align tests/test_face_align.cpp src/utils/time_utils.cpp src/utils/utils.cpp src/mtcnn.cpp src/face_align.cpp src/camera.cpp)
     target_link_libraries(test-face-align ncnn ${OpenCV_LIBS} ${DLIB_LIBRARIES} glog)
     set_target_properties(test-face-align
             PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
     )
 
-    add_executable(test-face-quality tests/test_face_quality.cpp src/utils.cpp src/face_attr.cpp src/image_quality.cpp src/face_align.cpp src/camera.cpp)
+    add_executable(test-face-quality tests/test_face_quality.cpp src/utils/time_utils.cpp src/utils/utils.cpp src/face_attr.cpp src/image_quality.cpp src/face_align.cpp src/camera.cpp)
     target_link_libraries(test-face-quality ${OpenCV_LIBS} ${DLIB_LIBRARIES} glog)
     set_target_properties(test-face-quality
             PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
     )
 
-    add_executable(test_video tests/test_video.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp)
+    add_executable(test_video tests/test_video.cpp src/utils/time_utils.cpp src/utils/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp)
     target_link_libraries(test_video ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f ${DLIB_LIBRARIES} glog)
     set_target_properties(test_video
             PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
     )
 
-    add_executable(read-camera tests/read_camera.cpp src/utils.cpp src/face_align.cpp src/camera.cpp)
+    add_executable(read-camera tests/read_camera.cpp src/utils/time_utils.cpp src/utils/utils.cpp src/face_align.cpp src/camera.cpp)
     target_link_libraries(read-camera ${OpenCV_LIBS} ${DLIB_LIBRARIES} glog)
     set_target_properties(read-camera
+            PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
+    )
+
+    add_executable(test-get-time tests/test_get_time.cpp src/utils/time_utils.cpp)
+    target_link_libraries(test-get-time)
+    set_target_properties(test-get-time
             PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
     )

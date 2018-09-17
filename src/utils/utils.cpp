@@ -13,35 +13,6 @@ using namespace std;
 
 FaceAlign faceAlign = FaceAlign();
 
-float getElapse(struct timeval *tv1,struct timeval *tv2)
-{
-    float t = 0.0f;
-    if (tv1->tv_sec == tv2->tv_sec)
-        t = (tv2->tv_usec - tv1->tv_usec)/1000.0f;
-    else
-        t = ((tv2->tv_sec - tv1->tv_sec) * 1000 * 1000 + tv2->tv_usec - tv1->tv_usec)/1000.0f;
-    return t;
-}
-
-std::string get_current_time() {
-    char buffer[26];
-    char full[30];
-    int millisec;
-    struct tm* tm_info;
-    struct timeval tv;
-
-    gettimeofday(&tv, NULL);
-
-    millisec = tv.tv_usec % 1000;
-    tm_info = localtime(&tv.tv_sec);
-
-    strftime(buffer, 26, "%Y-%m-%d.%H-%M-%S", tm_info);
-    sprintf(full, "%s.%03d", buffer, millisec);
-    std::string output = full;
-
-    return output;
-}
-
 int trave_dir(std::string& path, std::vector<std::string>& file_list)
 {
     DIR *d; //声明一个句柄
