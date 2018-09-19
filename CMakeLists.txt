@@ -81,9 +81,16 @@ link_directories(
 add_executable(main src/main.cpp src/face_tracker.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp 
                     src/camera.cpp src/face_pose_estimate.cpp src/face_predict.cpp 
                     src/vector_search.cpp src/face_embed.cpp src/face_age.cpp src/face_sample.cpp)
-target_link_libraries(main ncnn trackerKCF trackerStaple mxnet ${OpenCV_LIBS} 
+
+if(APPLE) 
+        target_link_libraries(main ncnn trackerKCF trackerStaple mxnet ${OpenCV_LIBS} 
                            fftw3f  glog  curl idn2 psl ssl crypto z 
                            clickhouse-cpp-lib cityhash-lib lz4-lib)
+else ()
+        target_link_libraries(main ncnn trackerKCF trackerStaple mxnet ${OpenCV_LIBS} 
+                           fftw3f  glog  curl z 
+                           clickhouse-cpp-lib cityhash-lib lz4-lib)
+endif()
 
 set_target_properties(main
         PROPERTIES 
@@ -91,7 +98,12 @@ set_target_properties(main
 )
 
 add_executable(test_infer_service src/test_infer_service.cpp)
-target_link_libraries(test_infer_service curl idn2 psl ssl crypto z)
+if (APPLE) 
+        target_link_libraries(test_infer_service curl idn2 psl ssl crypto z)
+else ()
+        target_link_libraries(test_infer_service curl z)
+endif()
+
 set_target_properties(test_infer_service 
         PROPERTIES 
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
