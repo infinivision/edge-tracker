@@ -18,8 +18,10 @@ size_t WriteCallback(char *contents, size_t size, size_t nmemb, void *userp)
 
 int main(int argc, char * argv[]){
 
-    if(argc!=4)
+    if(argc!=4){
         std::cout << "input format error! Usage: test_infer_service [service type] [service url] [data input_file]\n";
+        exit(0);
+    }
 
     int service_type = atoi(argv[1]);
     char * service_url = argv[2];

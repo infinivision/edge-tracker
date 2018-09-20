@@ -10,7 +10,7 @@ using namespace clickhouse;
 int main(){
 
     try{
-        Client client(ClientOptions().SetHost("172.19.0.101"));
+        Client client(ClientOptions().SetHost("172.19.0.105"));
 
         std::cout << "init client for click house server: 172.19.0.105\n" ;
 
@@ -25,7 +25,7 @@ int main(){
         block.AppendColumn("sample_date" , sample_date);
         block.AppendColumn("time_stamp", time_stamp);
 
-        client.Insert("tracker.sample123", block);
+        client.Insert("tracker.sample", block);
 
         std::cout << "insert one row into table tracker.sample\n";
     } 
