@@ -10,9 +10,6 @@ static PredictorHandle infer_hd = nullptr;
 
 static std::string infer_mode = "local";
 static std::string svc_url = "";
-static CURL *curl = NULL;
-static curl_mime * form;
-static curl_mimepart *field;
 
 int  n_age_sample = 2;
 bool age_enable = true;
@@ -113,6 +110,10 @@ int infer_svc_age(cv::Mat & face, std::string & remote_file) {
     param[1] = 100;//default(95) 0-100
     cv::imencode(".jpg", face, buff);
 
+    CURL *curl = NULL;
+    curl_mime * form;
+    curl_mimepart *field;
+    
     curl = curl_easy_init();
     CURLcode res;
     if(curl) {

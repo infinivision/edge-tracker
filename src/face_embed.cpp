@@ -10,9 +10,6 @@ static PredictorHandle infer_hd = nullptr;
 
 static std::string infer_mode = "local";
 static std::string svc_url = "";
-static CURL *curl = NULL;
-static curl_mime * form;
-static curl_mimepart *field;
 
 #ifdef BENCH_EDGE
 static long  sum_t_infer  = 0;
@@ -104,6 +101,9 @@ bool infer_svc_embed(cv::Mat & face, std::vector<float> & embed_vec, std::string
     param[1] = 100;//default(95) 0-100
     cv::imencode(".jpg", face, buff);
 
+    CURL *curl = NULL;
+    curl_mime * form;
+    curl_mimepart *field;
     curl = curl_easy_init();
     CURLcode res;
     if(curl) {
