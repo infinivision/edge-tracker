@@ -26,7 +26,7 @@ void process_camera(const string &model_path, const CameraConfig &camera, string
     VideoCapture cap = camera.GetCapture();
     if (!cap.isOpened()) {
         LOG(ERROR) << "failed to open camera: " << camera.identity();
-        return;
+        exit(1);
     }
 
     int frameCounter = 0;
