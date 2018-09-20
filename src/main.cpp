@@ -238,7 +238,8 @@ int main(int argc, char* argv[]) {
     fa.Load();
     vector<CameraConfig> cameras = LoadCameraConfig(config_path);
 
-    // LOG(INFO) << "detection period: " << camera.detection_period;
+    CameraConfig main_camera = cameras[cameras.size()-1];
+    cameras.pop_back();
 
     for (CameraConfig camera: cameras) {
         // start processing video
@@ -246,8 +247,5 @@ int main(int argc, char* argv[]) {
         t.detach();
     }
 
-    while(true) {
-        std::this_thread::sleep_for(chrono::minutes(5));
-    }
-
+    process_camera(model_path, main_camera, output_folder, fa);
 }
