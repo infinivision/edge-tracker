@@ -76,6 +76,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/staple/staple)
 link_directories(
   ${OpenCV_Install}/lib
   ${PROJECT_SOURCE_DIR}/3rdparty/mxnet/lib
+  /usr/local/lib
 )
 
 add_executable(main src/main.cpp src/face_tracker.cpp src/utils.cpp src/mtcnn.cpp src/face_attr.cpp 
