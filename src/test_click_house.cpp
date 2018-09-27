@@ -10,9 +10,9 @@ using namespace clickhouse;
 int main(){
 
     try{
-        Client client(ClientOptions().SetHost("172.19.0.105"));
+        Client client(ClientOptions().SetHost("172.19.0.104").SetPort(9001));
 
-        std::cout << "init client for click house server: 172.19.0.105\n" ;
+        std::cout << "init client for click house server: 172.19.0.104\n" ;
 
         Block block;
 

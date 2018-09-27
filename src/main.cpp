@@ -29,6 +29,10 @@ using namespace cv;
  * return true when:
  *   center point of one box is inside the other
  */
+
+int detection_period = 20;
+int min_score = 25;
+
 bool overlap(Rect2d &box1, Rect2d &box2) {
     int x1 = box1.x + box1.width/2;
     int y1 = box1.y + box1.height/2;
@@ -73,28 +77,23 @@ void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
     }    
 }
 
-void process_camera(const string model_path, const CameraConfig &camera, string output_folder, \
-                    const String video_file, const std::string click_house_server, bool main_thread) {
+void process_camera(const string mtcnn_model_path, const CameraConfig &camera, string output_folder, \
+                    const std::string ckdb_ip, const int ckdb_port, bool main_thread) {
 
     cout << "processing camera: " << camera.identity() << endl;
 
     prepare_output_folder(camera, output_folder);
     
-    MTCNN mm(model_path);
+    MTCNN mm(mtcnn_model_path);
 
-    VideoCapture cap;
-
-    if(video_file!="none")
-        cap = VideoCapture(video_file);
-    else
-        cap = camera.GetCapture();
+    VideoCapture cap = camera.GetCapture();
     
     if (!cap.isOpened()) {
         cerr << "failed to open camera" << endl;
         return;
     }
 
-    dbHandle db(click_house_server, camera.identity());
+    dbHandle db(ckdb_ip, ckdb_port, camera.identity());
 
     long frameCounter = 0;
     long faceId = 0;
@@ -114,10 +113,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
         cap >> frame;
         if (!frame.data) {
 
-            if(video_file!="none"){
-                std::cout << "video file read over!\n" ;
-                exit(0);
-            }
+            //to do: if cap is constrcuct from a video file, function must return if there is no more frame
 
             LOG(ERROR) << "Capture video failed: " << camera.identity() << ", opened: " << cap.isOpened();
             cap.release();
@@ -165,7 +161,7 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
             }
         }
         #endif
-        if (frameCounter % camera.detection_period == 0)
+        if (frameCounter % detection_period == 0)
         {
             ncnn::Mat ncnn_img = ncnn::Mat::from_pixels(frame.data, ncnn::Mat::PIXEL_BGR2RGB, frame.cols, frame.rows);
 
@@ -356,52 +352,68 @@ void process_camera(const string model_path, const CameraConfig &camera, string 
 
 int main(int argc, char* argv[]) {
 
-    google::InitGoogleLogging("multi-camera-tracking");
-    FLAGS_log_dir = "./";
-//    FLAGS_logtostderr = true;
     const String keys =
-        "{help h usage ?     |                         | print this message   }"
-        "{mtcnn-model        |../models/ncnn           | path to mtcnn model  }"
-        "{camera-config      |config.toml              | camera config        }"
-        "{wisdom             |wisdom                   | wisdom fiel for fftw, depend on hardware architecture }"
-        "{staple-config      |staple.toml              | tracker staple config }"
-        "{pnp-config         |3dpnp.toml               | pnp config }"
-        "{mx-model-config    |mxModel.toml             | mxnet model config }"
-        "{clickhouse-server  |127.0.0.1                | click house db server ip }"        
-        "{output             |output                   | output folder    }"
-        "{video-file         |none                     | use video file instead of camera stream }"
+        "{help h usage ?     |                    | print this message }"
+        "{config             |config.toml         | local_id config file }"
+        "{camera             |camera              | folder for camera meta info }"
+        "{output             |output              | folder for image sample outputh} "
+        "{log                |log                 | folder for log }"
     ;
 
     CommandLineParser parser(argc, argv, keys);
-    parser.about("camera face detector");
+    parser.about("camera face tracker detector and recognizor");
     if (parser.has("help")) {
         parser.printMessage();
         return 0;
     }
 
-    String config_path = parser.get<String>("camera-config");
-    cout << "camera config path: " << config_path << endl;
-
-    String wisdom_file = parser.get<String>("wisdom");
-    String staple_file = parser.get<String>("staple-config");
-
-    face_tracker::staple_init(wisdom_file,staple_file);
-
-    String model_path = parser.get<String>("mtcnn-model");
-    String pnp_conf_file = parser.get<String>("pnp-config");
-    String mx_model_conf_file = parser.get<String>("mx-model-config");
-    String click_house_server = parser.get<String>("clickhouse-server");
+    String config_path = parser.get<String>("config");
+    cout << "config file: " << config_path << endl;
+    String camera_folder = parser.get<String>("camera");
     String output_folder = parser.get<String>("output");
-    String video_file = parser.get<String>("video-file");
+    String log_folder = parser.get<String>("log");
 
     if (!parser.check()) {
         parser.printErrors();
         return 0;
     }
 
-    vector<CameraConfig> cameras = LoadCameraConfig(config_path);
+    google::InitGoogleLogging("multi-camera");
+    FLAGS_log_dir = log_folder.c_str();
+//    FLAGS_logtostderr = true;
 
-    // LOG(INFO) << "detection period: " << camera.detection_period;
+    std::string mtcnn_model_path;
+    std::string ckdb_ip;
+    int ckdb_port;
+    std::string pnp_conf_file;
+    std::string mx_model_conf_file;
+
+    try {
+        auto g = cpptoml::parse_file(config_path);
+        // parse tracker conf
+        auto staple_file = g->get_qualified_as<std::string>("tracker.config_file").value_or("staple.yaml");
+        auto wisdom_file = g->get_qualified_as<std::string>("tracker.wisdom_file").value_or("wisdom");
+        face_tracker::staple_init(wisdom_file,staple_file);
+        // parse detector conf
+        mtcnn_model_path =  g->get_qualified_as<std::string>("detect.mtccn_model_path").value_or("../models/ncnn");
+        detection_period = g->get_qualified_as<int>("detect.period").value_or(20);
+        min_score = g->get_qualified_as<int>("detect.min_score").value_or(25);
+        // parse db conf
+        ckdb_ip = g->get_qualified_as<std::string>("db.ip").value_or("172.19.0.105");
+        ckdb_port = g->get_qualified_as<int>("db.port").value_or(9000);
+        // parse other conf
+        pnp_conf_file = g->get_qualified_as<std::string>("global.pnp_config").value_or("3dpnp.toml");
+        mx_model_conf_file = g->get_qualified_as<std::string>("global.mxmodel_config").value_or("mxModel.toml");
+
+    }
+    catch (const cpptoml::parse_exception& e) {
+        std::cerr << "Failed to parse config.toml: " << e.what() << std::endl;
+        exit(1);
+    }
+
+    vector<CameraConfig> cameras = LoadCameraConfig(camera_folder);
+
+    // LOG(INFO) << "detection period: " << detection_period;
 
     CameraConfig main_camera = cameras[cameras.size()-1];
     cameras.pop_back();
@@ -413,11 +425,11 @@ int main(int argc, char* argv[]) {
     LoadVecSearchConf(mx_model_conf_file);
 
     for (CameraConfig camera: cameras) {
-        thread t {process_camera, model_path, camera, output_folder, video_file, click_house_server, false};
+        thread t {process_camera, mtcnn_model_path, camera, output_folder, ckdb_ip, ckdb_port, false};
         t.detach();
 
     }
 
-    process_camera(model_path, main_camera, output_folder, video_file, click_house_server, true);
+    process_camera(mtcnn_model_path, main_camera, output_folder, ckdb_ip, ckdb_port, true);
 
 }

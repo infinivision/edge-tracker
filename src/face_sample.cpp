@@ -3,12 +3,12 @@
 #include <sys/time.h>
 #include <ctime>
 
-dbHandle::dbHandle(std::string db_server, std::string camera_ip)
+dbHandle::dbHandle(std::string db_ip, int db_port, std::string camera_ip)
 try:
-    client(ClientOptions().SetHost(db_server)),
+    client(ClientOptions().SetHost(db_ip).SetPort(db_port)),
     camera_id(camera_ip)
 {
-    std::cout << "init client for click house server: " << db_server << std::endl;
+    std::cout << "init client for click house server, ip: " << db_ip << " port: " << db_port  << std::endl;
 }
 catch (clickhouse::ServerException & exception) {
     LOG(ERROR) << "click house client init exception: " << exception.what() << std::endl;

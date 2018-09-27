@@ -5,7 +5,6 @@
 #include <sstream>
 #include <vector>
 
-int min_score = 10;
 std::string CameraConfig::identity() const {
 	if (ip.empty()) {
         return std::to_string(index);
@@ -90,8 +89,6 @@ std::vector<CameraConfig> LoadCameraConfig(std::string config_path) {
 
 	try {
         std::shared_ptr<cpptoml::table> g = cpptoml::parse_file(config_path);
-        min_score = g->get_qualified_as<int>("global.min_score").value_or(10);
-        std::cout << "min score: " << min_score << std::endl;
         auto array = g->get_table_array("camera");
         for (const auto &table : *array) {
         	CameraConfig camera;

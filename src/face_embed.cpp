@@ -102,8 +102,6 @@ bool infer_svc_embed(cv::Mat & face, std::vector<float> & embed_vec, std::string
     cv::imencode(".jpg", face, buff);
 
     CURL *curl = NULL;
-    curl_mime * form;
-    curl_mimepart *field;
     curl = curl_easy_init();
     CURLcode res;
     if(curl) {
@@ -152,8 +150,6 @@ bool infer_svc_embed(cv::Mat & face, std::vector<float> & embed_vec, std::string
 
     } else {
         LOG(WARNING) << "access embeding service failed, curl init failed";
-        curl_easy_cleanup(curl);
-        curl_mime_free(form);        
-        return false;        
+        return false;
     }
 }

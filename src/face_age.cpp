@@ -111,8 +111,6 @@ int infer_svc_age(cv::Mat & face, std::string & remote_file) {
     cv::imencode(".jpg", face, buff);
 
     CURL *curl = NULL;
-    curl_mime * form;
-    curl_mimepart *field;
     
     curl = curl_easy_init();
     CURLcode res;
@@ -150,15 +148,13 @@ int infer_svc_age(cv::Mat & face, std::string & remote_file) {
         }
         auto json_res = json::parse(readBuffer);
         int age    = json_res["prediction"]["age"];
-        int gender = json_res["prediction"]["gender"];
+//      int gender = json_res["prediction"]["gender"];
         curl_easy_cleanup(curl);
         curl_mime_free(form);
         return age;
 
     } else {
-        LOG(WARNING) << "access embeding service failed, curl init failed";
-        curl_easy_cleanup(curl);
-        curl_mime_free(form);        
+        LOG(WARNING) << "access embeding service failed, curl init failed";     
         return -1;        
     }
 }
