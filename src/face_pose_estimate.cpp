@@ -4,7 +4,6 @@ using namespace std;
 using namespace cv;
 
 std::vector<cv::Point3d> model_points;
-bool  use_default_intrinsic = false;
 int   pnp_algo = cv::SOLVEPNP_EPNP;
 float child_weight;
 int   child_age_min = 6;
@@ -25,8 +24,6 @@ void read3D_conf(string pnpConfFile){
             point = point / 450 * eyeCornerLength;
             model_points.push_back(point);
         }
-        use_default_intrinsic = g->get_qualified_as<bool>("pnp.use_default_intrinsic").value_or("false");
-        cout <<"use_default_intrinsic: " << use_default_intrinsic << endl;
         std::string algo = g->get_qualified_as<std::string>("pnp.pnp_algo").value_or("EPNP");
         if( algo == "EPNP")
             pnp_algo = cv::SOLVEPNP_EPNP;
@@ -84,19 +81,13 @@ bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
     cv::Mat dist_coeffs;
     double focal_length = im.cols; // Approximate focal length.
     Point2d center = cv::Point2d(im.cols/2,im.rows/2);
-    if(use_default_intrinsic) {
+    if(camera.default_intrinsic) {
         // Camera internals
         camera_matrix = (cv::Mat_<double>(3,3) << focal_length, 0, center.x, 0 , focal_length, center.y, 0, 0, 1);
         dist_coeffs = cv::Mat::zeros(4,1,cv::DataType<double>::type); // Assuming no lens distortion
     } else {
-        if(camera.mat_file!="")
-            camera_matrix =  camera.matrix;
-        else
-            camera_matrix = (cv::Mat_<double>(3,3) << focal_length, 0, center.x, 0 , focal_length, center.y, 0, 0, 1);
-        if(camera.dist_file!="")
-            dist_coeffs   =  camera.dist_coeff;
-        else
-            dist_coeffs = cv::Mat::zeros(4,1,cv::DataType<double>::type);
+        camera_matrix =  camera.matrix;
+        dist_coeffs   =  camera.dist_coeff;
     }
     
     cv::Mat rotation_vector; // Rotation in axis-angle form
@@ -146,12 +137,12 @@ bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
     // We use this to draw a line sticking out of the nose
     // LOG(INFO) << camera.ip << " tvec: "<< translation_vector.t()/1000;
 
-    if(camera.r_file!="" && camera.t_file!="") {
+    if(!camera.default_extrinsic) {
         world_coordinate = camera.rmtx.t() * (translation_vector - camera.tvec);
         LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId 
                   << "] w coordinate: " << world_coordinate.t() / 1000;
-    } else
-        LOG(INFO) << camera.ip << " can't compute coordinate without camera rotation matrix";
+    } else 
+        world_coordinate = translation_vector;
 
     cv::Mat r_mat;
     cv::Rodrigues(rotation_vector,r_mat);

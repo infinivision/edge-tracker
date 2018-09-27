@@ -21,6 +21,56 @@ float male_weight;
 float female_weight;
 float child_weight;
 
+cv::Mat read_csv2d(std::string file, int row, int col) {
+    char separator = ' ';
+    cv::Mat result(row,col,CV_64FC1);
+    std::string line, item;
+    std::ifstream in( file );
+    if(!in.is_open()){
+        std::cout << "open csv file: " << file << " fail! " << std::endl;
+        exit(1);
+    }
+    int i = 0, j = 0;
+    while(1) {
+        std::getline( in, line );
+        if(!in.eof()){
+            if(i > row-1) {
+                std::cout<< "csv file[" << file << "] format wrong, too many row" << std::endl;
+                exit(1);
+            }
+            std::stringstream ss( line );
+            j = 0;
+            while(1){
+                getline ( ss, item, separator );
+                if(!ss.eof()){
+                    if(j>col-1){
+                        std::cout<< "csv file[" << file << "] format wrong, too many col" << std::endl;
+                        exit(1);
+                    }
+                    result.at<double>(i,j) = atof(item.c_str());
+                    j++;                    
+                }
+                else {
+                    if(j != col-1 ){
+                        std::cout<< "csv file[" << file << "] format wrong, col is not enough" << std::endl;
+                        exit(1);
+                    }
+                    result.at<double>(i,j) = atof(item.c_str());
+                    break;
+                }
+            }
+            i++;
+        } else {
+            if(i != row ){
+                std::cout<< "csv file[" << file << "] format wrong, row is not enough" << std::endl;
+                exit(1);
+            }
+            break;
+        }
+   }
+   return result;
+}
+
 void read3D_conf(){
     model_points.clear();
     char * pnpConfPath = getenv("pnpPath");

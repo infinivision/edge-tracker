@@ -9,8 +9,12 @@
 class CameraConfig {
 
 public:
-    int index;
+    // source type 1: ip camera; 2 local pc camera ; 3 local vedio file
+    int source_type;    
     std::string ip;
+    int idx;
+    int NO;
+    std::string video_file;
     std::string username;
     std::string password;
     int resize_rows, resize_cols;
@@ -19,12 +23,10 @@ public:
     std::string tracker;
 
     // add for pose estimate
-    std::string mat_file;
-    std::string dist_file;
+    bool default_intrinsic;
     cv::Mat matrix;
     cv::Mat dist_coeff;
-    std::string r_file;
-    std::string t_file;
+    bool default_extrinsic;
     cv::Mat rvec;
     cv::Mat tvec;
     cv::Mat rmtx;

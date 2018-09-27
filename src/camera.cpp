@@ -2,142 +2,152 @@
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
+//#include <sstream>
 #include <vector>
 
+#include <dirent.h>
+#include <string>
+#include "utils.h"
+
 std::string CameraConfig::identity() const {
-	if (ip.empty()) {
-        return std::to_string(index);
-    } else {
-        return ip;
+	if (source_type==1) {
+        return ip + "_" + std::to_string(NO);
+    } else if(source_type==2){
+        return std::to_string(idx) + "_" + std::to_string(NO);
+    } else if(source_type==3){
+        return video_file + "_" + std::to_string(NO);
     }
+    return "";
 }
 
 /*
  * Get video capture from a camera index (0, 1) or an ip (192.168.1.15)
  */
 cv::VideoCapture CameraConfig::GetCapture() const {
-    if ( this->ip.empty()) {
-        // use camera index
-        LOG(INFO) << "camera index: " << this->index;
-        cv::VideoCapture capture(this->index);
-        return capture;
-    } else {
+    if(source_type == 1){
         LOG(INFO) << "camera ip: " << this->ip << std::endl;
         std::string camera_stream = "rtsp://" + this->username +  ":" + this->password + "@" + this->ip + ":554//Streaming/Channels/1";
         cv::VideoCapture capture(camera_stream);
         return capture;
+    } else if (source_type == 2) {
+        LOG(INFO) << "camera index: " << this->idx;
+        cv::VideoCapture capture(this->idx);
+        return capture;
+    } else if(source_type == 3){
+        // use camera index
+        LOG(INFO) << "video file: " << this->video_file;
+        cv::VideoCapture capture(this->video_file);
+        return capture;
     }
+    return cv::VideoCapture();
 }
 
-cv::Mat read_csv2d(std::string file, int row, int col) {
-    char separator = ' ';
-    cv::Mat result(row,col,CV_64FC1);
-    std::string line, item;
-    std::ifstream in( file );
-    if(!in.is_open()){
-        std::cout << "open csv file: " << file << " fail! " << std::endl;
-        exit(1);
+cv::Mat json2Mat(json & j_array, int row, int col, std::string param_name ) {
+
+    if(!j_array.is_array()){
+        std::cout << param_name << " not a json array\n";
+        exit(-1);
     }
-    int i = 0, j = 0;
-    while(1) {
-        std::getline( in, line );
-        if(!in.eof()){
-            if(i > row-1) {
-                std::cout<< "csv file[" << file << "] format wrong, too many row" << std::endl;
-                exit(1);
-            }
-            std::stringstream ss( line );
-            j = 0;
-            while(1){
-                getline ( ss, item, separator );
-                if(!ss.eof()){
-                    if(j>col-1){
-                        std::cout<< "csv file[" << file << "] format wrong, too many col" << std::endl;
-                        exit(1);
-                    }
-                    result.at<double>(i,j) = atof(item.c_str());
-                    j++;                    
-                }
-                else {
-                    if(j != col-1 ){
-                        std::cout<< "csv file[" << file << "] format wrong, col is not enough" << std::endl;
-                        exit(1);
-                    }
-                    result.at<double>(i,j) = atof(item.c_str());
-                    break;
-                }
-            }
-            i++;
-        } else {
-            if(i != row ){
-                std::cout<< "csv file[" << file << "] format wrong, row is not enough" << std::endl;
-                exit(1);
-            }
-            break;
+    if(j_array.size()!=(row*col)){
+        std::cout << param_name << " array size is wrong \n";
+        exit(-1);
+    }
+
+    cv::Mat result(row,col,CV_64FC1);
+    for(int i=0; i<row; i++)
+        for(int j=0; j<col; j++){
+            result.at<double>(i,j) = j_array[i*col+j];
+            std::cout << result.at<double>(i,j) <<"\n";
         }
-   }
-   return result;
+            
+
+    return result;
 }
 
 /*
  * parse toml configuration using cpptoml library [https://github.com/skystrife/cpptoml]
  */
 std::vector<CameraConfig> LoadCameraConfig(std::string config_path) {
+    std::vector<std::string> meta_files;
+    DIR *dir;
+    struct dirent *ent;
+    if ((dir = opendir (config_path.c_str())) != NULL) {
+        /* print all the files and directories within directory */
+        while ((ent = readdir (dir)) != NULL) {
+            std::string file(ent->d_name);
+            std::string postfix = ".meta";
+            if(file.rfind(postfix)==(file.length()-postfix.length())){
+                meta_files.push_back(std::string(ent->d_name));
+            }                
+        }
+        closedir(dir);
+    } else {
+        /* could not open directory */
+        perror ("");
+        exit(-1);
+    }
 
 	std::vector<CameraConfig> cameras;
 
-	try {
-        std::shared_ptr<cpptoml::table> g = cpptoml::parse_file(config_path);
-        auto array = g->get_table_array("camera");
-        for (const auto &table : *array) {
-        	CameraConfig camera;
-        	auto index_ptr = table->get_as<int>("index");
-            auto ip = table->get_as<std::string>("ip").value_or("");
-            auto username_ptr = table->get_as<std::string>("username");
-            auto password_ptr = table->get_as<std::string>("password");
-            auto resize_rows = table->get_as<int>("resize_rows").value_or(0);
-            auto resize_cols = table->get_as<int>("resize_cols").value_or(0);
-            auto detection_period = table->get_as<int>("detection_period").value_or(1);
+    int no=0;
+    for(auto & file: meta_files){
+        no++;
+        try {
+            std::ifstream meta_file(config_path + "/" + file);
+            json meta;
+            meta_file >> meta;
 
-            camera.resize_rows = resize_rows;
-            camera.resize_cols = resize_cols;
-            camera.detection_period = detection_period;
+            CameraConfig camera;
+            camera.NO = no;
 
-            if (ip.empty()) {
-                camera.index = *index_ptr;
-            } else {
-                camera.ip = ip;
-                camera.username = *username_ptr;
-                camera.password = *password_ptr;
+            camera.source_type = meta["source_type"];
+
+            if(camera.source_type==1)
+                camera.ip = meta["ip"];
+            else if(camera.source_type==2)
+                camera.idx = meta["idx"];
+            else if(camera.source_type==3)
+                camera.video_file  = meta["video_file"];
+            else{
+                std::cout << "unknown camera source type!\n";
+                exit(-1);
             }
 
-            camera.tracker = table->get_as<std::string>("tracker").value_or("staple");
+            camera.username    = meta["username"];
+            camera.password    = meta["password"];
+            camera.euler_alpha = meta["euler_alpha"];
+            camera.euler_beta  = meta["euler_beta"];
 
-            camera.mat_file = table->get_as<std::string>("matrix").value_or("");
-            if(camera.mat_file != "")
-                camera.matrix = read_csv2d(camera.mat_file,3,3);
-            camera.dist_file = table->get_as<std::string>("dist_coeff").value_or("");
-            if(camera.dist_file!="")
-                camera.dist_coeff = read_csv2d(camera.dist_file,1,5);
-            camera.r_file = table->get_as<std::string>("rvector").value_or("");
-            if(camera.r_file != ""){
-                camera.rvec = read_csv2d(camera.r_file,3,1);
+            camera.default_intrinsic = meta["default_intrinsic"];
+            if(!camera.default_intrinsic){
+                json mtx = meta["matrix"];
+                camera.matrix = json2Mat(mtx,3,3,camera.ip+"intrinsic matrix");
+
+                json dist_coeff = meta["dist_coeff"];
+                camera.dist_coeff = json2Mat(dist_coeff,1,5,camera.ip+"intrinsic dist_coeff");
+            }
+
+            camera.default_extrinsic = meta["default_extrinsic"];
+            if(!camera.default_extrinsic){
+                json rvecor = meta["rvector"];
+                camera.rvec = json2Mat(rvecor,3,1,camera.ip+"extrinsic rotation vector");
                 cv::Rodrigues(camera.rvec,camera.rmtx);
-            }
-            camera.t_file = table->get_as<std::string>("tvector").value_or("");
-            if(camera.t_file != "")
-                camera.tvec = read_csv2d(camera.t_file,3,1);
 
-            camera.euler_alpha = table->get_as<double>("euler_alpha").value_or(10.0);
-            camera.euler_beta  = table->get_as<double>("euler_beta").value_or(35.0);
-            
+                json tvecor = meta["tvector"];
+                camera.tvec = json2Mat(tvecor,3,1,camera.ip+"extrinsic translation vector");
+            }
+
             cameras.push_back(camera);
+
         }
-    }
-    catch (const cpptoml::parse_exception& e) {
-        std::cerr << "Failed to parse " << config_path << ": " << e.what() << std::endl;
-        exit(1);
+        catch(json::exception & e ){
+            LOG(WARNING) <<"failed to parse meta file[" << file << "]: " << e.what() << "\n";
+            exit(-1);
+        }
+        catch(std::exception & e){
+            LOG(WARNING) << "failed to process meta file[" << file << "]: " << e.what() << "\n";
+            exit(-1);            
+        }
     }
 
     return cameras;

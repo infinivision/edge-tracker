@@ -113,7 +113,8 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
         cap >> frame;
         if (!frame.data) {
 
-            //to do: if cap is constrcuct from a video file, function must return if there is no more frame
+            //if cap is constrcuct from a video file, function must return if there is no more frame
+            if(camera.source_type==3) return;
 
             LOG(ERROR) << "Capture video failed: " << camera.identity() << ", opened: " << cap.isOpened();
             cap.release();
