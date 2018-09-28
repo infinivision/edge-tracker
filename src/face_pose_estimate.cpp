@@ -139,7 +139,7 @@ bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
 
     if(!camera.default_extrinsic) {
         world_coordinate = camera.rmtx.t() * (translation_vector - camera.tvec);
-        LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId 
+        LOG(INFO) << "camera["<< camera.NO << "]" << " frame["<< frameCount << "]faceId[" << faceId 
                   << "] w coordinate: " << world_coordinate.t() / 1000;
     } else 
         world_coordinate = translation_vector;
@@ -150,7 +150,7 @@ bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
     auto euler_angle = rotationMatrixToEulerAngles(r_mat);
     euler_angle = euler_angle / M_PI*180;
 
-    LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId
+    LOG(INFO) << "camera["<< camera.NO << "]" << " frame["<< frameCount << "]faceId[" << faceId
               << "] euler_angle: " << euler_angle;
 
     auto x = abs(euler_angle[0]);

@@ -60,7 +60,7 @@ void LoadAgeConf(std::string mx_model_conf) {
 
 int infer_svc_age(cv::Mat & face, std::string & remote_file);
 
-int proc_age(cv::Mat & face, vector<mx_float> & face_vec, face_tracker & target) {
+int proc_age(cv::Mat & face, vector<mx_float> & face_vec, face_tracker & target, CameraConfig camera) {
     if(target.infer_age_count < n_age_sample) {
         int age=0;
         if(age_enable){
@@ -81,7 +81,7 @@ int proc_age(cv::Mat & face, vector<mx_float> & face_vec, face_tracker & target)
                 age = infer_svc_age(face, remote_file);
             }
             if(age!=-1){
-                LOG(INFO) << "target infer age: " << age;
+                LOG(INFO) << "camera["<< camera.NO << "]" << " target infer age: " << age;
                 #ifdef BENCH_EDGE
                 gettimeofday(&tv_age,NULL);
                 long t_ms2_age = tv_age.tv_sec * 1000 * 1000 + tv_age.tv_usec;

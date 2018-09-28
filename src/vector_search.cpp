@@ -168,7 +168,7 @@ int proc_embd_vec(std::vector<float> &data, const CameraConfig & camera,int fram
     identifies[0] = vec_list;
     reid++;
     vec_mutex.unlock();
-    LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId
+    LOG(INFO) << "camera["<< camera.NO << "]" << " frame["<< frameCount << "]faceId[" << faceId
               << "]add first face vec ";
     return 0;
   }
@@ -196,14 +196,14 @@ int proc_embd_vec(std::vector<float> &data, const CameraConfig & camera,int fram
     std::vector<vec_element> vec_list;
     vec_list.push_back(element);
     identifies[reid] = vec_list;
-    LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId
+    LOG(INFO) << "camera["<< camera.NO << "]" << " frame["<< frameCount << "]faceId[" << faceId
               << "]add new face vec,distance[" << max_sim_score <<"], reid[" << reid <<"]";
     new_id = reid;
     reid++;
   } else {
     new_id = max_reid;
     insert_vec(identifies[max_reid], i_vec, max_idx, max_sim_score);
-    LOG(INFO) << camera.ip << " frame["<< frameCount << "]faceId[" << faceId
+    LOG(INFO) << "camera["<< camera.NO << "]" << " frame["<< frameCount << "]faceId[" << faceId
               << "]find old face vect,distance[" << max_sim_score <<"], reid[" << max_reid <<"] vec_list idx["<< max_idx <<"]";
   }
 

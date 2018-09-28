@@ -127,7 +127,7 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                 LOG(ERROR) << "failed to open camera: " << camera.identity();
                 return;
             }
-            LOG(INFO) << "reopen camera: " << camera.identity();
+            LOG(INFO) << "camera["<< camera.NO << "]" << "reopen camera: " << camera.identity();
             continue;
         }
 
@@ -199,7 +199,7 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                     if (newFace) {
                         // create a new tracker if a new face is detected
                         tracker_vec.push_back(face_tracker(faceId,frame,detected_face));
-                        LOG(INFO) << "start tracking face " << tracker_vec[index].faceId << ",tracker index " << index;
+                        LOG(INFO) << "camera["<< camera.NO << "]" << " start tracking face " << tracker_vec[index].faceId << ",tracker index " << index;
 
                         thisFace = faceId;
                         faceId++;
@@ -207,18 +207,18 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                         // update tracker's bounding box
                         thisFace = tracker_vec[index].faceId;
                         tracker_vec[index].update_by_dectect(frame,detected_face);
-                        LOG(INFO) << "update tracking face " << tracker_vec[index].faceId <<", tracker index " << index;
+                        LOG(INFO) << "camera["<< camera.NO << "]" << " update tracking face " << tracker_vec[index].faceId <<", tracker index " << index;
                     }
 
                     // calculate score of face
                     Mat face(frame, detected_face);
                     double score = GetVarianceOfLaplacianSharpness(face);
-                    LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace 
+                    LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace 
                               << "], LaplacianSharpness score: " << score;
                     if(score>min_score) {
                         vector<mx_float> face_vec;
                         imgFormConvert(face,face_vec);
-                        int infer_age = proc_age(face, face_vec, tracker_vec[index]);
+                        int infer_age = proc_age(face, face_vec, tracker_vec[index], camera);
                         cv::Mat world_coordinate;
                         if (infer_age >= child_age_min) {
                             // prepare image points for pnp
@@ -244,11 +244,11 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                                     #endif
                                 }
                             } else 
-                                LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
+                                LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
                                         << "], pose is skew, don't make face embedding";
                             db.insert(frameCounter, thisFace, index, front_side, score, infer_age, new_id, world_coordinate);
                         } else if(infer_age != -1)
-                                LOG(INFO) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
+                                LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
                                         << "], can't compute coordinate for child age less than " << child_age_min;
                     } else 
                         LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace 
@@ -313,7 +313,7 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                 }
                 if (!isFace) 
                 {
-                    LOG(INFO) << "stop tracking face " << tracker_vec[i].faceId << ", tracker index " << i;
+                    LOG(INFO) << "camera["<< camera.NO << "]" << "stop tracking face " << tracker_vec[i].faceId << ", tracker index " << i;
                     #ifdef SAVE_IMG
                     // debug output
                     string output = output_folder + "/tracker/face_" + to_string(tracker_vec[i].faceId) + "_" + to_string(frameCounter) + ".jpg";
@@ -340,7 +340,6 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
             else
                 small_show_frame = show_frame;
             
-            // LOG(INFO) << "camera ip: "<< camera.ip;
             imshow("window" + camera.ip , small_show_frame);
             if(QUIT_KEY == waitKey(1)) break;
         }
@@ -413,8 +412,6 @@ int main(int argc, char* argv[]) {
     }
 
     vector<CameraConfig> cameras = LoadCameraConfig(camera_folder);
-
-    // LOG(INFO) << "detection period: " << detection_period;
 
     CameraConfig main_camera = cameras[cameras.size()-1];
     cameras.pop_back();

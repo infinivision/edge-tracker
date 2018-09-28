@@ -65,7 +65,7 @@ void dbHandle::insert(long frameCounter, long faceId, unsigned tracker_index, \
         struct timeval  ts;
         gettimeofday(&ts,NULL);
         long int ts_ms = ts.tv_sec * 1000 + ts.tv_usec / 1000;
-        LOG(INFO) << "time stamp " << ts_ms;
+        // LOG(INFO) << "time stamp " << ts_ms;
         auto time_stamp = std::make_shared<ColumnUInt64>();
         time_stamp->Append(ts_ms);
         block.AppendColumn("time_stamp", time_stamp);
@@ -85,7 +85,6 @@ void dbHandle::insert(long frameCounter, long faceId, unsigned tracker_index, \
 
         client.Insert("tracker.sample", block);
 
-        // std::cout << "insert one row into table tracker.sample\n";
     } 
     catch (clickhouse::ServerException & exception) {
         LOG(ERROR) << "click house access exception " << exception.what() << std::endl;
