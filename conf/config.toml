@@ -1,0 +1,13 @@
+[tracker]
+	  config_file = "staple.yaml"
+	  wisdom_file = "wisdom"
+[detect]
+	mtccn_model_path = "../models/ncnn"
+	period = 25
+	min_score = 1
+[db]
+	ip = "172.19.0.105"
+	port = 9000
+[global]
+	pnp_config = "3dpnp.toml"
+	mxmodel_config = "mxModel.toml"

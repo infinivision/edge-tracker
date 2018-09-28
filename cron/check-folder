@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# test if folder size is bigger than 1000 MB
-EXIST=`du -sm /home/firefly/Pictures/faces | awk '$1 > 1000' | wc -l`
-if [[ $EXIST -eq 1 ]]; then
- 	rm -f /home/firefly/Pictures/faces/*
-fi 
