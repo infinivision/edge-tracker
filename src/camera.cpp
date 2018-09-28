@@ -13,9 +13,9 @@ std::string CameraConfig::identity() const {
 	if (source_type==1) {
         return ip + "_" + std::to_string(NO);
     } else if(source_type==2){
-        return std::to_string(idx) + "_" + std::to_string(NO);
+        return  "local_camera_" + std::to_string(NO);
     } else if(source_type==3){
-        return video_file + "_" + std::to_string(NO);
+        return "vide_file_" + std::to_string(NO);
     }
     return "";
 }
@@ -57,7 +57,6 @@ cv::Mat json2Mat(json & j_array, int row, int col, std::string param_name ) {
     for(int i=0; i<row; i++)
         for(int j=0; j<col; j++){
             result.at<double>(i,j) = j_array[i*col+j];
-            std::cout << result.at<double>(i,j) <<"\n";
         }
             
 
