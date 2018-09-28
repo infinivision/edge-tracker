@@ -1,0 +1,101 @@
+docker run -it --name edge-tracker-build --rm -v /rootdev_keeper/local_id:root/build,type=bind ubuntu:16.04 /bin/bash
+apt-get -y update && apt-get install -y build-essential libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libavresample-dev libfftw3-dev libopenblas-dev
+apt-get autoclean
+
+docker commit edge-tracker-build infinivision/local_id:prebuild
+
+docker run -it --name edge-tracker --rm  -v /root/dev_keeper/local_id:/root/build --network host infinivision/local_id /bin/bash
+
+local_id all dependcy:
+
+build from source
+	cmake
+		source:
+			https://cmake.org/files/v3.12/cmake-3.12.2.tar.gz
+		build:
+			./configure --parallel=20
+	opencv
+		soucre:
+			https://github.com/opencv/opencv/archive/3.4.2.zip
+	build
+		mkdir opencv_build
+		cmake ../opencv
+		make & make	install
+	mxnet				
+		source:
+			git clone --recursive -b 1.2.1.rc1 https://github.com/apache/incubator-mxnet
+		build:
+			make -D USE_BLAS=openblas -D USE_MKLDNN=1 -D USE_OPENMP=1
+	curl
+		source:
+			https://curl.haxx.se/download/curl-7.61.1.tar.gz
+		build:
+			./configure
+			make & make install
+			export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib/
+	ncnn static
+		source:
+			git clone https://github.com/infinivision/ncnn
+		build:
+			mkdir build & cd build
+			cmake ..
+			make & make install
+	cpp-toml
+		source:
+			https://github.com/skystrife/cpptoml/archive/v0.1.0.zip
+		build:
+			mkdir build & cd build
+			make & make install
+	cpp-json
+		source:
+			https://github.com/nlohmann/json/archive/v3.2.0.zip
+		build:
+			mkdir build & cd build
+			make & make install			
+	click_house 	
+		source:
+			git clone https://github.com/artpaul/clickhouse-cpp.git
+		build
+			mkdir build & cd build
+			make & make instal			
+			cp contrib/lz4/liblz4-lib.a clickhouse/	 
+			cp contrib/cityhash/libcityhash-lib.a clickhouse/
+	eigen
+		source:
+			http://bitbucket.org/eigen/eigen/get/3.3.4.tar.bz2
+		build:
+			uncompress & cp -r eigen/Eigen/  /usr/local/include/
+	glog
+		source:
+			https://github.com/google/glog/archive/v0.3.5.zip
+		build:
+			mkdir build & cd build
+			make & make install				
+	
+install lib
+	fftw3
+
+edge-tracker
+	build:
+		cmake -D BENCH_EDGE=true -D VISUAL=false -D SAVE_IMG=false -D NCNN_PATH=/root/build/ncnn/build/install -D CLICKHOUSE_PATH=/root/build/clickhouse-cpp ..
+		make
+		./export 28
+		mkdir /local_id & cd /local_id
+		mkdir log etc
+		copy wisdom into etc
+conf file:
+	common: config.toml mxModel.toml 3dpnp.toml 
+					staple.yaml wisdom
+					mtcnn model
+	camera conf: camera/*
+	
+build into image:
+	wisdom
+	
+ck:
+	docker run -itd --name ck-svr --rm  --network host -v /root/dev_keeper/ckdb/data:/var/lib/clickhouse -v /root/dev_keeper/ckdb/clickhouse_config.xml:/etc/clickhouse-server/config.xml  yandex/clickhouse-server 
+	docker run -itd --name ck-svr --network host -v /opt/dev_keeper/:/opt/dev_keeper/ -v /opt/dev_keeper/resources/clickhouse-config.xml:/etc/clickhouse-server/config.xml  yandex/clickhouse-server 
+
+mms:
+	docker run --name mms --network host -itd -v /root/dev_keeper/mms/mxmodels:/models/ deepinsight/mms_cpu mxnet-model-server.sh start --mms-config /models/mms_app_cpu.conf
+	curl -X POST http://127.0.0.1:8080/r100/predict -F "data=@image.jpg"

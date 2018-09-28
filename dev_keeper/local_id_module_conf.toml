@@ -1,0 +1,24 @@
+[DockerCompose]
+  [DockerCompose.Services]
+    [DockerCompose.Services.clickhouse-db]
+      ImageFromModule = "3"
+      MountWorkDir = true
+      [[DockerCompose.Services.clickhouse-db.Volumes]]
+        Source = "/opt/dev_keeper/resources/clickhouse-config.xml"
+        Destination = "/etc/clickhouse-server/config.xml"
+        AccessMode = ""
+		[DockerCompose.Services.mxmodel-svr]
+		  ImageFromModule = "5"
+      MountWorkDir = true
+      Entrypoint=["/mxnet_model_server/mxnet-model-server.sh"]
+      Args = ["start","--mms-config", "/models/mms_app_cpu.conf"]
+      [[DockerCompose.Services.mxmodel-svr.Volumes]]
+        Source = "/opt/dev_keeper/resources/mxmodels.tar.gz/"
+        Destination = "/models/"
+        AccessMode = ""
+    [DockerCompose.Services.edge-tracker]
+		  ImageFromModule = "7"
+      MountWorkDir = true
+      EntrypointFromModule = "9"
+      Args = ["--camera=/opt/dev_keeper/metas", "--config=/opt/dev_keeper/resources/local_id_conf.tar.gz/config.toml","--log=/local_id/log", "--output=/local_id/output"]
+      DependsOn = [ "clickhouse-db", "mxmodel-svr" ]
