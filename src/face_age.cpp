@@ -93,6 +93,7 @@ int proc_age(cv::Mat & face, vector<mx_float> & face_vec, face_tracker & target,
                 #endif
             } else{
                 LOG(WARNING) << "face infer age svc failed!";
+                exit(-1);
                 return -1;
             }
         } else 

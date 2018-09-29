@@ -422,12 +422,21 @@ int main(int argc, char* argv[]) {
     LoadAgeConf(mx_model_conf_file);
     LoadVecSearchConf(mx_model_conf_file);
 
-    for (CameraConfig camera: cameras) {
-        thread t {process_camera, mtcnn_model_path, camera, output_folder, ckdb_ip, ckdb_port, false};
-        t.detach();
+    std::vector<thread> threads;
 
+    for (CameraConfig camera: cameras) {
+        std::thread t(process_camera, mtcnn_model_path, camera, output_folder, ckdb_ip, ckdb_port, false);
+        t.detach();
+        threads.push_back(std::move(t));
     }
 
     process_camera(mtcnn_model_path, main_camera, output_folder, ckdb_ip, ckdb_port, true);
+
+    for( size_t i=0;i<threads.size();i++){
+        if(threads[i].joinable())
+            threads[i].join();
+    }
+
+    std::cout<< "all thread proccess over!\n" ;
 
 }

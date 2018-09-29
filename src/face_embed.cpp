@@ -88,6 +88,7 @@ int proc_embeding(cv::Mat & face, std::vector<mx_float> & face_vec, face_tracker
         return target.reid;
     } else{
         LOG(WARNING) << "face infer embeding svc failed!";
+        exit(-1);
         return -1;
     }
 }
