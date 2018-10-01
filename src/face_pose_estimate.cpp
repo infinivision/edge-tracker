@@ -1,4 +1,8 @@
 #include "face_pose_estimate.h"
+#include <math.h>
+#include <assert.h>
+
+#define PI 3.14159265
 
 using namespace std;
 using namespace cv;
@@ -165,4 +169,82 @@ bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
     if(y>camera.euler_beta)
         return false;
     return true;
+}
+
+
+float get_theta(Point2d base, Point2d x, Point2d y) {
+
+    Point2d vx = x-base;
+    Point2d vy = y-base;
+    vx.y *= -1;
+    vy.y *= -1;
+
+    float dx = atan2(vx.y,vx.x) * 180 / PI;
+    float dy = atan2(vy.y,vy.x) * 180 / PI;
+    float d = dy - dx;
+
+    if(d<-180.0)
+        d+=360.0;
+    else if (d>180.0)
+        d -= 360.0;
+
+    return d; 
+
+}
+
+int check_large_pose(std::vector<Point2d> & landmark, Rect2d & box ){
+    assert(landmark.size()==5);
+    float theta1 = get_theta(landmark[0], landmark[3], landmark[2]);
+    float theta2 = get_theta(landmark[1], landmark[2], landmark[4]);
+    float theta3 = get_theta(landmark[0], landmark[2], landmark[1]);
+    float theta4 = get_theta(landmark[1], landmark[0], landmark[2]);
+    float theta5 = get_theta(landmark[3], landmark[4], landmark[2]);
+    float theta6 = get_theta(landmark[4], landmark[2], landmark[3]);
+    float theta7 = get_theta(landmark[3], landmark[2], landmark[0]);
+    float theta8 = get_theta(landmark[4], landmark[1], landmark[2]);
+
+    float left_score = 0.0;
+    float right_score = 0.0;
+    float up_score = 0.0;
+    float down_score = 0.0;
+
+    if(theta1<=0.0)
+        left_score = 10.0;
+    else if(theta2<=0.0)
+        right_score = 10.0;
+    else{
+        left_score = theta2/theta1;
+        right_score = theta1/theta2;
+    }
+
+    if(theta3<=10.0 || theta4<=10.0)
+        up_score = 10.0;
+    else
+        up_score = max(theta1/theta3, theta2/theta4);
+    
+    if(theta5<=10.0 || theta6<=10.0)
+        down_score = 10.0;
+    else
+        down_score = max(theta7/theta5, theta8/theta6);
+    float mleft = (landmark[0].x+landmark[3].x)/2;
+    float mright = (landmark[1].x+landmark[4].x)/2;
+
+    Point2d box_center = (box.br() + box.tl())*0.5;
+
+    int ret = 0;
+    if(left_score>=3.0)
+        ret = 1;
+    if(ret==0 && left_score>=2.0)
+        if(mright<=box_center.x)
+            ret = 1;
+    if(ret==0 && right_score>=3.0)
+        ret = 2;
+    if(ret==0 && right_score>=2.0)
+        if(mleft>=box_center.x)
+            ret = 2;
+    if(ret==0 && up_score>=2.0)
+        ret = 3;
+    if(ret==0 && down_score>=5.0)
+        ret = 4;
+    return ret;
 }

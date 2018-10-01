@@ -18,5 +18,6 @@ extern int   child_age_min;
 void read3D_conf(std::string pnpConfFile);
 bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, \
                          cv::Mat & world_coordinate, int age, int frameCount,int faceId);
+int check_large_pose(std::vector<cv::Point2d> & landmark, cv::Rect2d & box );
 
 #endif

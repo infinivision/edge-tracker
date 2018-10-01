@@ -230,6 +230,16 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
 
                             bool front_side = compute_coordinate(frame, image_points, camera, world_coordinate, 
                                                                 infer_age, frameCounter, thisFace);
+
+                            int face_pose_type = check_large_pose(image_points, detected_face);
+
+                            if(front_side && face_pose_type!=0)
+                                LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
+                                        << "], pnp detect pose is front while naive algorithm detected type: " << face_pose_type;
+                            if(face_pose_type==0 && !front_side)
+                                LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
+                                        << "], pnp detect pose is not front while naive algorithm detected face is front";
+
                             int new_id=-1;
                             if(front_side) {
                                 if(newFace || (!newFace && (tracker_vec[index].reid == -1)) ) {
