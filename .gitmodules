@@ -16,3 +16,6 @@
 [submodule "3rdparty/opencv"]
 	path = 3rdparty/opencv
 	url = https://github.com/opencv/opencv.git
+[submodule "3rdparty/dlib"]
+	path = 3rdparty/dlib
+	url = https://github.com/davisking/dlib.git
