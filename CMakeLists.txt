@@ -41,13 +41,6 @@ endif (NOT OpenCV_FOUND)
 
 find_package(PkgConfig)
 
-pkg_check_modules(TRACKER_KCF REQUIRED tracker-kcf)
-if(TRACKER_KCF_FOUND)
-	message(STATUS "  tracker-kcf include: ${TRACKER_KCF_INCLUDE_DIRS}")
-	message(STATUS "  tracker-kcf libraries: ${TRACKER_KCF_LIBRARIES}")
-    include_directories(${TRACKER_KCF_INCLUDE_DIRS})
-endif()
-
 pkg_check_modules(DLIB REQUIRED dlib)
 if(DLIB_FOUND)
     message(STATUS "  dlib include: ${DLIB_INCLUDE_DIRS}")
@@ -65,11 +58,11 @@ endif()
 include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 #include_directories(${PROJECT_SOURCE_DIR}/include/ncnn)
-#include_directories(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
+include_directories(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/staple/staple)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/cpptoml/include)
 #include_directories(../dlib)
-#add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
+add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
 #add_subdirectory(${PROJECT_SOURCE_DIR}/3rdparty/staple/staple)
 
 link_directories(
