@@ -31,8 +31,8 @@ public:
     cv::Mat tvec;
     cv::Mat rmtx;
 
-    double euler_alpha;
-    double euler_beta;
+//    double euler_alpha;
+//    double euler_beta;
 
     CameraConfig(){};
 

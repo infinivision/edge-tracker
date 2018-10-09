@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS tracker.sample ( \
 	`frame_count`			UInt64,	\
 	`face_id`					UInt64,	\
 	`tracker_index`		Int8,		\
-	`front_side`			UInt8,	\
+	`face_pose_type`	UInt8,	\
 	`score`						Float32,\
 	`age`   					Int8,		\
 	`reid`						Int32,	\

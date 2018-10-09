@@ -77,6 +77,48 @@ void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
     }    
 }
 
+bool check_face_quality(cv::Mat & face, const CameraConfig & camera, long frameCounter, long thisFace, double * score)  { 
+    *score = GetVarianceOfLaplacianSharpness(face);
+    LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
+                << "], LaplacianSharpness score: " << score; 
+    if(*score>min_score )
+        return true;
+    else{
+        LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
+                        << "], video frame is blur";
+        return false;
+    }
+}
+
+bool check_face_angle(vector<cv::Point2d> & image_points, Rect2d &detected_face, 
+                      const CameraConfig & camera, long frameCounter, long thisFace, 
+                      int * face_pose_type) {
+
+    *face_pose_type = check_large_pose(image_points, detected_face);
+
+    if(*face_pose_type!=0){
+        LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
+                << "], pose is skew, don't make face embedding";
+        return false;
+    } else
+        return true;
+}
+
+bool check_face_age(cv::Mat & face, vector<mx_float> & face_vec, face_tracker & target, 
+                    const CameraConfig & camera, long frameCounter, long thisFace,
+                    int * infer_age ) {
+
+    *infer_age = proc_age(face, face_vec, target, camera);
+    if (*infer_age >= child_age_min)
+        return true;
+    else if(*infer_age!=-1){
+        LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
+                << "], can't compute coordinate for child age less than " << child_age_min;
+        return false;
+    } else
+        return false;
+}
+
 void process_camera(const string mtcnn_model_path, const CameraConfig &camera, string output_folder, \
                     const std::string ckdb_ip, const int ckdb_port, bool main_thread) {
 
@@ -212,73 +254,61 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
 
                     // calculate score of face
                     Mat face(frame, detected_face);
-                    double score = GetVarianceOfLaplacianSharpness(face);
-                    LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace 
-                              << "], LaplacianSharpness score: " << score;
-                    if(score>min_score) {
-                        vector<mx_float> face_vec;
-                        imgFormConvert(face,face_vec);
-                        int infer_age = proc_age(face, face_vec, tracker_vec[index], camera);
-                        cv::Mat world_coordinate;
-                        if (infer_age >= child_age_min) {
-                            // prepare image points for pnp
-                            image_points.clear();
-                            for(int j =0;j<5;j++){
-                                cv::Point2d point(box.ppoint[j],box.ppoint[j+5]);
-                                image_points.push_back(point);
-                            }
-
-                            bool front_side = compute_coordinate(frame, image_points, camera, world_coordinate, 
-                                                                infer_age, frameCounter, thisFace);
-
-                            int face_pose_type = check_large_pose(image_points, detected_face);
-
-                            if(front_side && face_pose_type!=0)
-                                LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
-                                        << "], pnp detect pose is front while naive algorithm detected type: " << face_pose_type;
-                            if(face_pose_type==0 && !front_side)
-                                LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
-                                        << "], pnp detect pose is not front while naive algorithm detected face is front";
-
-                            int new_id=-1;
-                            if(front_side) {
-                                if(newFace || (!newFace && (tracker_vec[index].reid == -1)) ) {
-                                    new_id = proc_embeding(face ,face_vec, tracker_vec[index], camera, frameCounter, thisFace);
-                                    #ifdef SAVE_IMG
-                                    if(new_id!=-1){
-                                        string cmd = "mkdir -p " + output_folder + "/" + to_string(new_id);
-                                        system(cmd.c_str());
-                                        string output = output_folder + "/" + to_string(new_id) + "/face_" + to_string(thisFace) + "_"+ to_string(frameCounter) + ".jpg";
-                                        imwrite(output,face);
-                                    }
-                                    #endif
-                                }
-                            } else 
-                                LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
-                                        << "], pose is skew, don't make face embedding";
-                            db.insert(frameCounter, thisFace, index, front_side, score, infer_age, new_id, world_coordinate);
-                        } else if(infer_age != -1)
-                                LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
-                                        << "], can't compute coordinate for child age less than " << child_age_min;
-                    } else 
-                        LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace 
-                                     << "], video frame is blur";
-
-                    std::vector<cv::Point2d> detect_points;
+                    bool next = true;
+                    double score=0;
+                    int face_pose_type = 0;
+                    vector<mx_float> face_vec;
+                    int infer_age=0;
+                    image_points.clear();
                     for(int j =0;j<5;j++){
                         cv::Point2d point(box.ppoint[j],box.ppoint[j+5]);
-                        detect_points.push_back(point);
+                        image_points.push_back(point);
+                    }
+
+                    next =  check_face_quality(face,camera,frameCounter,thisFace, &score);
+                    if(next) 
+                        next = check_face_angle(image_points, detected_face, 
+                                                camera, frameCounter, thisFace, 
+                                                &face_pose_type);
+                    if(next){
+                        imgFormConvert(face,face_vec);
+                        next = check_face_age(face,face_vec,tracker_vec[index], 
+                                              camera,frameCounter,thisFace,
+                                              &infer_age);
+                    }
+                    if(next) {
+                        cv::Mat world_coordinate;
+                        // prepare image points for pnp
+
+                        compute_coordinate(frame, image_points, camera, world_coordinate, 
+                                                            infer_age, frameCounter, thisFace);
+
+                        int new_id=-1;
+                        if(newFace || (!newFace && (tracker_vec[index].reid == -1)) ) {
+                            new_id = proc_embeding(face ,face_vec, tracker_vec[index], camera, frameCounter, thisFace);
+                            #ifdef SAVE_IMG
+                            if(new_id!=-1){
+                                string cmd = "mkdir -p " + output_folder + "/" + to_string(new_id);
+                                system(cmd.c_str());
+                                string output = output_folder + "/" + to_string(new_id) + "/face_" + to_string(thisFace) + "_"+ to_string(frameCounter) + ".jpg";
+                                imwrite(output,face);
+                            }
+                            #endif
+                        }
+                        
+                        db.insert(frameCounter, thisFace, index, face_pose_type, score, infer_age, new_id, world_coordinate);
+                    
                     }
 
                     #ifdef SAVE_IMG
                     {
                         // debug output
-                        // draw detected face                    
+                        // draw detected face
                         rectangle( detect_frame, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
                         Point middleHighPoint = Point(detected_face.x+detected_face.width/2, detected_face.y);
                         putText(detect_frame, to_string(thisFace), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
                         
-                        for(auto point: detect_points){
+                        for(auto point: image_points){
                             drawMarker(detect_frame, point,  cv::Scalar(0, 255, 0), cv::MARKER_CROSS, 10, 1);
                         }                        
                     }
@@ -290,7 +320,7 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                         Point middleHighPoint = Point(detected_face.x+detected_face.width/2, detected_face.y);
                         putText(show_frame, to_string(thisFace), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
 
-                        for(auto point: detect_points){
+                        for(auto point: image_points){
                             drawMarker(show_frame, point,  cv::Scalar(0, 255, 0), cv::MARKER_CROSS, 10, 1);
                         }
                     }
@@ -321,7 +351,7 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                         }
                     }
                 }
-                if (!isFace) 
+                if (!isFace)
                 {
                     LOG(INFO) << "camera["<< camera.NO << "]" << "stop tracking face " << tracker_vec[i].faceId << ", tracker index " << i;
                     #ifdef SAVE_IMG

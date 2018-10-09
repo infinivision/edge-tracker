@@ -79,7 +79,7 @@ long  sum_t_pnp     = 0;
 long  pnp_count = 0;
 #endif
 
-bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, \
+void compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, \
                          cv::Mat & world_coordinate, int age, int frameCount,int faceId) {
     cv::Mat camera_matrix;
     cv::Mat dist_coeffs;
@@ -107,7 +107,7 @@ bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
     } else if(age>=18)
         model_points_clone = model_points;
     else
-        return false;
+        return;
 
 #ifdef BENCH_EDGE
     struct timeval  tv;
@@ -125,29 +125,18 @@ bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
     pnp_count++;
     LOG(INFO) << "PnP performance: [" << (sum_t_pnp/1000.0 ) / pnp_count << "] mili second latency per time";
 #endif
-    /*
-    string points_str;
-    for(auto point: image_points){
-        points_str += to_string(point.x) + "," + to_string(point.y) + ";";
-    }
-    LOG(INFO) << "ip[" << camera.ip << "] image point: " << points_str;
-    
-    std::cout << "camera_matrix\n" << camera_matrix << endl;
-    std::cout << "model_points\n" << model_points << endl;
-    std::cout << "image_points\n" << image_points << endl;
-    */
-
-    // Project a 3D point (0, 0, 1000.0) onto the image plane.
-    // We use this to draw a line sticking out of the nose
-    // LOG(INFO) << camera.ip << " tvec: "<< translation_vector.t()/1000;
 
     if(!camera.default_extrinsic) {
         world_coordinate = camera.rmtx.t() * (translation_vector - camera.tvec);
         LOG(INFO) << "camera["<< camera.NO << "]" << " frame["<< frameCount << "]faceId[" << faceId 
                   << "] w coordinate: " << world_coordinate.t() / 1000;
-    } else 
+    } else {
         world_coordinate = translation_vector;
-
+        LOG(INFO) << "camera["<< camera.NO << "]" << " frame["<< frameCount << "]faceId[" << faceId 
+                  << "] w coordinate: " << world_coordinate.t() / 1000;
+    }
+    
+    /*
     cv::Mat r_mat;
     cv::Rodrigues(rotation_vector,r_mat);
 
@@ -169,6 +158,7 @@ bool compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
     if(y>camera.euler_beta)
         return false;
     return true;
+    */
 }
 
 

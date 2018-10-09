@@ -114,8 +114,8 @@ std::vector<CameraConfig> LoadCameraConfig(std::string config_path) {
 
             camera.username    = meta["username"];
             camera.password    = meta["password"];
-            camera.euler_alpha = meta["euler_alpha"];
-            camera.euler_beta  = meta["euler_beta"];
+//            camera.euler_alpha = meta["euler_alpha"];
+//            camera.euler_beta  = meta["euler_beta"];
 
             camera.default_intrinsic = meta["default_intrinsic"];
             if(!camera.default_intrinsic){

@@ -20,7 +20,7 @@ catch(std::system_error & exception){
 }
 
 void dbHandle::insert(long frameCounter, long faceId, unsigned tracker_index, \
-                    bool front_side, float score, int age, int reid, cv::Mat & coordinate) {
+                    int face_pose_type, float score, int age, int reid, cv::Mat & coordinate) {
 
     try{
 
@@ -42,9 +42,9 @@ void dbHandle::insert(long frameCounter, long faceId, unsigned tracker_index, \
         tracker_index_->Append(tracker_index);
         block.AppendColumn("tracker_index" , tracker_index_);
 
-        auto front_side_ = std::make_shared<ColumnUInt8>();
-        front_side_->Append(front_side);
-        block.AppendColumn("front_side" , front_side_);
+        auto face_pose_type_ = std::make_shared<ColumnUInt8>();
+        face_pose_type_->Append(face_pose_type);
+        block.AppendColumn("face_pose_type" , face_pose_type_);
 
         auto score_ = std::make_shared<ColumnFloat32>();
         score_->Append(score);
