@@ -88,12 +88,12 @@ void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
 bool check_face_quality(cv::Mat & face, const CameraConfig & camera, long frameCounter, long thisFace, double * score)  { 
     *score = GetVarianceOfLaplacianSharpness(face);
     LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
-                << "], LaplacianSharpness score: " << score; 
+                << "], LaplacianSharpness score: " << *score; 
     if(*score>min_score )
         return true;
     else{
         LOG(WARNING) << camera.ip <<" frame[" << frameCounter << "]faceId[" << thisFace
-                        << "], video frame is blur";
+                        << "] face check false, video frame is blur";
         return false;
     }
 }
@@ -104,9 +104,9 @@ bool check_face_angle(vector<cv::Point2d> & image_points, Rect2d &detected_face,
 
     *face_pose_type = check_large_pose(image_points, detected_face);
 
-    if(*face_pose_type!=0){
+    if(*face_pose_type > 2){
         LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
-                << "], pose is skew, don't make face embedding";
+                << "] face check false, pose is skew";
         return false;
     } else
         return true;
@@ -121,7 +121,7 @@ bool check_face_age(cv::Mat & face, vector<mx_float> & face_vec, face_tracker & 
         return true;
     else if(*infer_age!=-1){
         LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
-                << "], can't compute coordinate for child age less than " << child_age_min;
+                << "] face check false, age is too small";
         return false;
     } else
         return false;

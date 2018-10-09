@@ -114,7 +114,7 @@ bool infer_svc_embed(cv::Mat & face, std::vector<float> & embed_vec, std::string
 
         curl_easy_setopt(curl, CURLOPT_URL, svc_url.c_str());
         curl_easy_setopt(curl, CURLOPT_MIMEPOST, form);
-        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 1L);
+        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10L);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         // to do: set a small threshold for out of time

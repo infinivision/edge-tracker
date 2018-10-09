@@ -11,6 +11,7 @@ std::vector<cv::Point3d> model_points;
 int   pnp_algo = cv::SOLVEPNP_EPNP;
 float child_weight;
 int   child_age_min = 6;
+std::vector<float> face_pose_threshold;
 
 void read3D_conf(string pnpConfFile){
     model_points.clear();
@@ -37,6 +38,12 @@ void read3D_conf(string pnpConfFile){
         else if (algo == "DLS"){
             pnp_algo = cv::SOLVEPNP_DLS;
         }
+
+        auto threshold_array = g->get_qualified_array_of<double>("facePoseType.threshold");
+        for (const auto& element : *threshold_array){
+            face_pose_threshold.push_back(element);
+        }
+
     }
     catch (const cpptoml::parse_exception& e) {
         std::cerr << "Failed to parse 3dpnp.toml: " << e.what() << std::endl;
@@ -222,19 +229,24 @@ int check_large_pose(std::vector<Point2d> & landmark, Rect2d & box ){
     Point2d box_center = (box.br() + box.tl())*0.5;
 
     int ret = 0;
-    if(left_score>=3.0)
-        ret = 1;
-    if(ret==0 && left_score>=2.0)
-        if(mright<=box_center.x)
-            ret = 1;
-    if(ret==0 && right_score>=3.0)
-        ret = 2;
-    if(ret==0 && right_score>=2.0)
-        if(mleft>=box_center.x)
-            ret = 2;
-    if(ret==0 && up_score>=2.0)
+    if(left_score>=face_pose_threshold[0])
         ret = 3;
-    if(ret==0 && down_score>=5.0)
+    if(ret==0 && left_score>=face_pose_threshold[1])
+        if(mright<=box_center.x)
+            ret = 3;
+    if(ret==0 && right_score>=face_pose_threshold[0])
         ret = 4;
+    if(ret==0 && right_score>=face_pose_threshold[1])
+        if(mleft>=box_center.x)
+            ret = 4;
+    if(ret==0 && up_score>=2.0)
+        ret = 5;
+    if(ret==0 && down_score>=5.0)
+        ret = 6;
+    if(ret==0 && left_score>face_pose_threshold[2])
+        ret = 1;
+    if(ret==0 && right_score>face_pose_threshold[2])
+        ret = 2;
+
     return ret;
 }

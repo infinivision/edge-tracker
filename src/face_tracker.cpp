@@ -13,7 +13,6 @@ face_tracker::face_tracker(int faceId_, Mat frame, Rect2d roi , algo_type t_) {
         staple->tracker_staple_initialize(frame,roi);
         staple->tracker_staple_train(frame,true);
     }
-
 }
 
 face_tracker::~face_tracker(){

@@ -121,7 +121,7 @@ int infer_svc_age(cv::Mat & face, std::string & remote_file) {
         curl_mime_name(field, "data");
         curl_mime_filename(field, remote_file.c_str());
         curl_mime_data(field, (char *) &buff[0], buff.size());
-        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 1L);
+        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10L);
         curl_easy_setopt(curl, CURLOPT_URL, svc_url.c_str());
         curl_easy_setopt(curl, CURLOPT_MIMEPOST, form);
 
