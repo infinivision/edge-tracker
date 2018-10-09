@@ -33,6 +33,11 @@ using namespace cv;
 int detection_period = 20;
 int min_score = 25;
 
+#ifdef SAVE_IMG
+bool original_save = false;
+bool tracker_save  = false;
+#endif
+
 vector<float> mtcnn_threshold;
 vector<float> mtcnn_nms_threshold;
 
@@ -333,10 +338,14 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
             }
             #ifdef SAVE_IMG
             // debug output
-            string output = output_folder + "/original/" + to_string(frameCounter) + ".jpg";
-            imwrite(output,frame);
-            output = output_folder + "/detect/"  + to_string(frameCounter) + ".jpg";
-            imwrite(output,detect_frame);
+            if(original_save){
+                string output = output_folder + "/original/" + to_string(frameCounter) + ".jpg";
+                imwrite(output,frame);
+            }
+            if(total>0){
+                string output = output_folder + "/detect/"  + to_string(frameCounter) + ".jpg";
+                imwrite(output,detect_frame);
+            }
             #endif
             #ifdef BENCH_EDGE
             gettimeofday(&tv3,NULL);
@@ -360,13 +369,15 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                     LOG(INFO) << "camera["<< camera.NO << "]" << "stop tracking face " << tracker_vec[i].faceId << ", tracker index " << i;
                     #ifdef SAVE_IMG
                     // debug output
-                    string output = output_folder + "/tracker/face_" + to_string(tracker_vec[i].faceId) + "_" + to_string(frameCounter) + ".jpg";
-                    Rect2d t_face = tracker_vec[i].box;
-                    Rect2d frame_rect = Rect2d(0, 0, frame.size().width, frame.size().height);
-                    Rect2d roi = t_face & frame_rect;
-                    if(roi.area() > 0){
-                        Mat tracker_face(frame,roi);
-                        imwrite(output,tracker_face);
+                    if(tracker_save){
+                        string output = output_folder + "/tracker/face_" + to_string(tracker_vec[i].faceId) + "_" + to_string(frameCounter) + ".jpg";
+                        Rect2d t_face = tracker_vec[i].box;
+                        Rect2d frame_rect = Rect2d(0, 0, frame.size().width, frame.size().height);
+                        Rect2d roi = t_face & frame_rect;
+                        if(roi.area() > 0){
+                            Mat tracker_face(frame,roi);
+                            imwrite(output,tracker_face);
+                        }
                     }
                     #endif
                     tracker_vec.erase(tracker_vec.begin() + i);
