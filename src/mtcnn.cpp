@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sys/time.h>
 #include <opencv2/opencv.hpp>
+#include <cassert>
 #include "mtcnn.h"
 #include "utils.h"
 
@@ -40,7 +41,17 @@ MTCNN::MTCNN(const std::string& model_path){
 
 }
 
+void MTCNN::set_threshold(vector<float> threshold_, vector<float> nms_threshold_){
+    assert(threshold_.size()==3);
+    assert(nms_threshold_.size()==3);
 
+    for(size_t i=0;i<3;i++)
+        threshold[i] = threshold_[i];
+
+    for(size_t i=0;i<3;i++)
+        nms_threshold[i] = nms_threshold_[i];
+
+}
 
 void MTCNN::generateBbox(ncnn::Mat score, ncnn::Mat location, std::vector<Bbox>& boundingBox_, std::vector<orderScore>& bboxScore_, float scale){
     int stride = 2;

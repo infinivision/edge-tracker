@@ -33,6 +33,9 @@ using namespace cv;
 int detection_period = 20;
 int min_score = 25;
 
+vector<float> mtcnn_threshold;
+vector<float> mtcnn_nms_threshold;
+
 bool overlap(Rect2d &box1, Rect2d &box2) {
     int x1 = box1.x + box1.width/2;
     int y1 = box1.y + box1.height/2;
@@ -127,6 +130,7 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
     prepare_output_folder(camera, output_folder);
     
     MTCNN mm(mtcnn_model_path);
+    mm.set_threshold(mtcnn_threshold,mtcnn_nms_threshold);
 
     VideoCapture cap = camera.GetCapture();
     
@@ -438,6 +442,14 @@ int main(int argc, char* argv[]) {
         mtcnn_model_path =  g->get_qualified_as<std::string>("detect.mtccn_model_path").value_or("../models/ncnn");
         detection_period = g->get_qualified_as<int>("detect.period").value_or(20);
         min_score = g->get_qualified_as<int>("detect.min_score").value_or(25);
+        auto array = g->get_qualified_array_of<double>("detect.mtcnn_threshold");
+        for (const auto& element : *array){
+            mtcnn_threshold.push_back(element);
+        }
+        array = g->get_qualified_array_of<double>("detect.mtcnn_nms_threshold");
+        for (const auto& element : *array){
+            mtcnn_nms_threshold.push_back(element);
+        }
         // parse db conf
         ckdb_ip = g->get_qualified_as<std::string>("db.ip").value_or("172.19.0.105");
         ckdb_port = g->get_qualified_as<int>("db.port").value_or(9000);

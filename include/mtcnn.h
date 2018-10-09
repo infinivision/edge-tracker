@@ -46,6 +46,7 @@ public:
     MTCNN();
     MTCNN(const std::string& model_path);
     void detect(ncnn::Mat& img_, std::vector<Bbox>& finalBbox);
+    void set_threshold(vector<float> threshold_, vector<float> nms_threshold_);
 
 private:
     void generateBbox(ncnn::Mat score, ncnn::Mat location, vector<Bbox>& boundingBox_, vector<orderScore>& bboxScore_, float scale);
@@ -55,8 +56,8 @@ private:
     ncnn::Net pnet_, rnet_, onet_;
     ncnn::Mat img;
 
-    const float nms_threshold[3] = {0.5, 0.7, 0.7};
-    const float threshold[3] = {0.7, 0.6, 0.8};
+    float nms_threshold[3] = {0.5, 0.7, 0.7};
+    float threshold[3] = {0.7, 0.6, 0.8};
     const float mean_vals[3] = {127.5, 127.5, 127.5};
     const float norm_vals[3] = {0.0078125, 0.0078125, 0.0078125};
     std::vector<Bbox> firstBbox_, secondBbox_,thirdBbox_;

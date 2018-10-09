@@ -3,6 +3,8 @@
 	  wisdom_file = "wisdom"
 [detect]
 	mtccn_model_path = "../models/ncnn"
+	mtcnn_threshold     = [0.6,0.7,0.8]
+	mtcnn_nms_threshold = [0.7,0.7,0.7]	
 	period = 25
 	min_score = 1
 [db]
