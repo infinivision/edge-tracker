@@ -10,16 +10,16 @@ using namespace cv;
 std::vector<cv::Point3d> model_points;
 int   pnp_algo = cv::SOLVEPNP_EPNP;
 float child_weight;
-int   child_age_min = 6;
+int   min_child_age = 6;
 std::vector<float> face_pose_threshold;
-
+float min_face_size = 0.0002;
 void read3D_conf(string pnpConfFile){
     model_points.clear();
     try {
         auto g = cpptoml::parse_file(pnpConfFile);
         auto eyeCornerLength = g->get_qualified_as<int>("faceModel.eyeCornerLength").value_or(105);
         child_weight = g->get_qualified_as<double>("faceModel.child").value_or(0.66);
-        child_age_min = g->get_qualified_as<int>("faceModel.child_age_min").value_or(6);
+        min_child_age = g->get_qualified_as<int>("faceModel.min_child_age").value_or(6);
         auto array = g->get_table_array("face3dpoint");
         for (const auto &table : *array) {
         	auto x = table->get_as<double>("x");
@@ -43,6 +43,8 @@ void read3D_conf(string pnpConfFile){
         for (const auto& element : *threshold_array){
             face_pose_threshold.push_back(element);
         }
+
+        min_face_size = g->get_qualified_as<double>("facePoseType.min_face_size").value_or(0.0002);
 
     }
     catch (const cpptoml::parse_exception& e) {
@@ -105,10 +107,10 @@ void compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & imag
     cv::Mat translation_vector;
     std::vector<cv::Point3d> model_points_clone;
     Point3d point;
-    if(age >= child_age_min && age < 18) {
+    if(age >= min_child_age && age < 18) {
         for(size_t i =0;i< model_points.size();i++){
             point = model_points[i];
-            point *= child_weight + (1-child_weight) / (18-child_age_min) * (age-child_age_min);
+            point *= child_weight + (1-child_weight) / (18-min_child_age) * (age-min_child_age);
             model_points_clone.push_back(point);
         }
     } else if(age>=18)
@@ -249,4 +251,20 @@ int check_large_pose(std::vector<Point2d> & landmark, Rect2d & box ){
         ret = 2;
 
     return ret;
+}
+
+bool check_face_coordinate(Mat & frame, vector<cv::Point2d> & image_points, double * face_size){
+    assert(image_points.size()==5);
+    assert(frame.data);
+    double dx = image_points[0].x - image_points[1].x;
+    double dy = image_points[0].y - image_points[1].y;
+    double dz = dx*dx+dy*dy;
+
+    *face_size = dz / (frame.cols*frame.rows);
+    if(*face_size>min_face_size)
+        return true;
+    else{
+        LOG(INFO) << "face size is too small: " << *face_size;
+        return false;
+    }
 }

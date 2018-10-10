@@ -85,7 +85,8 @@ void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
     }    
 }
 
-bool check_face_quality(cv::Mat & face, const CameraConfig & camera, long frameCounter, long thisFace, double * score)  { 
+bool check_face_quality(cv::Mat & face, const CameraConfig & camera, long frameCounter, 
+                        long thisFace, double * score) {
     *score = GetVarianceOfLaplacianSharpness(face);
     LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
                 << "], LaplacianSharpness score: " << *score; 
@@ -117,7 +118,7 @@ bool check_face_age(cv::Mat & face, vector<mx_float> & face_vec, face_tracker & 
                     int * infer_age ) {
 
     *infer_age = proc_age(face, face_vec, target, camera);
-    if (*infer_age >= child_age_min)
+    if (*infer_age >= min_child_age)
         return true;
     else if(*infer_age!=-1){
         LOG(INFO) << "camera["<< camera.NO << "]" <<" frame[" << frameCounter << "]faceId[" << thisFace
@@ -125,6 +126,44 @@ bool check_face_age(cv::Mat & face, vector<mx_float> & face_vec, face_tracker & 
         return false;
     } else
         return false;
+}
+
+void clean_up_trackers(vector<face_tracker> & tracker_vec, vector<Bbox> & detected_bounding_boxes, 
+                    const CameraConfig & camera, long frameCounter, 
+                    Mat & frame, string & output_folder) {
+    // clean up trackers if the tracker doesn't follow a face
+    for (size_t i = 0; i < tracker_vec.size(); i++) {
+        bool isFace = false;
+        for (vector<Bbox>::iterator it=detected_bounding_boxes.begin(); it!=detected_bounding_boxes.end();it++) {
+            if ((*it).exist) {
+                Bbox box = *it;
+                Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
+                if (overlap(detected_face, tracker_vec[i].box)) {
+                    isFace = true;
+                    break;
+                }
+            }
+        }
+        if (!isFace)
+        {
+            LOG(INFO) << "camera["<< camera.NO << "]" << "stop tracking face " << tracker_vec[i].faceId << ", tracker index " << i;
+            #ifdef SAVE_IMG
+            // debug output
+            if(tracker_save){
+                string output = output_folder + "/tracker/face_" + to_string(tracker_vec[i].faceId) + "_" + to_string(frameCounter) + ".jpg";
+                Rect2d t_face = tracker_vec[i].box;
+                Rect2d frame_rect = Rect2d(0, 0, frame.size().width, frame.size().height);
+                Rect2d roi = t_face & frame_rect;
+                if(roi.area() > 0){
+                    Mat tracker_face(frame,roi);
+                    imwrite(output,tracker_face);
+                }
+            }
+            #endif
+            tracker_vec.erase(tracker_vec.begin() + i);
+            i--;
+        }
+    }
 }
 
 void process_camera(const string mtcnn_model_path, const CameraConfig &camera, string output_folder, \
@@ -268,6 +307,8 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                     int face_pose_type = 0;
                     vector<mx_float> face_vec;
                     int infer_age=0;
+                    double face_size = 0.0;
+                    cv::Mat world_coordinate;
                     image_points.clear();
                     for(int j =0;j<5;j++){
                         cv::Point2d point(box.ppoint[j],box.ppoint[j+5]);
@@ -275,23 +316,26 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                     }
 
                     next =  check_face_quality(face,camera,frameCounter,thisFace, &score);
-                    if(next) 
-                        next = check_face_angle(image_points, detected_face, 
-                                                camera, frameCounter, thisFace, 
-                                                &face_pose_type);
+
+                    if(next)
+                        next = check_face_coordinate(frame, image_points, &face_size);
+                    
                     if(next){
                         imgFormConvert(face,face_vec);
                         next = check_face_age(face,face_vec,tracker_vec[index], 
                                               camera,frameCounter,thisFace,
                                               &infer_age);
                     }
-                    if(next) {
-                        cv::Mat world_coordinate;
-                        // prepare image points for pnp
 
-                        compute_coordinate(frame, image_points, camera, world_coordinate, 
+                    if(next) compute_coordinate(frame, image_points, camera, world_coordinate, 
                                                             infer_age, frameCounter, thisFace);
 
+                    if(next) 
+                        next = check_face_angle(image_points, detected_face, 
+                                                camera, frameCounter, thisFace, 
+                                                &face_pose_type);
+
+                    if(next) {
                         int new_id=-1;
                         if(newFace || (!newFace && (tracker_vec[index].reid == -1)) ) {
                             new_id = proc_embeding(face ,face_vec, tracker_vec[index], camera, frameCounter, thisFace);
@@ -315,7 +359,8 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                         // draw detected face
                         rectangle( detect_frame, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
                         Point middleHighPoint = Point(detected_face.x+detected_face.width/2, detected_face.y);
-                        putText(detect_frame, to_string(thisFace), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
+                        string text = to_string(thisFace) + ":" + to_string(score) +':' + to_string(face_size);
+                        putText(detect_frame, text, middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
                         
                         for(auto point: image_points){
                             drawMarker(detect_frame, point,  cv::Scalar(0, 255, 0), cv::MARKER_CROSS, 10, 1);
@@ -327,7 +372,8 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                     if(main_thread){
                         rectangle( show_frame, detected_face, Scalar( 255, 0, 0 ), 2, 1 );
                         Point middleHighPoint = Point(detected_face.x+detected_face.width/2, detected_face.y);
-                        putText(show_frame, to_string(thisFace), middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
+                        string text = to_string(thisFace);
+                        putText(show_frame, text, middleHighPoint, FONT_HERSHEY_SIMPLEX, 1, Scalar(255, 255, 255), 2);
 
                         for(auto point: image_points){
                             drawMarker(show_frame, point,  cv::Scalar(0, 255, 0), cv::MARKER_CROSS, 10, 1);
@@ -351,39 +397,7 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
             gettimeofday(&tv3,NULL);
             LOG(INFO) << "detected " << total << " Persons. time eclipsed: " <<  getElapse(&tv1, &tv3) << " ms";
             #endif
-            // clean up trackers if the tracker doesn't follow a face
-            for (size_t i = 0; i < tracker_vec.size(); i++) {
-                bool isFace = false;
-                for (vector<Bbox>::iterator it=detected_bounding_boxes.begin(); it!=detected_bounding_boxes.end();it++) {
-                    if ((*it).exist) {
-                        Bbox box = *it;
-                        Rect2d detected_face(Point(box.x1, box.y1),Point(box.x2, box.y2));
-                        if (overlap(detected_face, tracker_vec[i].box)) {
-                            isFace = true;
-                            break;
-                        }
-                    }
-                }
-                if (!isFace)
-                {
-                    LOG(INFO) << "camera["<< camera.NO << "]" << "stop tracking face " << tracker_vec[i].faceId << ", tracker index " << i;
-                    #ifdef SAVE_IMG
-                    // debug output
-                    if(tracker_save){
-                        string output = output_folder + "/tracker/face_" + to_string(tracker_vec[i].faceId) + "_" + to_string(frameCounter) + ".jpg";
-                        Rect2d t_face = tracker_vec[i].box;
-                        Rect2d frame_rect = Rect2d(0, 0, frame.size().width, frame.size().height);
-                        Rect2d roi = t_face & frame_rect;
-                        if(roi.area() > 0){
-                            Mat tracker_face(frame,roi);
-                            imwrite(output,tracker_face);
-                        }
-                    }
-                    #endif
-                    tracker_vec.erase(tracker_vec.begin() + i);
-                    i--;
-                }
-            }
+            clean_up_trackers(tracker_vec, detected_bounding_boxes, camera, frameCounter, frame, output_folder);
         }
 
         frameCounter++;

@@ -13,11 +13,12 @@ extern std::vector<cv::Point3d> model_points;
 extern bool  use_default_intrinsic;
 extern int   pnp_algo;
 extern float child_weight;
-extern int   child_age_min;
+extern int   min_child_age;
 
 void read3D_conf(std::string pnpConfFile);
 void compute_coordinate( const cv::Mat im, const std::vector<cv::Point2d> & image_points, const CameraConfig & camera, \
                          cv::Mat & world_coordinate, int age, int frameCount,int faceId);
 int check_large_pose(std::vector<cv::Point2d> & landmark, cv::Rect2d & box );
+bool check_face_coordinate(cv::Mat & frame, std::vector<cv::Point2d> & image_points, double * face_size);
 
 #endif

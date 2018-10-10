@@ -24,4 +24,7 @@
 [faceModel]
   eyeCornerLength = 105
   child         =  0.66
-  chile_age_min =  6
+  min_child_age =  6
+[facePoseType]
+  threshold = [5.0,4.0,1.85]
+  min_face_size = 0.0002  
