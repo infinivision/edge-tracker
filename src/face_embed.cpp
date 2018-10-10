@@ -11,6 +11,9 @@ static PredictorHandle infer_hd = nullptr;
 static std::string infer_mode = "local";
 static std::string svc_url = "";
 
+int n_sample_count_type1 = 3;
+int n_sample_count_type2 = 3;
+
 #ifdef BENCH_EDGE
 static long  sum_t_infer  = 0;
 static long  infer_count  = 0;
@@ -44,6 +47,10 @@ void LoadEmbedConf(std::string mx_model_conf) {
         std::cout << "embedding service url: " << svc_url <<"\n";
         curl_global_init(CURL_GLOBAL_ALL);
     }
+
+    n_sample_count_type1 = g->get_qualified_as<int>("embedding.n_sample_count_type1").value_or(3);
+    n_sample_count_type2 = g->get_qualified_as<int>("embedding.n_sample_count_type2").value_or(3);
+
   }
   catch (const cpptoml::parse_exception& e) {
       std::cerr << "Failed to parse mxModel.toml: " << e.what() << std::endl;
@@ -54,7 +61,7 @@ void LoadEmbedConf(std::string mx_model_conf) {
 
 bool infer_svc_embed(cv::Mat & face, std::vector<float> & embed_vec, std::string & remote_file) ;
 
-int proc_embeding(cv::Mat & face, std::vector<mx_float> & face_vec, face_tracker & target, 
+int proc_embeding(cv::Mat & face, std::vector<mx_float> & face_vec, 
                  const CameraConfig & camera, int frameCounter, int thisFace) {
 
     std::vector<float> face_embed_vec;
@@ -84,8 +91,7 @@ int proc_embeding(cv::Mat & face, std::vector<mx_float> & face_vec, face_tracker
     }
     #endif
     if(infer_success) {
-        target.reid = proc_embd_vec(face_embed_vec, camera, frameCounter, thisFace);
-        return target.reid;
+        return proc_embd_vec(face_embed_vec, camera, frameCounter, thisFace);
     } else{
         LOG(WARNING) << "face infer embeding svc failed!";
         return -1;

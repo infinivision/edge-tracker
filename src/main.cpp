@@ -31,8 +31,8 @@ using namespace cv;
  */
 
 int detection_period = 20;
-int min_score = 25;
-
+int min_score = 5;
+int disappear_threshold = 100;
 #ifdef SAVE_IMG
 bool original_save = false;
 bool tracker_save  = false;
@@ -144,24 +144,34 @@ void clean_up_trackers(vector<face_tracker> & tracker_vec, vector<Bbox> & detect
                 }
             }
         }
-        if (!isFace)
-        {
-            LOG(INFO) << "camera["<< camera.NO << "]" << "stop tracking face " << tracker_vec[i].faceId << ", tracker index " << i;
-            #ifdef SAVE_IMG
-            // debug output
-            if(tracker_save){
-                string output = output_folder + "/tracker/face_" + to_string(tracker_vec[i].faceId) + "_" + to_string(frameCounter) + ".jpg";
-                Rect2d t_face = tracker_vec[i].box;
-                Rect2d frame_rect = Rect2d(0, 0, frame.size().width, frame.size().height);
-                Rect2d roi = t_face & frame_rect;
-                if(roi.area() > 0){
-                    Mat tracker_face(frame,roi);
-                    imwrite(output,tracker_face);
+        if (!isFace) {
+            if( tracker_vec[i].last_disappear_frame == -1) {
+                tracker_vec[i].last_disappear_frame = frameCounter;
+                LOG(INFO) << "camera["<< camera.NO << "]frame[" << frameCounter  << "]face[" << tracker_vec[i].faceId << "] disappear, tracker index " << i;
+                continue;
+            } else if( (frameCounter - tracker_vec[i].last_disappear_frame) > disappear_threshold) {
+                LOG(INFO) << "camera["<< camera.NO <<"]frame[" << frameCounter << "] stop tracking face " << tracker_vec[i].faceId << ", tracker index " << i;
+                #ifdef SAVE_IMG
+                // debug output
+                if(tracker_save){
+                    string output = output_folder + "/tracker/face_" + to_string(tracker_vec[i].faceId) + "_" + to_string(frameCounter) + ".jpg";
+                    Rect2d t_face = tracker_vec[i].box;
+                    Rect2d frame_rect = Rect2d(0, 0, frame.size().width, frame.size().height);
+                    Rect2d roi = t_face & frame_rect;
+                    if(roi.area() > 0){
+                        Mat tracker_face(frame,roi);
+                        imwrite(output,tracker_face);
+                    }
                 }
+                #endif
+                tracker_vec.erase(tracker_vec.begin() + i);
+                i--;
             }
-            #endif
-            tracker_vec.erase(tracker_vec.begin() + i);
-            i--;
+        } else {
+            if(tracker_vec[i].last_disappear_frame!=-1){
+                LOG(INFO) << "camera["<< camera.NO << "]frame[" << frameCounter  << "]face[" << tracker_vec[i].faceId << "] reappear, tracker index " << i;
+                tracker_vec[i].last_disappear_frame = -1;
+            }
         }
     }
 }
@@ -330,27 +340,59 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                     if(next) compute_coordinate(frame, image_points, camera, world_coordinate, 
                                                             infer_age, frameCounter, thisFace);
 
-                    if(next) 
+                    if(next)
                         next = check_face_angle(image_points, detected_face, 
                                                 camera, frameCounter, thisFace, 
                                                 &face_pose_type);
 
                     if(next) {
                         int new_id=-1;
-                        if(newFace || (!newFace && (tracker_vec[index].reid == -1)) ) {
-                            new_id = proc_embeding(face ,face_vec, tracker_vec[index], camera, frameCounter, thisFace);
-                            #ifdef SAVE_IMG
+                        if (face_pose_type == 0 && tracker_vec[index].sample_count_type1 < n_sample_count_type1) {
+                            new_id = proc_embeding(face ,face_vec, camera, frameCounter, thisFace);
                             if(new_id!=-1){
-                                string cmd = "mkdir -p " + output_folder + "/" + to_string(new_id);
-                                system(cmd.c_str());
-                                string output = output_folder + "/" + to_string(new_id) + "/face_" + to_string(thisFace) + "_"+ to_string(frameCounter) + ".jpg";
-                                imwrite(output,face);
+                                if(tracker_vec[index].reid==-1)
+                                    tracker_vec[index].reid = new_id;
+                                else if( tracker_vec[index].reid != new_id ) {
+                                    LOG(INFO) << "camera["<< camera.NO << "]frame["<< frameCounter << "] face " << tracker_vec[index].faceId 
+                                              <<" reid change from " << tracker_vec[index].reid << " to " << new_id <<", erase tracker";
+                                    tracker_vec.erase(tracker_vec.begin() + index);                                    
+                                    continue;
+                                }
+                                tracker_vec[index].sample_count_type1++;
+                                #ifdef SAVE_IMG
+                                if(new_id!=-1){
+                                    string cmd = "mkdir -p " + output_folder + "/" + to_string(new_id);
+                                    system(cmd.c_str());
+                                    string output = output_folder + "/" + to_string(new_id) + "/face_" + to_string(thisFace) + "_"+ to_string(frameCounter) + ".jpg";
+                                    imwrite(output,face);
+                                }
+                                #endif
                             }
-                            #endif
+                        } else if ( (face_pose_type == 1 || face_pose_type==2)&& tracker_vec[index].sample_count_type2 < n_sample_count_type2) {
+                            new_id = proc_embeding(face ,face_vec, camera, frameCounter, thisFace);
+                            if(new_id!=-1) {
+                                if(tracker_vec[index].reid==-1)
+                                    tracker_vec[index].reid = new_id;
+                                else if( tracker_vec[index].reid != new_id ) {
+                                    LOG(INFO) << "camera["<< camera.NO <<  "]frame[" << frameCounter << "] face " << tracker_vec[index].faceId 
+                                              <<" reid change from " << tracker_vec[index].reid << " to " << new_id <<", erase tracker";                                    
+                                    tracker_vec.erase(tracker_vec.begin() + index);
+                                    continue;
+                                }
+                                tracker_vec[index].sample_count_type2++;                                
+                                #ifdef SAVE_IMG
+                                if(new_id!=-1){
+                                    string cmd = "mkdir -p " + output_folder + "/" + to_string(new_id);
+                                    system(cmd.c_str());
+                                    string output = output_folder + "/" + to_string(new_id) + "/face_" + to_string(thisFace) + "_"+ to_string(frameCounter) + ".jpg";
+                                    imwrite(output,face);
+                                }
+                                #endif
+                            }
                         }
-                        
+
                         db.insert(frameCounter, thisFace, index, face_pose_type, score, infer_age, new_id, world_coordinate);
-                    
+
                     }
 
                     #ifdef SAVE_IMG
@@ -463,10 +505,11 @@ int main(int argc, char* argv[]) {
         auto staple_file = g->get_qualified_as<std::string>("tracker.config_file").value_or("staple.yaml");
         auto wisdom_file = g->get_qualified_as<std::string>("tracker.wisdom_file").value_or("wisdom");
         face_tracker::staple_init(wisdom_file,staple_file);
+        disappear_threshold = g->get_qualified_as<int>("tracker.disappear_threshold").value_or(100);
         // parse detector conf
         mtcnn_model_path =  g->get_qualified_as<std::string>("detect.mtccn_model_path").value_or("../models/ncnn");
         detection_period = g->get_qualified_as<int>("detect.period").value_or(20);
-        min_score = g->get_qualified_as<int>("detect.min_score").value_or(25);
+        min_score = g->get_qualified_as<int>("detect.min_score").value_or(5);
         auto array = g->get_qualified_array_of<double>("detect.mtcnn_threshold");
         for (const auto& element : *array){
             mtcnn_threshold.push_back(element);

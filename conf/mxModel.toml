@@ -1,6 +1,8 @@
 [embedding]
     infer_mode = "service"
     url = "http://172.19.0.15:81/r100/predict"
+    n_sample_count_type1 = 3
+    n_sample_count_type2 = 3    
 [age]
     enable = true
     n_age_sample = 3

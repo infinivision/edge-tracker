@@ -6,8 +6,12 @@ face_tracker::face_tracker(int faceId_, Mat frame, Rect2d roi , algo_type t_) {
     reid = -1;
     age_sum = 0;
     infer_age_count = 0;
+    sample_count_type1 = 0;
+    sample_count_type2 = 0;
+    last_disappear_frame = -1;
     t = t_;
     staple = nullptr;
+
     if(t == STAPLE){
         staple = new STAPLE_TRACKER(s_cfg);
         staple->tracker_staple_initialize(frame,roi);
@@ -28,6 +32,9 @@ face_tracker::face_tracker(face_tracker && tracker){
     reid            = tracker.reid;
     age_sum         = tracker.age_sum;
     infer_age_count = tracker.infer_age_count;
+    sample_count_type1 = tracker.sample_count_type1;
+    sample_count_type2 = tracker.sample_count_type2;
+    last_disappear_frame = tracker.last_disappear_frame;
     t               = tracker.t;
     staple          = tracker.staple;
 
@@ -38,8 +45,11 @@ face_tracker & face_tracker::operator=(face_tracker && tracker){
     box             = tracker.box;    
     faceId          = tracker.faceId;
     reid            = tracker.reid;
-    age_sum             = tracker.age_sum;
+    age_sum         = tracker.age_sum;
     infer_age_count = tracker.infer_age_count;
+    sample_count_type1 = tracker.sample_count_type1;
+    sample_count_type2 = tracker.sample_count_type2;
+    last_disappear_frame = tracker.last_disappear_frame;
     t               = tracker.t;
     staple          = tracker.staple;
 

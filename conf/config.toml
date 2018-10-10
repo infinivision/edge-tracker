@@ -1,6 +1,7 @@
 [tracker]
-	  config_file = "staple.yaml"
-	  wisdom_file = "wisdom"
+	config_file = "staple.yaml"
+	wisdom_file = "wisdom"
+	disappear_threshold = 100	  
 [detect]
 	mtccn_model_path = "../models/ncnn"
 	mtcnn_threshold     = [0.6,0.7,0.8]

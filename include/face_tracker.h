@@ -34,6 +34,9 @@ public:
     int reid;
     int age_sum;
     int infer_age_count;
+    int sample_count_type1;
+    int sample_count_type2;
+    int last_disappear_frame;
 
 private:
     algo_type t;

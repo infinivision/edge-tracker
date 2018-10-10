@@ -191,7 +191,7 @@ float get_theta(Point2d base, Point2d x, Point2d y) {
 
 }
 
-int check_large_pose(std::vector<Point2d> & landmark, Rect2d & box ){
+int check_large_pose(std::vector<Point2d> & landmark, Rect2d & box ) {
     assert(landmark.size()==5);
     float theta1 = get_theta(landmark[0], landmark[3], landmark[2]);
     float theta2 = get_theta(landmark[1], landmark[2], landmark[4]);
