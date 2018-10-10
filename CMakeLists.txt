@@ -41,6 +41,12 @@ endif (NOT OpenCV_FOUND)
 
 find_package(PkgConfig)
 
+pkg_check_modules(EIGEN REQUIRED eigen3)
+if(EIGEN_FOUND)
+    message(STATUS "  eigen include: ${EIGEN_INCLUDE_DIRS}")
+    include_directories(${EIGEN_INCLUDE_DIRS})
+endif()
+
 pkg_check_modules(DLIB REQUIRED dlib)
 if(DLIB_FOUND)
     message(STATUS "  dlib include: ${DLIB_INCLUDE_DIRS}")
