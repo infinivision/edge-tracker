@@ -32,7 +32,7 @@ using namespace cv;
 
 int detection_period = 20;
 int min_score = 5;
-int disappear_threshold = 100;
+int disappear_threshold = 40;
 #ifdef SAVE_IMG
 bool original_save = false;
 bool tracker_save  = false;
@@ -244,8 +244,14 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
         for (size_t i = 0; i< tracker_vec.size(); i++) {
             for(size_t j = i+1; j< tracker_vec.size(); j++) {
                 if(overlap(tracker_vec[i].box, tracker_vec[j].box)){
-                    tracker_vec.erase(tracker_vec.begin() + j);
-                    j--;
+                    if(tracker_vec[i].box.area() >=  tracker_vec[j].box.area()){
+                        tracker_vec.erase(tracker_vec.begin() + j);
+                        j--;
+                    } else {
+                        tracker_vec.erase(tracker_vec.begin() + i);
+                        i--;
+                        break;
+                    }
                 }
             }
         }
@@ -347,41 +353,26 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
 
                     if(next) {
                         int new_id=-1;
-                        if (face_pose_type == 0 && tracker_vec[index].sample_count_type1 < n_sample_count_type1) {
+                        if (    (face_pose_type == 0 && tracker_vec[index].sample_count_type1 < n_sample_count_type1)
+                             || (face_pose_type == 1 && tracker_vec[index].sample_count_type2 < n_sample_count_type2)
+                             || (face_pose_type == 2 && tracker_vec[index].sample_count_type2 < n_sample_count_type2)
+                           ) {
                             new_id = proc_embeding(face ,face_vec, camera, frameCounter, thisFace);
-                            if(new_id!=-1){
+                            if(new_id>-1){
                                 if(tracker_vec[index].reid==-1)
                                     tracker_vec[index].reid = new_id;
                                 else if( tracker_vec[index].reid != new_id ) {
                                     LOG(INFO) << "camera["<< camera.NO << "]frame["<< frameCounter << "] face " << tracker_vec[index].faceId 
                                               <<" reid change from " << tracker_vec[index].reid << " to " << new_id <<", erase tracker";
-                                    tracker_vec.erase(tracker_vec.begin() + index);                                    
-                                    continue;
-                                }
-                                tracker_vec[index].sample_count_type1++;
-                                #ifdef SAVE_IMG
-                                if(new_id!=-1){
-                                    string cmd = "mkdir -p " + output_folder + "/" + to_string(new_id);
-                                    system(cmd.c_str());
-                                    string output = output_folder + "/" + to_string(new_id) + "/face_" + to_string(thisFace) + "_"+ to_string(frameCounter) + ".jpg";
-                                    imwrite(output,face);
-                                }
-                                #endif
-                            }
-                        } else if ( (face_pose_type == 1 || face_pose_type==2)&& tracker_vec[index].sample_count_type2 < n_sample_count_type2) {
-                            new_id = proc_embeding(face ,face_vec, camera, frameCounter, thisFace);
-                            if(new_id!=-1) {
-                                if(tracker_vec[index].reid==-1)
-                                    tracker_vec[index].reid = new_id;
-                                else if( tracker_vec[index].reid != new_id ) {
-                                    LOG(INFO) << "camera["<< camera.NO <<  "]frame[" << frameCounter << "] face " << tracker_vec[index].faceId 
-                                              <<" reid change from " << tracker_vec[index].reid << " to " << new_id <<", erase tracker";                                    
                                     tracker_vec.erase(tracker_vec.begin() + index);
                                     continue;
                                 }
-                                tracker_vec[index].sample_count_type2++;                                
+                                if(face_pose_type == 0)
+                                    tracker_vec[index].sample_count_type1++;
+                                else
+                                    tracker_vec[index].sample_count_type2++;
                                 #ifdef SAVE_IMG
-                                if(new_id!=-1){
+                                if(new_id>-1){
                                     string cmd = "mkdir -p " + output_folder + "/" + to_string(new_id);
                                     system(cmd.c_str());
                                     string output = output_folder + "/" + to_string(new_id) + "/face_" + to_string(thisFace) + "_"+ to_string(frameCounter) + ".jpg";
