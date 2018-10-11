@@ -19,8 +19,8 @@ catch(std::system_error & exception){
     exit(0);
 }
 
-void dbHandle::insert(long frameCounter, long faceId, unsigned tracker_index, \
-                    int face_pose_type, float score, int age, int reid, cv::Mat & coordinate) {
+void dbHandle::insert_coordinate(long frameCounter, long faceId, unsigned tracker_index, \
+                    int face_pose_type, float score, int age, cv::Mat & coordinate) {
 
     try{
 
@@ -54,10 +54,6 @@ void dbHandle::insert(long frameCounter, long faceId, unsigned tracker_index, \
         age_->Append(age);
         block.AppendColumn("age", age_);
 
-        auto reid_ = std::make_shared<ColumnInt32>();
-        reid_->Append(reid);
-        block.AppendColumn("reid", reid_);
-
         auto sample_date = std::make_shared<ColumnDate>();
         sample_date->Append(std::time(nullptr));
         block.AppendColumn("sample_date", sample_date);
@@ -83,15 +79,58 @@ void dbHandle::insert(long frameCounter, long faceId, unsigned tracker_index, \
         z_->Append(z);
         block.AppendColumn("coordinate-z", z_);
 
-        client.Insert("tracker.sample", block);
+        client.Insert("tracker.coordinate", block);
 
     } 
     catch (clickhouse::ServerException & exception) {
-        LOG(ERROR) << "click house access exception " << exception.what() << std::endl;
+        LOG(ERROR) << "insert tracker.coordinate failed: click house access exception " << exception.what() << std::endl;
         exit(0);
     }
     catch(std::system_error & exception){
-        LOG(ERROR) << "click house access exception, system error: " << exception.what() << std::endl;
+        LOG(ERROR) << "insert tracker.coordinate failed: click house access exception, system error: " << exception.what() << std::endl;
+        exit(0);
+    }
+}
+
+void dbHandle::insert_reid(long faceId, int reid ) {
+
+    try{
+
+        Block block;
+
+        auto camera_id_ = std::make_shared<ColumnString>();
+        camera_id_->Append(camera_id);
+        block.AppendColumn("camera_id" , camera_id_);
+
+        auto faceId_ = std::make_shared<ColumnUInt64>();
+        faceId_->Append(faceId);
+        block.AppendColumn("face_id" , faceId_);
+
+        auto reid_ = std::make_shared<ColumnInt32>();
+        reid_->Append(reid);
+        block.AppendColumn("reid" , reid_);
+
+        auto sample_date = std::make_shared<ColumnDate>();
+        sample_date->Append(std::time(nullptr));
+        block.AppendColumn("sample_date", sample_date);
+
+        struct timeval  ts;
+        gettimeofday(&ts,NULL);
+        long int ts_ms = ts.tv_sec * 1000 + ts.tv_usec / 1000;
+        // LOG(INFO) << "time stamp " << ts_ms;
+        auto time_stamp = std::make_shared<ColumnUInt64>();
+        time_stamp->Append(ts_ms);
+        block.AppendColumn("time_stamp", time_stamp);
+
+        client.Insert("tracker.reid", block);
+
+    } 
+    catch (clickhouse::ServerException & exception) {
+        LOG(ERROR) << "insert tracker.reid failed: click house access exception " << exception.what() << std::endl;
+        exit(0);
+    }
+    catch(std::system_error & exception){
+        LOG(ERROR) << "insert tracker.reid failed: click house access exception, system error: " << exception.what() << std::endl;
         exit(0);
     }
 }

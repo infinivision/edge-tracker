@@ -154,7 +154,7 @@ int proc_embd_vec(std::vector<float> &data, const CameraConfig & camera,int fram
 
   if(identifies.size()>= amt_reid){
     identifies.clear();
-    reid = 0;
+    // reid = 0;
     LOG(INFO) << "reid amount up to "<< amt_reid <<", clear map";
   }
 

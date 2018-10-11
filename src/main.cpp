@@ -351,6 +351,9 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                                                 camera, frameCounter, thisFace, 
                                                 &face_pose_type);
 
+                    if(next)
+                        db.insert_coordinate(frameCounter, thisFace, index, face_pose_type, score, infer_age, world_coordinate);
+
                     if(next) {
                         int new_id=-1;
                         if (    (face_pose_type == 0 && tracker_vec[index].sample_count_type1 < n_sample_count_type1)
@@ -359,9 +362,10 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                            ) {
                             new_id = proc_embeding(face ,face_vec, camera, frameCounter, thisFace);
                             if(new_id>-1){
-                                if(tracker_vec[index].reid==-1)
+                                if(tracker_vec[index].reid==-1){
                                     tracker_vec[index].reid = new_id;
-                                else if( tracker_vec[index].reid != new_id ) {
+                                    db.insert_reid(thisFace, new_id);
+                                } else if( tracker_vec[index].reid != new_id ) {
                                     LOG(INFO) << "camera["<< camera.NO << "]frame["<< frameCounter << "] face " << tracker_vec[index].faceId 
                                               <<" reid change from " << tracker_vec[index].reid << " to " << new_id <<", erase tracker";
                                     tracker_vec.erase(tracker_vec.begin() + index);
@@ -381,9 +385,6 @@ void process_camera(const string mtcnn_model_path, const CameraConfig &camera, s
                                 #endif
                             }
                         }
-
-                        db.insert(frameCounter, thisFace, index, face_pose_type, score, infer_age, new_id, world_coordinate);
-
                     }
 
                     #ifdef SAVE_IMG

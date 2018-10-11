@@ -11,8 +11,9 @@ using namespace clickhouse;
 class dbHandle {
     public:
         dbHandle(std::string db_ip, int db_port, std::string camera_ip);
-        void insert(long frameCounter, long faceId, unsigned tracker_index, \
-                    int face_pose_type, float score, int age, int reid, cv::Mat & coordinate);
+        void insert_coordinate(long frameCounter, long faceId, unsigned tracker_index, \
+                               int face_pose_type, float score, int age, cv::Mat & coordinate);
+        void insert_reid(long faceId, int reid );
     private:
         Client client;
         std::string camera_id;
