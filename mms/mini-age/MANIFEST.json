@@ -1,0 +1,20 @@
+{
+    "Engine": {
+        "MXNet": [
+            "int", 
+            10200
+        ]
+    }, 
+    "Model": {
+        "Description": "mini-age", 
+        "Service": "mxnet_vision_service.py", 
+        "Symbol": "model-symbol.json", 
+        "Parameters": "model-0000.params", 
+        "Signature": "signature.json", 
+        "Model-Name": "mini-age", 
+        "Model-Format": "MXNet-Symbolic"
+    }, 
+    "Model-Archive-Version": 0.2, 
+    "Model-Server": 0.4, 
+    "Model-Archive-Description": "mini-age"
+}

@@ -15,7 +15,7 @@ std::string CameraConfig::identity() const {
     } else if(source_type==2){
         return  "local_camera_" + std::to_string(NO);
     } else if(source_type==3){
-        return "vide_file_" + std::to_string(NO);
+        return "video_file_" + std::to_string(NO);
     }
     return "";
 }
