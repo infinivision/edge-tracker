@@ -29,22 +29,52 @@ CREATE TABLE IF NOT EXISTS tracker.reid ( \
 // DROP TABLE IF EXISTS tracker.reid
 // DROP DATABASE IF EXISTS tracker
 
+// trace map
+// eliminate noise point by select correct reid
 select reid,point_num from (	\
-		select reid,count(1) as point_num from tracker.reid \
-					any inner join tracker.coordinate \
+		select reid,count(1) as point_num from tracker.coordinate \
+					any inner join  tracker.reid\
 					using camera_id,face_id	 \
 					where sample_date='2018-10-11'	\
 					group by reid ) \
-		where point_num > 3 \
+		where point_num > 10 \
 		order by point_num
 				
-select time_stamp, `coordinate-x` from tracker.coordinate	\
+select time_stamp, `coordinate-x`, `coordinate-y` from tracker.coordinate	\
 			any inner join tracker.reid	\
 			using camera_id,face_id	 \
 			where    sample_date='2018-10-11' \
-					 and reid = 4 \
+					 and reid = 1 \
 			order by time_stamp
 	
 
-docker run -itd --name ck-svr --rm  --network host -v /root/dev_keeper/ckdb/data:/var/lib/clickhouse -v /root/dev_keeper/ckdb/clickhouse_config.xml:/etc/clickhouse-server/config.xml  yandex/clickhouse-server 
+// heat map
+// eliminate noise point by select correct reid
+select reid,point_num from (	\
+		select reid,count(1) as point_num from tracker.coordinate \
+					any inner join  tracker.reid\
+					using camera_id,face_id	 \
+					where sample_date='2018-10-11'	\
+					group by reid ) \
+		where point_num > 10 \
+		order by reid
+		
+// coordinate metric:  decimetre		
+select x, y, count(1) from ( \
+	select cast(`coordinate-x`/100 as int) as x,cast(`coordinate-y`/100 as int) as y  from tracker.coordinate	\
+			any inner join tracker.reid	\
+			using camera_id,face_id	 \
+			where    sample_date='2018-10-11' \
+					 and reid in ( 1,6,7,8,12,16,21 ) \
+	) group by x, y order by x,y
 
+// coordinate metric:  metre		
+select x, y, count(1) from ( \
+	select cast(`coordinate-x`/1000 as int) as x,cast(`coordinate-y`/1000 as int) as y  from tracker.coordinate	\
+			any inner join tracker.reid	\
+			using camera_id,face_id	 \
+			where    sample_date='2018-10-11' \
+					 and reid in ( 1,6,7,8 ) \
+	) group by x, y order by x,y
+	
+docker run -itd --name ck-svr --rm  --network host -v /root/dev_keeper/ckdb/data:/var/lib/clickhouse -v /root/dev_keeper/ckdb/clickhouse_config.xml:/etc/clickhouse-server/config.xml  yandex/clickhouse-server 
