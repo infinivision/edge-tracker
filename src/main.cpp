@@ -538,7 +538,6 @@ int main(int argc, char* argv[]) {
 
     for (CameraConfig camera: cameras) {
         std::thread t(process_camera, mtcnn_model_path, camera, output_folder, ckdb_ip, ckdb_port, false);
-        t.detach();
         threads.push_back(std::move(t));
     }
 
