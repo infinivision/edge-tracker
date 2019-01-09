@@ -171,19 +171,7 @@ cv::Mat FaceAlign::Align(const cv::Mat& input, const std::vector<cv::Point2f>& a
   // cout << R << endl;
 
   // R is now a matrix of size 2 * 3
-  cv::Mat H = cv::Mat(2,3,R.type());
-  H.at<double>(0,0) = R.at<double>(0,0);
-  H.at<double>(0,1) = R.at<double>(0,1);
-  H.at<double>(0,2) = R.at<double>(0,2);
-
-  H.at<double>(1,0) = R.at<double>(1,0);
-  H.at<double>(1,1) = R.at<double>(1,1);
-  H.at<double>(1,2) = R.at<double>(1,2);
-
-  // H.at<double>(2,0) = 0.0;
-  // H.at<double>(2,1) = 0.0;
-  // H.at<double>(2,2) = 1.0;
-
+  cv::Mat H = R.rowRange(0,2);
   // cout << H << endl;
 
   // cout << "\twarp affine ...";
