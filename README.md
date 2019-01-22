@@ -50,7 +50,7 @@ cmake ..
 make
 ```
 
-# run edge tracker
+## run edge tracker
 ```sh
 # activate OpemMP threads
 set OMP_NUM_THREADS=2
