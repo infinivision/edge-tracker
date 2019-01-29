@@ -5,7 +5,7 @@
 
 static int magic = 35000;    // for measuring blur
 
-double GetImageQuality(IplImage* img, int left, int top, int right, int bottom);
+//double GetImageQuality(IplImage* img, int left, int top, int right, int bottom);
 double GetNormOfDerivativesBlurriness(const cv::Mat& image);
 double GetVarianceOfLaplacianSharpness(const cv::Mat& image);
 

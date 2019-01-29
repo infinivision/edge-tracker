@@ -2,7 +2,7 @@
 #define __MTCNN_H__
 
 #include <vector>
-#include "net.h"
+#include "ncnn/net.h"
 
 using namespace std;
 using namespace cv;

@@ -1,5 +1,6 @@
 #include <image_quality.h>
 
+/*
 double GetImageQuality(IplImage* img, int left, int top, int right, int bottom) {
     double temp = 0;
     double DR = 0;
@@ -18,6 +19,7 @@ double GetImageQuality(IplImage* img, int left, int top, int right, int bottom) 
     DR = temp/num;
     return DR;
 }
+*/
 
 double GetNormOfDerivativesBlurriness(const cv::Mat& image) {
     cv::Mat Gx;

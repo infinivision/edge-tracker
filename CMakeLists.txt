@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.1)
 project(edge-tracker)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+message(STATUS "CMAKE_MODULE_PATH: ${CMAKE_MODULE_PATH}")
 
 if(NOT CMAKE_BUILD_TYPE)
     message(STATUS "build type not defined")
@@ -30,16 +31,17 @@ else()
     message(STATUS "OpenMP Not Found")
 endif()
 
-find_package( OpenCV REQUIRED )
-
-if (NOT OpenCV_FOUND)
-    message(FATAL_ERROR "  opencv Not Found!")
-else()
-    message(STATUS "  OpenCV_LIBS: ${OpenCV_LIBS}")
-    message(STATUS "  OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}")
-endif (NOT OpenCV_FOUND)
-
 find_package(PkgConfig)
+pkg_check_modules( OpenCV REQUIRED opencv)
+if (OpenCV_FOUND)
+    message(STATUS "  OpenCV_LIBS: ${OpenCV_LIBRARIES}")
+    message(STATUS "  OpenCV_INCLUDE_DIRS: ${OpenCV_INCLUDE_DIRS}")
+    message(STATUS "  OpenCV_LIBRARY_DIRS: ${OpenCV_LIBRARY_DIRS}")
+    include_directories(${OpenCV_INCLUDE_DIRS})
+    link_directories(${OpenCV_LIBRARY_DIRS})
+else()
+    message(FATAL_ERROR "  opencv Not Found!")
+endif()
 
 pkg_check_modules(EIGEN REQUIRED eigen3)
 if(EIGEN_FOUND)
@@ -47,11 +49,21 @@ if(EIGEN_FOUND)
     include_directories(${EIGEN_INCLUDE_DIRS})
 endif()
 
+pkg_check_modules(FFTW REQUIRED fftw3)
+if(FFTW_FOUND)
+    message(STATUS "  fftw include: ${FFTW_INCLUDE_DIRS}")
+    include_directories(${FFTW_INCLUDE_DIRS})
+else()
+    message(FATAL_ERROR "  fftw not found! tracker depends on it")
+endif()
+
 pkg_check_modules(DLIB REQUIRED dlib)
 if(DLIB_FOUND)
     message(STATUS "  dlib include: ${DLIB_INCLUDE_DIRS}")
     message(STATUS "  dlib libraries: ${DLIB_LIBRARIES}")
+    message(STATUS "  dlib library dir: ${DLIB_LIBRARY_DIRS}")
     include_directories(${DLIB_INCLUDE_DIRS})
+    link_directories(${DLIB_LIBRARY_DIRS})
 endif()
 
 pkg_check_modules(NCNN REQUIRED ncnn)
@@ -61,9 +73,31 @@ if(NCNN_FOUND)
     include_directories(${NCNN_INCLUDE_DIRS})
 endif()
 
-include_directories(${OpenCV_INCLUDE_DIRS})
+pkg_check_modules(GLOG REQUIRED glog)
+if(GLOG_FOUND)
+    message(STATUS "  glog include: ${GLOG_INCLUDE_DIRS}")
+    include_directories(${GLOG_INCLUDE_DIRS})
+else()
+    message(FATAL_ERROR "  glog not found! edge-tracker needs it for logging")
+endif()
+
+pkg_check_modules(GFLAGS REQUIRED gflags)
+if(GFLAGS_FOUND)
+    message(STATUS "  gflags include: ${GFLAGS_INCLUDE_DIRS}")
+    include_directories(${GFLAGS_INCLUDE_DIRS})
+else()
+    message(FATAL_ERROR "  gflags not found! glog depends on it")
+endif()
+
+pkg_check_modules(KCF REQUIRED tracker-kcf)
+if(KCF_FOUND)
+    message(STATUS "  kcf include: ${KCF_INCLUDE_DIRS}")
+    include_directories(${KCF_INCLUDE_DIRS})
+else()
+    message(FATAL_ERROR "  KCF tracker not found!")
+endif()
+
 include_directories(${PROJECT_SOURCE_DIR}/include)
-#include_directories(${PROJECT_SOURCE_DIR}/include/ncnn)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/kcf/trackerKCF)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/staple/staple)
 include_directories(${PROJECT_SOURCE_DIR}/3rdparty/cpptoml/include)
@@ -77,7 +111,7 @@ link_directories(
 )
 
 add_executable(main src/main.cpp src/utils/utils.cpp src/utils/time_utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp src/image_quality.cpp)
-target_link_libraries(main ncnn trackerKCF ${OpenCV_LIBS} fftw3f ${DLIB_LIBRARIES} glog)
+target_link_libraries(main ncnn trackerKCF ${OpenCV_LIBRARIES} fftw3f ${DLIB_LIBRARIES} glog)
 set_target_properties(main
         PROPERTIES 
         RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
@@ -89,28 +123,28 @@ set_target_properties(export PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOUR
 
 if (EDGE_BUILD_TESTS)
     add_executable(test-face-align tests/test_face_align.cpp src/utils/time_utils.cpp src/utils/utils.cpp src/mtcnn.cpp src/face_align.cpp src/camera.cpp)
-    target_link_libraries(test-face-align ncnn ${OpenCV_LIBS} ${DLIB_LIBRARIES} glog)
+    target_link_libraries(test-face-align ncnn ${OpenCV_LIBRARIES} ${DLIB_LIBRARIES} glog)
     set_target_properties(test-face-align
             PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
     )
 
     add_executable(test-face-quality tests/test_face_quality.cpp src/utils/time_utils.cpp src/utils/utils.cpp src/face_attr.cpp src/image_quality.cpp src/face_align.cpp src/camera.cpp)
-    target_link_libraries(test-face-quality ${OpenCV_LIBS} ${DLIB_LIBRARIES} glog)
+    target_link_libraries(test-face-quality ${OpenCV_LIBRARIES} ${DLIB_LIBRARIES} glog)
     set_target_properties(test-face-quality
             PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
     )
 
     add_executable(test_video tests/test_video.cpp src/utils/time_utils.cpp src/utils/utils.cpp src/mtcnn.cpp src/face_attr.cpp src/face_align.cpp src/camera.cpp)
-    target_link_libraries(test_video ncnn trackerKCF trackerStaple ${OpenCV_LIBS} fftw3f ${DLIB_LIBRARIES} glog)
+    target_link_libraries(test_video ncnn trackerKCF trackerStaple ${OpenCV_LIBRARIES} fftw3f ${DLIB_LIBRARIES} glog)
     set_target_properties(test_video
             PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"
     )
 
     add_executable(read-camera tests/read_camera.cpp src/utils/time_utils.cpp src/utils/utils.cpp src/face_align.cpp src/camera.cpp)
-    target_link_libraries(read-camera ${OpenCV_LIBS} ${DLIB_LIBRARIES} glog)
+    target_link_libraries(read-camera ${OpenCV_LIBRARIES} ${DLIB_LIBRARIES} glog)
     set_target_properties(read-camera
             PROPERTIES
             RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin"

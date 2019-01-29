@@ -180,7 +180,7 @@ void resizeBoundingBox(const cv::Mat &frame, cv::Rect2d &roi, float factor) {
     float center_x = roi.x + roi.width / 2.0;
     float center_y = roi.y + roi.height / 2.0;
     int new_x = floor(center_x - factor * roi.width / 2);
-    int new_y = floor(center_y - factor * roi.height / 2;
+    int new_y = floor(center_y - factor * roi.height / 2);
     int new_width = ceil(factor * roi.width);
     int new_height = ceil(factor * roi.height);
 
