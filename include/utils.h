@@ -21,4 +21,5 @@ void prepare_output_folder(const CameraConfig &camera, string &output_folder);
 
 void saveFace(const cv::Mat &frame, const Bbox &box, long faceId, string outputFolder);
 
+void resizeBoundingBox(const cv::Mat &frame, cv::Rect2d &roi, float factor);
 #endif

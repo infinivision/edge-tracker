@@ -140,7 +140,7 @@ void saveFace(const cv::Mat &frame, const Bbox &box, long faceId, string outputF
     }
 
     //namedWindow("output", WINDOW_NORMAL);
-
+    /* face alignment
     std::vector<cv::Point2f> points;
     for(int num=0;num<5;num++) {
         Point2f point(box.ppoint[num], box.ppoint[num+5]);
@@ -150,9 +150,15 @@ void saveFace(const cv::Mat &frame, const Bbox &box, long faceId, string outputF
     Mat image = faceAlign.Align(frame, points);
 
     if (image.empty()) {
-        /* empty image means unable to align face */
+        // empty image means unable to align face
         return;
     }
+    */
+
+    // no alignment, only crop a bit larger face bounding box
+    float factor = 1.5; // make the face roi 1.5x larger
+    resizeBoundingBox(frame, roi, factor);
+    cv::Mat image(frame, roi);
 
     output = outputFolder + "/" + current_time + ".jpg";
     if ( imwrite(output, image) ) {
@@ -167,6 +173,26 @@ void saveFace(const cv::Mat &frame, const Bbox &box, long faceId, string outputF
     imwrite(output, image);
 
     //imshow("output", image);
+}
+
+// scale the roi to a factor, inside an image
+void resizeBoundingBox(const cv::Mat &frame, cv::Rect2d &roi, float factor) {
+    float center_x = roi.x + roi.width / 2.0;
+    float center_y = roi.y + roi.height / 2.0;
+    int new_x = floor(center_x - factor * roi.width / 2);
+    int new_y = floor(center_y - factor * roi.height / 2;
+    int new_width = ceil(factor * roi.width);
+    int new_height = ceil(factor * roi.height);
+
+    if (new_x < 0) new_x = 0;
+    if (new_y < 0) new_y = 0;
+    if (new_x + new_width > frame.cols) new_width = frame.cols - new_x;
+    if (new_y + new_height > frame.rows) new_height = frame.rows - new_y;
+
+    roi.x = new_x;
+    roi.y = new_y;
+    roi.width = new_width;
+    roi.height = new_height;
 }
 
 // int main() {
