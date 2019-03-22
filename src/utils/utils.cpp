@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "camera.h"
 #include <dirent.h>
 #include <face_align.h>
@@ -10,6 +11,8 @@
 #include <vector>
 
 using namespace std;
+
+#define MAX_DETECTED_FACE_SIZE 160
 
 FaceAlign faceAlign = FaceAlign();
 
@@ -103,23 +106,24 @@ bool overlap(const cv::Rect2d &box1, const cv::Rect2d &box2) {
     return false;
 }
 
-// prepare (clean output folder), output_folder argument will be changed!
+// prepare (clean output folder)
+// args output_folder will append camera ip address
 void prepare_output_folder(const CameraConfig &camera, string &output_folder) {
     output_folder += "/" + camera.identity();
 
-    string cmd = "mkdir -p " + output_folder + "/original";
-    int dir_err = system(cmd.c_str());
-    if (-1 == dir_err) {
-        LOG(ERROR) << "Error creating directory";
-        exit(1);
-    }
+//     string cmd = "mkdir -p " + output_folder + "/original";
+//     int dir_err = system(cmd.c_str());
+//     if (-1 == dir_err) {
+//         LOG(ERROR) << "Error creating directory";
+//         exit(1);
+//     }
 
-    cmd = "mkdir -p " + output_folder + "/aligned";
-    dir_err = system(cmd.c_str());
-    if (-1 == dir_err) {
-        LOG(ERROR) << "Error creating directory";
-        exit(1);
-    }
+//     cmd = "mkdir -p " + output_folder + "/aligned";
+//     dir_err = system(cmd.c_str());
+//     if (-1 == dir_err) {
+//         LOG(ERROR) << "Error creating directory";
+//         exit(1);
+//     }
 }
 
 /*
@@ -130,14 +134,14 @@ void saveFace(const cv::Mat &frame, const Bbox &box, long faceId, string outputF
     string current_time = get_current_time();
 
     cv::Rect2d roi(cv::Point(box.x1, box.y1),Point(box.x2, box.y2));
-    cv::Mat cropped(frame, roi);
-    string output = outputFolder + "/original/" + current_time + ".jpg";
-    if ( imwrite(output, cropped) ) {
-        LOG(INFO) << "\tsave face #" << faceId << " to " << output;
-        cout << "save face #" << faceId << " to " << output << endl;
-    } else {
-        LOG(ERROR) << "\tfail to save face #" << faceId << " to " << output;
-    }
+    // cv::Mat cropped(frame, roi);
+    // string output = outputFolder + "/original/" + current_time + ".jpg";
+    // if ( imwrite(output, cropped) ) {
+    //     LOG(INFO) << "\tsave face #" << faceId << " to " << output;
+    //     cout << "save face #" << faceId << " to " << output << endl;
+    // } else {
+    //     LOG(ERROR) << "\tfail to save face #" << faceId << " to " << output;
+    // }
 
     //namedWindow("output", WINDOW_NORMAL);
     /* face alignment
@@ -159,9 +163,28 @@ void saveFace(const cv::Mat &frame, const Bbox &box, long faceId, string outputF
     float factor = 1.5; // make the face roi 1.5x larger
     resizeBoundingBox(frame, roi, factor);
     cv::Mat image(frame, roi);
+    cv::Mat resized_image; // resize image if long side is larger than MAX_DETECTED_FACE_SIZE
 
-    output = outputFolder + "/" + current_time + ".jpg";
-    if ( imwrite(output, image) ) {
+    // resize image to long side MAX_DETECTED_FACE_SIZE
+    if (image.rows > image.cols) {
+        if (image.rows > MAX_DETECTED_FACE_SIZE) {
+            int new_rows = MAX_DETECTED_FACE_SIZE;
+            int new_cols = floor(image.cols * MAX_DETECTED_FACE_SIZE / image.rows);
+            cv::resize(image, resized_image, cv::Size(new_cols, new_rows));
+        } else {
+            resized_image = image;
+        }
+
+    } else if (image.cols > MAX_DETECTED_FACE_SIZE) {
+        int new_cols = MAX_DETECTED_FACE_SIZE;
+        int new_rows = floor(image.rows * MAX_DETECTED_FACE_SIZE / image.cols);
+        cv::resize(image, resized_image, cv::Size(new_cols, new_rows));
+    } else {
+        resized_image = image;
+    }
+
+    string output = outputFolder + "/" + current_time + ".jpg";
+    if ( imwrite(output, resized_image) ) {
         LOG(INFO) << "\tsave face #" << faceId << " to " << output;
         cout << "save face #" << faceId << " to " << output << endl;
         LOG(INFO) << "\tmtcnn score: " << box.score;
@@ -169,8 +192,8 @@ void saveFace(const cv::Mat &frame, const Bbox &box, long faceId, string outputF
         LOG(ERROR) << "\tfail to save face #" << faceId << " to " << output;
     }
 
-    output = outputFolder + "/aligned/" + current_time + ".jpg";
-    imwrite(output, image);
+    // output = outputFolder + "/aligned/" + current_time + ".jpg";
+    // imwrite(output, image);
 
     //imshow("output", image);
 }
