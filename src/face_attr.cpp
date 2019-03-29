@@ -8,6 +8,8 @@
 #include <dlib/image_processing.h>
 #include <face_attr.h>
 
+/* compute face pose */
+
 struct profiler
 {
     std::string name;

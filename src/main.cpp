@@ -72,7 +72,7 @@ void process_camera(const string &model_path, const CameraConfig &camera, string
             continue;
         }
 
-        Mat show_frame = frame.clone();
+        // Mat show_frame = frame.clone();
 
         string log = "frame #" + to_string(frameCounter) + ", tracking faces: ";
         // update trackers
@@ -203,7 +203,6 @@ void process_camera(const string &model_path, const CameraConfig &camera, string
         google::FlushLogFiles(google::GLOG_INFO);
 
     } while (true);
-    // } while (QUIT_KEY != waitKey(1));
 }
 
 int main(int argc, char* argv[]) {
@@ -217,7 +216,7 @@ int main(int argc, char* argv[]) {
         "{output       |/opt/dev_keeper/faces      | output folder        }"
     ;
 
-    CommandLineParser parser(argc, argv, keys);
+    cv::CommandLineParser parser(argc, argv, keys);
     parser.about("camera face detector");
     if (parser.has("help")) {
         parser.printMessage();
